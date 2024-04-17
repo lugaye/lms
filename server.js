@@ -76,6 +76,12 @@ app.post('/logout', (req, res) => {
     res.send('Logout successful');
 });
 
+app.get('/dashboard', (req, res) => {
+    // Assuming you have middleware to handle user authentication and store user information in req.user
+    const userFullName = req.user.full_name;
+    res.render('dashboard', { fullName: userFullName });
+});
+
 // Route to retrieve course content
 app.get('/course/:id', (req, res) => {
     const courseId = req.params.id;
