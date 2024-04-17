@@ -35,6 +35,7 @@ CREATE TABLE users (
 ```
 
 #### Create courses table
+```bash
 -- Create courses table
 CREATE TABLE courses (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -46,8 +47,10 @@ INSERT INTO courses (name) VALUES
 ('Introduction to HTML'),
 ('CSS Fundamentals'),
 ('JavaScript Basics');
+```
 
 #### Create leaderboard table
+```bash
 -- Create leaderboard table
 CREATE TABLE leaderboard (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -61,7 +64,7 @@ INSERT INTO leaderboard (name, score) VALUES
 ('Jane Smith', 90),
 ('Michael Brown', 85),
 ('Emily Jones', 80);
-
+```
 
 ### Run the server.
 ```bash
