@@ -13,7 +13,7 @@ npm init -y
 ```
 ### Install necessary dependencies.
 ```bash
-npm install express mysql ejs bcryptjs express-session
+npm install express mysql ejs bcryptjs express-session express-validator
 ```
 
 ## Step 2: Set up the Backend
