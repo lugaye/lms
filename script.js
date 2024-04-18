@@ -9,13 +9,15 @@ document.addEventListener('DOMContentLoaded', () => {
         const formData = new FormData(registerForm);
         const username = formData.get('username');
         const password = formData.get('password');
+        const email = formData.get('email');
+        const full_name = formData.get('full_name');
         try {
             const response = await fetch('/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ username, password })
+                body: JSON.stringify({ username, password, email, full_name })
             });
             if (response.ok) {
                 alert('Registration successful');
@@ -66,14 +68,23 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Fetch course content from server
-    fetchCourseContent();
+    // Check if the current page is the course content page
+    if (window.location.pathname === '/course-content') {
+        // Call the fetchCourseContent function
+        fetchCourseContent();
+    }
 
-    // Fetch course content from server
-    fetchLeaderboardData();
+     // Check if the current page is the course content page
+    if (window.location.pathname === '/leader-board') {
+        // Fetch course content from server
+        fetchLeaderboardData();
+    }
 
-    //fetch Logged in user's full name
-    fetchFullName();
+    // Check if the current page is the course content page
+    if (window.location.pathname === '/dashboard') {
+        //fetch Logged in user's full name
+        fetchFullName();
+    }
 });
 
 function fetchCourseContent() {
