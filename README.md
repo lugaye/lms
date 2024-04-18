@@ -79,9 +79,9 @@ node server.js
 
 ### Create a `leader-board.html` file for the leader board.
 
-### Create a `styles.css` file to style your HTML.
+### Create a `style.css` file to style your HTML.
 
-### Create a `scripts.js` file to handle frontend interactions.
+### Create a `script.js` file to handle frontend interactions.
 
 ## Step 4: Testing
 Open your web browser and navigate to http://localhost:3000.
