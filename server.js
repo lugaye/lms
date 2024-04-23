@@ -17,12 +17,19 @@ app.use(session({
 // Create MySQL connection
 const connection = mysql.createConnection({
     host: 'localhost',
-    user: 'your_mysql_username',
-    password: 'your_mysql_password',
+    user: 'root',
+    password: '',
     database: 'learning_management'
 });
 
-connection.connect();
+// Connect to MySQL
+connection.connect((err) => {
+    if (err) {
+        console.error('Error connecting to MySQL: ' + err.stack);
+        return;
+    }
+    console.log('Connected to MySQL as id ' + connection.threadId);
+});
 
 // Serve static files from the default directory
 app.use(express.static(__dirname));
@@ -38,6 +45,22 @@ app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
 });
 
+
+  
+// Define a User representation for clarity
+const User = {
+    tableName: 'users', 
+    createUser: function(newUser, callback) {
+        connection.query('INSERT INTO ' + this.tableName + ' SET ?', newUser, callback);
+    },  
+    getUserByEmail: function(email, callback) {
+        connection.query('SELECT * FROM ' + this.tableName + ' WHERE email = ?', email, callback);
+    },
+    getUserByUsername: function(username, callback) {
+        connection.query('SELECT * FROM ' + this.tableName + ' WHERE username = ?', username, callback);
+    }
+};
+
 // Registration route
 app.post('/register', [
     // Validate email and username fields
@@ -46,13 +69,13 @@ app.post('/register', [
 
     // Custom validation to check if email and username are unique
     check('email').custom(async (value) => {
-        const user = await User.findOne({ email: value });
+        const user = await User.getUserByEmail(value);
         if (user) {
             throw new Error('Email already exists');
         }
     }),
     check('username').custom(async (value) => {
-        const user = await User.findOne({ username: value });
+        const user = await User.getUserByUsername(value);
         if (user) {
             throw new Error('Username already exists');
         }
@@ -69,20 +92,22 @@ app.post('/register', [
     const hashedPassword = await bcrypt.hash(req.body.password, saltRounds);
 
     // Create a new user object
-    const newUser = new User({
+    const newUser = {
         email: req.body.email,
         username: req.body.username,
         password: hashedPassword,
         full_name: req.body.full_name
-    });
+    };
 
-    // Save the user to the database
-    try {
-        const savedUser = await newUser.save();
-        res.status(201).json(savedUser); // Return the newly created user
-    } catch (err) {
-        res.status(500).json({ error: err.message }); // Handle database errors
-    }
+    // Insert user into MySQL
+    User.createUser(newUser, (error, results, fields) => {
+        if (error) {
+          console.error('Error inserting user: ' + error.message);
+          return res.status(500).json({ error: error.message });
+        }
+        console.log('Inserted a new user with id ' + results.insertId);
+        res.status(201).json(newUser);
+      });
 });
 
 // Login route
