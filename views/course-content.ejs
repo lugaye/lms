@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Content</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js"></script>
+</head>
+<body>
+    <header>
+        <h1 id="course-name">Course Name</h1>
+        <nav>
+                <a href="/">Home</a>
+                <br>
+                <a href="/dashboard">Dashboard</a>
+                <br>
+                <a href="/leader-board.html">Leader Board</a>
+                <br>
+                <a href="/user-courses.html">Your Courses</a>
+                <!-- Add more navigation links as needed -->
+        </nav>
+    </header>
+    <main id="course-content">
+        <!-- Course content will be dynamically populated here -->
+    </main>
+    <main id="course-content">
+        <% courses.forEach(course => { %> <!-- Loop through the courses -->
+            <section>
+                <h2><%= course.name %></h2> <!-- Display the course name -->
+                <!-- Add more details if needed -->
+            </section>
+        <% }); %>
+    </main>
+    <!-- Form for selecting courses -->
+    <section>
+        <h1>select courses</h1>
+        <form id="course-selection-form">
+            <div>
+                <input type="checkbox" id="course1" value="1"> <!-- The course ID -->
+                <label for="course1">Introduction to HTML</label>
+            </div>
+            <div>
+                <input type="checkbox" id="course2" value="2">
+                <label for="course2">CSS Fundamentals</label>
+            </div>
+            <div>
+                <input type="checkbox" id="course3" value="3">
+                <label for="course3">JavaScript Basics</label>
+            </div>
+            <button type="submit">Submit</button> <!-- Submit button -->
+        </form>
+    </section>
+    
+    <footer>
+        <p>&copy; 2024 Your LMS</p>
+    </footer>
+
+    <!-- Include your client-side JavaScript file -->
+
+    <script src="script.js"></script>
+</body>
+</html>

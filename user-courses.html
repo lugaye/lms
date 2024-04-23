@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Your Selected Courses</title>
+    <link rel="stylesheet" href="./style.css"> <!-- Add your styles here -->
+</head>
+<body>
+    <header>
+        <h1>USER COURSES</h1>
+        
+            <a href="/">Home</a>
+            <br>
+            <a href="/dashboard">Dashboard</a>
+            <br>
+            <a href="/course-content">course content</a>
+            
+        </ul>
+    </header>
+
+<main id="display" >
+    <h2 style="text-align: center;">SELECTED COURSES</h2>
+
+<div id="selected-courses" class="course-container" style="text-align: center;">
+    <!-- Selected courses will be populated here -->
+</div>
+   
+</main>
+
+<br><br><br><br><br><br><br>
+
+<footer>
+    <hr>
+    <p>&copy; 2024 Your LMS</p>
+</footer>
+
+    <!-- Place the script at the end of the body -->
+    <script src="/scripts.js"></script> <!-- Include the script file -->
+    <script>
+        fetchSelectedCourses(); // Call the function to fetch selected courses
+    </script>
+    <script src="../script.js"></script>
+</body>
+</html>

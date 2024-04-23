@@ -14,6 +14,18 @@ app.use(session({
     saveUninitialized: true
 }));
 
+app.set('view engine', 'ejs'); // Set EJS as the templating engine
+app.set('views', __dirname + '/views'); // Set the correct views directory
+// Serving static files
+app.use(express.static(__dirname + '/public'));
+app.use(express.static(__dirname + '/public', {
+    setHeaders: (res, path) => {
+        if (path.endsWith('.css')) {
+            res.setHeader('Content-Type', 'text/css'); // Ensure correct MIME type
+        }
+    }
+}));
+
 // Create MySQL connection
 const connection = mysql.createConnection({
     host: 'localhost',
@@ -33,6 +45,7 @@ connection.connect((err) => {
 
 // Serve static files from the default directory
 app.use(express.static(__dirname));
+
 
 // Set up middleware to parse incoming JSON data
 app.use(express.json());
@@ -142,10 +155,19 @@ app.post('/logout', (req, res) => {
 });
 
 //Dashboard route
+// app.get('/dashboard', (req, res) => {
+//     // Assuming you have middleware to handle user authentication and store user information in req.user
+//     const userFullName = req.user.full_name;
+//     res.render('dashboard', { fullName: userFullName });
+// });
+
 app.get('/dashboard', (req, res) => {
-    // Assuming you have middleware to handle user authentication and store user information in req.user
-    const userFullName = req.user.full_name;
-    res.render('dashboard', { fullName: userFullName });
+    if(!req.session.user){
+        return res.redirect('/'); //redirect to home if not authenticated
+    }
+
+    //render the dashboard and pass the full name
+    res.render('dashboard',{fullName: req.session.user.full_name});
 });
 
 // Route to retrieve course content
@@ -160,6 +182,23 @@ app.get('/course/:id', (req, res) => {
       res.json(result);
     });
   });
+
+  app.get('/leaderboard', (req, res) => {
+    const query = `
+        SELECT name, score
+        FROM leaderboard
+        ORDER BY score DESC
+    `;
+
+    connection.query(query, (err, results) => {
+        if (err) {
+            console.error('Error retrieving leaderboard data:', err);
+            return res.status(500).send('Error retrieving leaderboard data.');
+        }
+
+        res.json(results); // Return the leaderboard data as JSON
+    });
+});
 
 // Start server
 const PORT = process.env.PORT || 3000;
