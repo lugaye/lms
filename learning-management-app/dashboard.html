@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Include your CSS file -->
+</head>
+<body>
+    <header>
+        <h1>Welcome to Your Dashboard</h1>
+        <nav>
+            <ul>
+                <li><a href="/leader-board.html">Leaderboard</a></li>
+                <li><a href="/courses.html">Course Content</a></li>
+                <li><a href="/selected-courses.html">Selected courses</a></li>
+                <!-- Add more navigation links as needed -->
+                <!-- Render logout button only if user is logged in -->
+                <li id="logout-li" style="display: none;"><a href="#" id="logout-link">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section class="welcome-message">
+            <h2>Hello, <span id="user-fullname"></span>!</h2>
+            <p>Welcome to your personalized dashboard.</p>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2024 Your LMS</p>
+    </footer>
+
+    <!-- Include your client-side JavaScript file -->
+    <script src="script.js" defer></script> <!-- Defer loading of the script -->
+</body>
+</html>
