@@ -85,3 +85,18 @@ node server.js
 
 ## Step 4: Testing
 Open your web browser and navigate to http://localhost:3000.
+
+# Hackathon Instructions
+Finish up the project by: 
+1. creating functionality for the user to select their preferred courses.
+2. storing the selection in the database
+3. create a page where the selected courses for each student is displayed
+   
+## Submission Guidelines
+Fork this repository and clone it to your local machine. 
+Create a new branch with your GitHub username (git checkout -b username). 
+Complete the tasks. 
+Commit your changes and push them to your forked repository. 
+Submit a pull request to the main repository for review.
+
+Happy hacking! 🚀
