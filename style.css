@@ -1,74 +1,94 @@
-/* styles.css */
 body {
     font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    background-color: #f0f0f0;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
 }
 
 form {
-    margin-top: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-input, button {
-    margin-top: 10px;
-    padding: 5px;
-}
-
-header {
-    background-color: #333;
-    color: #fff;
+    max-width: 400px;
+    margin: 0 auto;
+    background-color: #fff;
     padding: 20px;
-    text-align: center;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-nav ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
+label {
+    display: block;
+    margin-bottom: 10px;
 }
 
-nav ul li {
-    display: inline;
-    margin-right: 20px;
-}
-
-main {
-    padding: 20px;
-}
-
-footer {
-    background-color: #333;
-    color: #fff;
-    padding: 20px;
-    text-align: center;
-}
-
-/* Course content page styles */
-section {
-    margin-bottom: 30px;
-    border-bottom: 1px solid #ccc;
-    padding-bottom: 20px;
-}
-
-h2 {
-    color: #333;
-    font-size: 24px;
-}
-
-p {
-    color: #666;
-    font-size: 16px;
-    line-height: 1.5;
-}
-
-iframe {
+input[type="text"] {
     width: 100%;
-    height: 400px;
-    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+}
+
+button[type="submit"] {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+#error {
+    color: red;
+    margin-top: 10px;
+}
+
+/* Additional styles */
+#course-selection-form {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#course-selection-form label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+#course-selection-form select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+}
+
+#course-selection-form button {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#course-selection-form button:hover {
+    background-color: #0056b3;
+}
+
+#error {
+    color: red;
+    margin-top: 10px;
 }
