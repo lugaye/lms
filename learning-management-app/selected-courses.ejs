@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selected Courses</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Include your CSS file -->
+</head>
+<body>
+    <header>
+        <h1>Selected Courses</h1>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/courses.html">Course Content</a></li>
+                <!-- Add more navigation links as needed -->
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <div class="course-list">
+            <% if (courses.length > 0) { %>
+                <% courses.forEach(course => { %>
+                    <h2><%= course.name %></h2>
+                <% }); %>
+            <% } else { %>
+                <p>No selected courses yet.</p>
+            <% } %>
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2024 Your LMS</p>
+    </footer>
+</body>
+</html>

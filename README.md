@@ -14,6 +14,8 @@ npm init -y
 ### Install necessary dependencies.
 ```bash
 npm install express mysql ejs bcryptjs express-session express-validator
+npm install ejs
+npm install sqlite3
 ```
 
 ## Step 2: Set up the Backend
@@ -63,7 +65,8 @@ INSERT INTO leaderboard (name, score) VALUES
 ('John Doe', 100),
 ('Jane Smith', 90),
 ('Michael Brown', 85),
-('Emily Jones', 80);
+('Emily Jones', 80),
+('solo ondul', 99);
 ```
 
 ### Run the server.

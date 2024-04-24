@@ -17,8 +17,8 @@ app.use(session({
 // Create MySQL connection
 const connection = mysql.createConnection({
     host: 'localhost',
-    user: 'root',
-    password: '',
+    user: 'solo',
+    password: 'password',
     database: 'learning_management'
 });
 
@@ -162,7 +162,7 @@ app.get('/course/:id', (req, res) => {
   });
 
 // Start server
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3306;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
