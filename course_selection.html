@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Selection</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f7f6;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        th:first-child, td:first-child {
+            border-left: none;
+        }
+        th:last-child, td:last-child {
+            border-right: none;
+        }
+        .checkbox-column {
+            width: 10%;
+            text-align: center;
+        }
+        .icon-column {
+            width: 10%;
+            text-align: center;
+        }
+        .course-column {
+            width: 70%;
+        }
+        .score-column {
+            width: 10%;
+            text-align: center;
+        }
+        .icon-column i {
+            color: #ffc107;
+        }
+        button {
+            display: block;
+            margin: 0 auto;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Course Selection</h1>
+        <ul>
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="course_selection.html">Course Selection<a/></li>
+            <li><a href="leader-board.html">Leader board</a></li>
+            <li>Course content</li>
+            
+        </ul>
+
+        <table id="courseTable">
+            <thead>
+                <tr>
+                    <th class="checkbox-column"></th>
+                    <th class="icon-column"></th>
+                    <th class="course-column">Course Name</th>
+                    <th class="score-column">Score</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><input type="checkbox" name="course" value="Course 1"></td>
+                    <td><i class="far fa-star" id="star1" onclick="toggleFavorite('star1')"></i></td>
+                    <td>Course 1</td>
+                    <td>100</td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox" name="course" value="Course 2"></td>
+                    <td><i class="far fa-star" id="star2" onclick="toggleFavorite('star2')"></i></td>
+                    <td>Course 2</td>
+                    <td>95</td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox" name="course" value="Course 3"></td>
+                    <td><i class="far fa-star" id="star3" onclick="toggleFavorite('star3')"></i></td>
+                    <td>Course 3</td>
+                    <td>90</td>
+                </tr>
+                <!-- Add more rows as needed -->
+            </tbody>
+        </table>
+        <button onclick="submitSelectedCourses()">Submit Selected Courses</button>
+    </div>
+<script src="selection.js"></script>
+</body>
+</html>

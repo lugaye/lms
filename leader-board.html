@@ -3,28 +3,105 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Leaderboard</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Include your CSS file -->
+    <title>Mukenya Schools Leaderboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f7f6;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        th:first-child, td:first-child {
+            border-left: none;
+        }
+        th:last-child, td:last-child {
+            border-right: none;
+        }
+        .rank-column {
+            width: 10%;
+        }
+        .icon-column {
+            width: 20%;
+            text-align: center;
+        }
+        .user-column {
+            width: 50%;
+        }
+        .score-column {
+            width: 20%;
+        }
+        .icon-column i {
+            color: #ffc107;
+        }
+    </style>
 </head>
 <body>
-    <header>
-        <h1>Leaderboard</h1>
-        <nav>
-            <ul>
-                <li><a href="/">Home</a></li>
-                <li><a href="/course-content">Course Content</a></li>
-                <!-- Add more navigation links as needed -->
-            </ul>
-        </nav>
-    </header>
-    <main id="leaderboard">
-        <!-- Leaderboard data will be dynamically populated here -->
-    </main>
-    <footer>
-        <p>&copy; 2024 Your LMS</p>
-    </footer>
+    <div class="container">
+        <h1>Mukenya Schools Leaderboard</h1>
+        <ul>
+            <li><a href="course_selection.html">Course Selection<a/></li>
+            <li><a href="leader-board.html">Leader board</a></li>
+            <li>Course content</li>
+            
+        </ul>
 
-    <!-- Include your client-side JavaScript file -->
-    <script src="script.js"></script>
+        <table>
+            <thead>
+                <tr>
+                    <th class="rank-column">#</th>
+                    <th class="icon-column"></th>
+                    <th class="user-column">Username</th>
+                    <th class="score-column">Score</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td><i class="fas fa-crown"></i></td>
+                    <td>Alice</td>
+                    <td>1000</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td><i class="fas fa-trophy"></i></td>
+                    <td>Bob</td>
+                    <td>950</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td><i class="fas fa-medal"></i></td>
+                    <td>Charlie</td>
+                    <td>900</td>
+                </tr>
+                <!-- Add more rows as needed -->
+            </tbody>
+        </table>
+    </div>
 </body>
 </html>
