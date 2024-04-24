@@ -5,6 +5,7 @@ const bcrypt = require('bcryptjs');
 const bodyParser = require('body-parser');
 const mysql = require('mysql');
 const { check, validationResult } = require('express-validator');
+
 const app = express();
 
 // Configure session middleware
@@ -18,7 +19,7 @@ app.use(session({
 const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: '',
+    password: 'shiznit1999$',
     database: 'learning_management'
 });
 
