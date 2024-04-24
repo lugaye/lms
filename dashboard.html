@@ -4,30 +4,128 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Include your CSS file -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f7f6;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .overview {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+        }
+        .overview h2 {
+            margin-bottom: 10px;
+        }
+        .overview-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+        .overview-item i {
+            font-size: 24px;
+            margin-right: 10px;
+        }
+        .overview-item p {
+            margin: 0;
+        }
+        .course-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            grid-gap: 20px;
+        }
+        .course {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+        .course h3 {
+            margin-top: 0;
+        }
+        .course i {
+            margin-right: 5px;
+        }
+    </style>
 </head>
 <body>
-    <header>
-        <h1>Welcome to Your Dashboard</h1>
-        <nav>
-            <ul>
-                <li><a href="/leaderboard">Leaderboard</a></li>
-                <li><a href="/course-content">Course Content</a></li>
-                <!-- Add more navigation links as needed -->
-            </ul>
-        </nav>
-    </header>
-    <main>
-        <section class="welcome-message">
-            <h2>Hello, <span id="user-fullname"></span>!</h2>
-            <p>Welcome to your personalized dashboard.</p>
-        </section>
-    </main>
-    <footer>
-        <p>&copy; 2024 Your LMS</p>
-    </footer>
+    <div class="container">
+        <h1>Mukenya schools Dashboard</h1>
+        <ul>
+            <li><a href="course_selection.html">Course Selection<a/></li>
+            <li><a href="leader-board.html">Leader board</a></li>
+            <li>Course content</li>
+            
+        </ul>
 
-    <!-- Include your client-side JavaScript file -->
-    <script src="script.js"></script>
+        <div class="overview">
+            <h2>Dashboard Overview</h2>
+            <div class="overview-item">
+                <i class="fas fa-chalkboard"></i>
+                <p>Enrolled Courses: 4</p>
+                <p>Upcoming Deadlines: 4</p>
+            </div>
+            <div class="overview-item">
+                <i class="fas fa-chart-line"></i>
+                <p>Overall Progress: 90</p>
+                <p>Completed Courses: 1</p>
+                <p>In Progress Courses: 56%</p>
+            </div>
+            <div class="overview-item">
+                <i class="fas fa-bell"></i>
+                <p>Unread Messages: 2</p>
+                <p>Upcoming Assignments: Confirm with specific instructors</p>
+            </div>
+        </div>
+
+        <h2>My Courses</h2>
+        <div class="course-list">
+            <div class="course">
+                <h3><i class="fas fa-book"></i> Python</h3>
+                <p><i class="fas fa-user"></i> Instructor: mr Wowza</p>
+                <p><i class="fas fa-chart-pie"></i> Progress:67%</p>
+                <p><i class="far fa-calendar-alt"></i> Next Deadline: 01/05/24</p>
+            </div>
+            <div class="course">
+                <h3><i class="fas fa-book"></i> Web Technologies</h3>
+                <p><i class="fas fa-user"></i> Instructor: Mrs. Fantastic</p>
+                <p><i class="fas fa-chart-pie"></i> Progress: 72%</p>
+                <p><i class="far fa-calendar-alt"></i> Next Deadline: 01/05/24</p>
+            </div>
+            <div class="course">
+                <h3><i class="fas fa-book"></i> Research Methodologies</h3>
+                <p><i class="fas fa-user"></i> Instructor: Mr. Research</p>
+                <p><i class="fas fa-chart-pie"></i> Progress: 56%</p>
+                <p><i class="far fa-calendar-alt"></i> Next Deadline: 01/05/24</p>
+            </div>
+            <div class="course">
+                <h3><i class="fas fa-book"></i> Software Engineering</h3>
+                <p><i class="fas fa-user"></i> Instructor: Mrs Msupa</p>
+                <p><i class="fas fa-chart-pie"></i> Progress: 89%</p>
+                <p><i class="far fa-calendar-alt"></i> Next Deadline: 01/05/24</p>
+            </div>
+            <!-- Add more courses here -->
+        </div>
+
+        <h2>Explore Courses</h2>
+        <p>Browse New Courses: [Link]</p>
+        <p>Popular Courses: [Link]</p>
+    </div>
 </body>
 </html>
