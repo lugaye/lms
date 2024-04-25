@@ -1,0 +1,64 @@
+.quizzes {
+  width: 100%;
+  max-height: calc(100vh - 75px);
+  overflow-y: auto;
+  background-color: var(--light);
+}
+.quizzes::-webkit-scrollbar {
+  display: none;
+}
+.quizData {
+  margin: 25px 20px;
+  padding: 20px;
+  background: white;
+  border-radius: 15px;
+  box-shadow: rgba(178, 181, 184, 0.2) 0px 8px 24px;
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.Review {
+  width: 100%;
+  padding: 10px;
+  outline: none;
+  cursor: pointer;
+  border: none;
+  background-color: rgb(168, 98, 233);
+  color: white;
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+.Submit {
+  width: 100%;
+  padding: 10px;
+  outline: none;
+  cursor: pointer;
+  border: none;
+  background-color: rgb(31, 230, 137);
+  color: white;
+  font-weight: 500;
+}
+.questionDiv {
+  margin-bottom: 10px;
+  border: 1px solid gray;
+  padding: 10px;
+}
+.questionDiv h4 {
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+.questionDiv p {
+  margin-bottom: 5px;
+  color: rgb(19, 169, 19);
+}
+.questionDiv button {
+  background-color: rgba(247, 24, 24, 0.911);
+  color: white;
+  padding: 4px 10px;
+  border: none;
+  outline: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+}
