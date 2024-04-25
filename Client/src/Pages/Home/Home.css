@@ -1,0 +1,344 @@
+.main {
+  width: 100%;
+  max-height: calc(100vh - 75px);
+  overflow-y: auto;
+  background-color: var(--light);
+}
+.main::-webkit-scrollbar {
+  display: none;
+}
+.main .overview {
+  display: flex;
+  padding: 25px 20px;
+  gap: 20px;
+}
+.main .overview .overview-left {
+  width: 30%;
+  height: 230px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 30px;
+  background: linear-gradient(103.75deg, #33b1ee -13.9%, #7366ff 79.68%);
+  color: #fff;
+  border-radius: 10px;
+  position: relative;
+}
+.main .overview .overview-left p {
+  width: 55%;
+  font-size: 15px;
+  margin-top: 4px;
+  line-height: 24px;
+}
+.main .overview .overview-left button {
+  background-color: transparent;
+  border: 1px solid white;
+  color: white;
+  padding: 10px 25px;
+  border-radius: 6px;
+  letter-spacing: 1px;
+  font-size: 14px;
+}
+.main .overview .overview-left img {
+  width: 50%;
+  position: absolute;
+  right: 20px;
+  bottom: -20px;
+}
+
+.main .overview .overview-right {
+  width: 70%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+}
+.main .overview-right li {
+  padding: 10px;
+  background: white;
+  border-radius: 15px;
+  box-shadow: rgba(178, 181, 184, 0.2) 0px 8px 24px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.main .overview-right li > div {
+  width: 60px;
+  height: 60px;
+  border-radius: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 20px;
+}
+
+.main .overview-right li:nth-child(1) > div {
+  border: 1px solid #f73164;
+  border-left: 3px solid #f73164;
+  color: #f73164;
+}
+.main .overview-right li:nth-child(2) > div {
+  border: 1px solid #ffaa05;
+  border-left: 3px solid #ffaa05;
+  color: #ffaa05;
+}
+.main .overview-right li:nth-child(3) > div {
+  border: 1px solid #7366ff;
+  border-left: 3px solid #7366ff;
+  color: #7366ff;
+}
+.main .overview-right li:nth-child(4) > div {
+  border: 1px solid #54ba4a;
+  border-left: 3px solid #54ba4a;
+  color: #54ba4a;
+}
+.main .overview-right li:nth-child(5) > div {
+  border: 1px solid #f73164;
+  border-left: 3px solid #f73164;
+  color: #f73164;
+}
+.main .overview-right li:nth-child(6) > div {
+  border: 1px solid #ffaa05;
+  border-left: 3px solid #ffaa05;
+  color: #ffaa05;
+}
+.main .overview-right li .text h3 {
+  font-size: 24px;
+  font-weight: 500;
+  color: var(--dark);
+  letter-spacing: 1px;
+}
+.main .overview-right li .text p {
+  color: var(--dark);
+}
+
+.main .charts {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 20px;
+}
+.main .charts .lineChart {
+  width: 65%;
+  background-color: white;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+.main .charts .lineChart > div {
+  width: 100%;
+}
+.main .chartHead {
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: rgb(36, 33, 33);
+  padding-bottom: 25px;
+  border-bottom: 1px solid rgb(231, 231, 231);
+}
+
+.main .charts .chartBox {
+  display: flex;
+  gap: 20px;
+}
+.main .charts .chartBox .chartOne {
+  width: 65%;
+  height: 270px;
+}
+.main .charts .chartBox .chartTwo {
+  width: 35%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+.main .charts .chartBox .chartTwo > div {
+  padding: 10px;
+  background-color: var(--light);
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+.main .charts .chartBox .chartTwo > div svg {
+  font-size: 30px;
+  color: black;
+  background-color: white;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  padding: 5px;
+}
+.main .charts .chartBox .chartTwo > div > div > p {
+  color: gray;
+}
+.main .charts .chartBox .chartTwo > div > div > h4 {
+  font-weight: 500;
+}
+.main .charts .chartBox .chartTwo > div:nth-child(1) > p {
+  color: rgb(83, 183, 86);
+}
+.main .charts .chartBox .chartTwo > div:nth-child(2) > p {
+  color: rgb(247, 49, 49);
+}
+.main .charts .pieChart {
+  width: 35%;
+  background-color: white;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+.main .charts .pieChart .pieBox {
+  position: relative;
+  width: 100%;
+  height: 270px;
+}
+.main .charts .pieChart .pieBox .pieData {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height: 100px;
+  width: 150px;
+  top: calc(50% - 50px);
+  left: calc(50% - 76px);
+}
+.main .charts .pieChart .pieBox .pieData span {
+  font-size: 25px;
+}
+.main .charts .pieChart .pieBox .pieData p {
+  color: grey;
+}
+
+.homeFooter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 60px;
+  margin-top: 30px;
+  background-color: white;
+  text-align: center;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  font-size: 13px;
+  color: rgb(66, 66, 66);
+  font-weight: 400;
+}
+
+@media screen and (max-width: 1200px) {
+  .main .overview .overview-left {
+    display: none;
+  }
+  .main .overview .overview-right {
+    width: 100%;
+  }
+}
+@media screen and (max-width: 1060px) {
+  .timeline {
+    flex-direction: column;
+  }
+  .timeline > div {
+    width: 100%;
+  }
+}
+@media screen and (max-width: 768px) {
+  .main .charts {
+    gap: 10px;
+    padding: 10px;
+    flex-direction: column;
+  }
+  .main .charts .lineChart {
+    width: 100%;
+    padding: 15px;
+  }
+  .main .charts .pieChart {
+    width: 100%;
+    padding: 15px;
+  }
+  .main .charts .pieChart .pieBox {
+    width: 100%;
+    height: 200px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .main .overview {
+    flex-direction: column;
+    gap: 30px;
+  }
+  .main .overview .overview-left {
+    width: 100%;
+    display: block;
+  }
+  .main .overview .overview-left button {
+    margin-top: 20px;
+  }
+  .main .overview .overview-right {
+    width: 100%;
+  }
+  .main .charts .chartBox .chartOne {
+    width: 100%;
+  }
+  .main .charts .chartBox .chartTwo {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 420px) {
+  .main .overview {
+    padding: 15px;
+    gap: 15px;
+  }
+  .main .overview .overview-left {
+    height: 200px;
+    padding: 15px;
+  }
+  .main .overview .overview-left p {
+    width: 65%;
+    font-size: 14px;
+    line-height: 18px;
+  }
+  .main .overview .overview-left img {
+    width: 40%;
+    right: 10px;
+    bottom: -10px;
+  }
+  .main .overview .overview-right {
+    gap: 10px;
+  }
+  .main .overview-right li {
+    border-radius: 10px;
+    gap: 20px;
+  }
+  .main .overview-right li > div {
+    width: 50px;
+    height: 50px;
+    font-size: 17px;
+  }
+  .main .overview-right li .text h3 {
+    font-size: 20px;
+  }
+  .main .overview-right li .text p {
+    font-size: 16px;
+  }
+  .main .chartHead {
+    font-size: 18px;
+    font-weight: 500;
+    padding-bottom: 15px;
+  }
+}
+
+@media screen and (max-width: 300px) {
+  .main .overview .overview-left {
+    height: 160px;
+    padding: 10px;
+  }
+  .main .overview .overview-left h2 {
+    font-size: 18px;
+  }
+  .main .overview .overview-left p {
+    width: 100%;
+  }
+  .main .overview .overview-left img {
+    display: none;
+  }
+}

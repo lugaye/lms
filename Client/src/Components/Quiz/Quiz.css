@@ -1,0 +1,60 @@
+.quizDiv {
+  width: 260px;
+  padding: 10px;
+  background-color: var(--light);
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+.quizDiv img {
+  width: 100%;
+  height: 135px;
+  object-fit: cover;
+  overflow: hidden;
+}
+
+.quizDiv > div:nth-child(1) {
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 6px;
+}
+.quizDiv > div:nth-child(2) {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.quizDiv > div:nth-child(2) p {
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+.startQuiz {
+  padding: 5px 12px;
+  outline: none;
+  border: none;
+  background-color: rgb(38, 139, 233);
+  border-radius: 5px;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+}
+.deleteQuiz {
+  padding: 5px 12px;
+  outline: none;
+  border: none;
+  background-color: rgba(233, 38, 38, 0.874);
+  border-radius: 5px;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+}
+.startQuiz:hover {
+  background-color: rgb(76, 157, 234);
+}
+.deleteQuiz:hover {
+  background-color: rgb(244, 101, 101);
+}
+.quizPoint {
+  background-color: rgba(13, 200, 13, 0.788);
+  padding: 3px 5px;
+  color: white;
+  border-radius: 5px;
+  font-weight: 500;
+}
