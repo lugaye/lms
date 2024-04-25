@@ -131,6 +131,7 @@ app.post('/login', (req, res) => {
                     // Store user in session
                     req.session.user = user;
                     res.send('Login successful');
+
                 } else {
                     res.status(401).send('Invalid username or password');
                 }
@@ -148,7 +149,7 @@ app.post('/logout', (req, res) => {
 //Dashboard route
 app.get('/dashboard', (req, res) => {
     // Assuming you have middleware to handle user authentication and store user information in req.user
-    const userFullName = req.user.full_name;
+    const userFullName = req.session.user.full_name;
     //res.render('dashboard', { fullName: userFullName });
     res.sendFile(__dirname + '/dashboard.html');
 });
