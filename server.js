@@ -5,7 +5,11 @@ const bcrypt = require('bcryptjs');
 const bodyParser = require('body-parser');
 const mysql = require('mysql');
 const { check, validationResult } = require('express-validator');
+const dotenv = require('dotenv');
+dotenv.config();
+
 const app = express();
+
 
 // Configure session middleware
 app.use(session({
@@ -18,7 +22,7 @@ app.use(session({
 const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: '',
+    password: process.env.DB_PASSWORD,
     database: 'learning_management'
 });
 
@@ -145,8 +149,10 @@ app.post('/logout', (req, res) => {
 app.get('/dashboard', (req, res) => {
     // Assuming you have middleware to handle user authentication and store user information in req.user
     const userFullName = req.user.full_name;
-    res.render('dashboard', { fullName: userFullName });
+    //res.render('dashboard', { fullName: userFullName });
+    res.sendFile(__dirname + '/dashboard.html');
 });
+
 
 // Route to retrieve course content
 app.get('/course/:id', (req, res) => {
