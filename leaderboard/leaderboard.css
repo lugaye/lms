@@ -1,0 +1,39 @@
+h1{
+    margin-bottom: 30px;
+}
+table{
+    width: 70%;
+    margin: auto;
+}
+th{
+    text-align: left;
+    font-weight: 400;
+    background: var(--primary-color);
+    padding: 5px;
+    color: var(--secondary-color);
+}
+thead{
+    background: var(--primary-color);
+    border: none;
+}
+td{
+    padding: 5px 10px;
+    border-bottom: 1px solid lightgray;
+    background: transparent;
+}
+tr:hover{
+    background: lightgray;
+    transition: all ease-in-out .3s;
+}
+/* Responsive Leader Board */
+@media (max-width: 768px){
+    table{
+    width: 90%;
+}
+}
+
+@media (max-width: 500px){
+    table{
+    width: 100%;
+}
+}

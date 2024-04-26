@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Webinars | LMS</title>
+
+    <!-- Include your CSS file -->
+    <link rel="stylesheet" href="../style.css" />
+    <link rel="stylesheet" href="webinars.css" />
+
+    <!--    link to fa icons    -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+</head>
+<body>
+     <!--    Navbar  -->
+     <nav>
+        <div class="navbar-content">
+          <h1>
+            <i class="fa fa-bars" id="openMenuBtn" aria-hidden="true"></i>
+            LMS
+          </h1>
+          <!--    navigation links    -->
+          <ul class="nav-links">
+            <li><a href="/dashboard">Dashboard</a></li>
+            <li><a href="/leaderboard">Leaderboard</a></li>
+            <li class="dropdown">
+              <a href=""
+                >Courses
+                <i class="fa fa-angle-down" aria-hidden="true"></i>
+              </a>
+              <ul class="dropdown-content">
+                <li><a href="/courses">All Courses</a></li>
+                <li><a href="/my-courses">My Courses</a></li>
+              </ul>
+            </li>
+            <li><a href="/webinars">Webinars</a></li>
+            <!-- Add more navigation links as needed -->
+          </ul>
+  
+          <!--    Responsive Menu     -->
+          <ul class="res-nav-links">
+            <h1>
+              LMS
+              <i class="fa fa-times" id="closeMenuBtn" aria-hidden="true"></i>
+            </h1>
+            <li><a href="/dashboard/">Dashboard</a></li>
+            <li><a href="/leaderboard/">Leaderboard</a></li>
+            <li><a href="/my-courses/">My Courses</a></li>
+            <li><a href="/courses/">All Courses</a></li>
+            <li><a href="/webinars/">Webinars</a></li>
+          </ul>
+  
+          <!--    profile -->
+          <div class="profile-section">
+            <a href="/profile/"></a><i class="fa fa-user-circle-o" aria-hidden="true"></i></a>
+          </div>
+        </div>
+    </nav>
+
+    <section class="main-section">
+        <div class="main-wrapper">
+            <h1>Planned Webinars</h1>
+
+            <div class="webinars-wrapper">
+                <div class="webinar-card">
+                    <h3 class="webinar-title">Lorem ipsum dolor sit amet.</h3>
+                    <div class="webinar-info">
+                        <p class="webinar-time"><i class="fa fa-clock-o" aria-hidden="true"></i>8:00AM - 10:00AM</p>
+                        <p class="webinar-date"><i class="fa fa-calendar-o" aria-hidden="true"></i>12 May 2024</p>
+                        <p class="webinar-details">Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt aperiam laborum odit accusantium exercitationem nisi architecto blanditiis distinctio expedita, repellat hic, mole stiae, similique veritatis tempora non rem qui consequatur consequuntur! Quis sed illo ipsam saepe dignissimos voluptate tenetur, modi perferendis minima. Id soluta, ea animi qui incidunt nemo nihil dolore.</p>
+                        <a href=""><button class="primary-btn">Attend Webinar</button></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+</body>
+</html>

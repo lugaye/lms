@@ -1,0 +1,28 @@
+.main-wrapper{
+    display: flex;
+    justify-content: space-evenly;
+    padding-top: 50px;
+}
+.form{
+    padding: 50px 30px;
+    border-radius: 5px;
+}
+input{
+    width: 70%;
+}
+h1{
+    font-weight: 500;
+    margin-bottom: 20px;
+}
+.details h3{
+    color: var(--tertiary-color);
+}
+@media(max-width: 660px){
+    .main-wrapper{
+        flex-direction: column;
+        gap: 50px;
+    }
+    h1{
+        text-align: center;
+    }
+}

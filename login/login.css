@@ -1,0 +1,58 @@
+body{
+    width: full;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: var(--primary-color);
+    transition: all ease-in-out 1s;
+}
+h1{
+    margin: 10px;
+    color: var(--secondary-color);
+    text-align: center;
+}
+.formContainer{
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    padding: 20px;
+    border-radius: 5px;
+    width: 80%;
+}
+form{
+    width: 30%;
+    border-radius: 5px;
+}
+form button{
+    width: 50%;
+    margin: 5px auto;
+}
+form h2{
+    text-align: center;
+    color: var(--primary-color);
+}
+form p{
+    margin-top: 20px;
+    text-align: center;
+}
+form p span{
+    color: var(--primary-color);
+    cursor: pointer;
+}
+#login-form, #logout-form{
+    display: none;
+}
+.t-and-c{
+    font-size: 0.8rem;
+}
+
+/* Responsive Styling */
+@media (max){}
+
+@media (max-width: 764px){
+    form{
+        width: 90%;
+    }
+}
