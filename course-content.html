@@ -6,75 +6,65 @@
     <title>Course Content</title>
     <link rel="stylesheet" href="styles.css"> <!-- Include your CSS file -->
     <style>
-        body {
-    font-family: Arial, sans-serif;
+      
+body, h1, h2, h3, p, ul, li {
     margin: 0;
     padding: 0;
-    background-color: #f0f0f0;
 }
 
-h1 {
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+}
+
+header {
+    background-color: #343a40;
+    color: #fff;
+    padding: 20px 0;
     text-align: center;
-    color: #333;
 }
 
-a {
-    display: block;
-    margin: 10px 0;
-    padding: 10px;
+header h1 {
+    margin: 0;
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin-right: 20px;
+}
+
+nav ul li a {
     text-decoration: none;
     color: #fff;
-    background-color: #007bff;
-    text-align: center;
-    border-radius: 5px;
-}
-
-a:hover {
-    background-color: #0056b3;
-}
-
-.container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.form-group {
-    margin-bottom: 20px;
-}
-
-label {
-    display: block;
     font-weight: bold;
-    margin-bottom: 5px;
+    transition: color 0.3s ease;
 }
 
-input[type="text"],
-input[type="password"],
-input[type="email"] {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+nav ul li a:hover {
+    color: #ffc107;
 }
 
-button {
-    width: 100%;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    background-color: #007bff;
+main {
+    padding: 20px;
+}
+
+h2 {
+    color: #343a40;
+}
+
+footer {
+    background-color: #343a40;
     color: #fff;
-    cursor: pointer;
+    padding: 10px 0;
+    text-align: center;
 }
 
-button:hover {
-    background-color: #0056b3;
-}
-    </style>
+        </style>
 </head>
 <body>
     <header>
@@ -96,75 +86,47 @@ button:hover {
 
     <!-- Include your client-side JavaScript file -->
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-    const registerForm = document.getElementById('register-form');
-    const loginForm = document.getElementById('login-form');
-    const logoutForm = document.getElementById('logout-form');
+     
 
-    registerForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const formData = new FormData(registerForm);
-        const username = formData.get('username');
-        const password = formData.get('password');
-        const email = formData.get('email');
-        const full_name = formData.get('full_name');
-        try {
-            const response = await fetch('/register', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ username, password, email, full_name })
-            });
-            if (response.ok) {
-                alert('Registration successful');
-            } else {
-                alert('Registration failed');
-            }
-        } catch (error) {
-            console.error('Error:', error);
-        }
-    });
+document.addEventListener('DOMContentLoaded', () => {
+    const courseContentElement = document.getElementById('course-content');
+    
+    const courseContentData = [
+        { module: 'Module 1', title: 'Introduction to HTML', description: 'Learn the basics of HTML.' },
+        { module: 'Module 2', title: 'CSS Fundamentals', description: 'Explore the fundamentals of CSS.' },
+        { module: 'Module 3', title: 'JavaScript Basics', description: 'Get started with JavaScript programming.' },
+    ];
+    
+    function populateCourseContent(data) {
+        // Clear previous content
+        courseContentElement.innerHTML = '';
+        
+        data.forEach(module => {
+            const moduleSection = document.createElement('section');
+            moduleSection.classList.add('module');
 
-    loginForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const formData = new FormData(loginForm);
-        const username = formData.get('username');
-        const password = formData.get('password');
-        try {
-            const response = await fetch('/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ username, password })
-            });
-            if (response.ok) {
-                alert('Login successful');
-            } else {
-                alert('Invalid username or password');
-            }
-        } catch (error) {
-            console.error('Error:', error);
-        }
-    });
+            const moduleTitle = document.createElement('h2');
+            moduleTitle.textContent = module.module;
+            moduleSection.appendChild(moduleTitle);
 
-    logoutForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        try {
-            const response = await fetch('/logout', {
-                method: 'POST'
-            });
-            if (response.ok) {
-                alert('Logout successful');
-            } else {
-                alert('Logout failed');
-            }
-        } catch (error) {
-            console.error('Error:', error);
-        }
-    });
+            const contentDiv = document.createElement('div');
+            const contentTitle = document.createElement('h3');
+            contentTitle.textContent = module.title;
+            const contentDescription = document.createElement('p');
+            contentDescription.textContent = module.description;
+            contentDiv.appendChild(contentTitle);
+            contentDiv.appendChild(contentDescription);
+
+            moduleSection.appendChild(contentDiv);
+            courseContentElement.appendChild(moduleSection);
+        });
+    }
+
+    populateCourseContent(courseContentData);
 });
+   
+            
+           
     </script>
 </body>
 </html>
