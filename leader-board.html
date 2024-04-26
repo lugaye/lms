@@ -4,7 +4,86 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Leaderboard</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Include your CSS file -->
+    <link rel="stylesheet" href="styles.css"> 
+    <style>
+    
+body, h1, h2, h3, p, ul, li {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+}
+
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 10px;
+    text-align: center;
+}
+
+header h1 {
+    margin: 0;
+}
+
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin-right: 10px;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #fff;
+}
+
+nav ul li a:hover {
+    text-decoration: underline;
+}
+
+main {
+    padding: 20px;
+}
+
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #555;
+    color: #fff;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+tr:hover {
+    background-color: #ddd;
+}
+
+footer {
+    background-color: #333;
+    color: #fff;
+    padding: 10px;
+    text-align: center;
+}
+  
+    </style>
 </head>
 <body>
     <header>
@@ -13,7 +92,7 @@
             <ul>
                 <li><a href="/">Home</a></li>
                 <li><a href="/course-content">Course Content</a></li>
-                <!-- Add more navigation links as needed -->
+               <li><a href="/score-percentage">score-percentage</a></li>
             </ul>
         </nav>
     </header>
@@ -25,6 +104,39 @@
     </footer>
 
     <!-- Include your client-side JavaScript file -->
-    <script src="script.js"></script>
+    <script >
+        document.addEventListener('DOMContentLoaded', () => {
+    const leaderboardContainer = document.getElementById('leaderboard');
+            
+    const leaderboardData = [
+        { rank: 1, name: 'John Doe', score: 100 },
+        { rank: 2, name: 'Jane Smith', score: 90 },
+        { rank: 3, name: 'Michael Brown', score: 85 },
+        { rank: 4, name: 'Emily Jones', score: 80 },
+    ];
+
+    function populateLeaderboard(data) {
+        leaderboardContainer.innerHTML = '';
+
+        const table = document.createElement('table');
+        table.classList.add('leaderboard-table');
+        const headerRow = table.insertRow();
+        const headers = ['Rank', 'Name', 'Score'];
+        headers.forEach(headerText => {
+            const th = document.createElement('th');
+            th.textContent = headerText;
+            headerRow.appendChild(th);
+        });
+        data.forEach(entry => {
+            const row = table.insertRow();
+            row.insertCell().textContent = entry.rank;
+            row.insertCell().textContent = entry.name;
+            row.insertCell().textContent = entry.score;
+        });
+        leaderboardContainer.appendChild(table);
+    }
+    populateLeaderboard(leaderboardData);
+});
+    </script>
 </body>
 </html>
