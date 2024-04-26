@@ -5,6 +5,76 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Course Content</title>
     <link rel="stylesheet" href="styles.css"> <!-- Include your CSS file -->
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f0f0;
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+}
+
+a {
+    display: block;
+    margin: 10px 0;
+    padding: 10px;
+    text-decoration: none;
+    color: #fff;
+    background-color: #007bff;
+    text-align: center;
+    border-radius: 5px;
+}
+
+a:hover {
+    background-color: #0056b3;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="email"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: #fff;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+    </style>
 </head>
 <body>
     <header>
@@ -13,7 +83,7 @@
             <ul>
                 <li><a href="/">Home</a></li>
                 <li><a href="/course-content">Course Content</a></li>
-                <!-- Add more navigation links as needed -->
+                <li><a href="/Grade-content">Grade-content</a></li>
             </ul>
         </nav>
     </header>
@@ -25,6 +95,76 @@
     </footer>
 
     <!-- Include your client-side JavaScript file -->
-    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+    const registerForm = document.getElementById('register-form');
+    const loginForm = document.getElementById('login-form');
+    const logoutForm = document.getElementById('logout-form');
+
+    registerForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = new FormData(registerForm);
+        const username = formData.get('username');
+        const password = formData.get('password');
+        const email = formData.get('email');
+        const full_name = formData.get('full_name');
+        try {
+            const response = await fetch('/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ username, password, email, full_name })
+            });
+            if (response.ok) {
+                alert('Registration successful');
+            } else {
+                alert('Registration failed');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    });
+
+    loginForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = new FormData(loginForm);
+        const username = formData.get('username');
+        const password = formData.get('password');
+        try {
+            const response = await fetch('/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ username, password })
+            });
+            if (response.ok) {
+                alert('Login successful');
+            } else {
+                alert('Invalid username or password');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    });
+
+    logoutForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        try {
+            const response = await fetch('/logout', {
+                method: 'POST'
+            });
+            if (response.ok) {
+                alert('Logout successful');
+            } else {
+                alert('Logout failed');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    });
+});
+    </script>
 </body>
 </html>
