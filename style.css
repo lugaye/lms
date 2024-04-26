@@ -1,31 +1,49 @@
-/* styles.css */
+/* style.css */
+
+/* Reset CSS */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
 body {
     font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
     margin: 0;
     padding: 0;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    min-height: 100vh; /* Set minimum height to full viewport height */
 }
 
-form {
-    margin-top: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-input, button {
-    margin-top: 10px;
-    padding: 5px;
-}
-
+/* Header Styles */
 header {
-    background-color: #333;
+    background-color: #4CAF50;
     color: #fff;
     padding: 20px;
-    text-align: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
+
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.logo img {
+    width: 50px; /* Adjust the width of the logo */
+    height: auto; /* Maintain aspect ratio */
+    margin-right: 10px;
+    
+}
+
+.logo h1 {
+    font-size: 24px;
+}
+
 
 nav ul {
     list-style-type: none;
@@ -38,18 +56,101 @@ nav ul li {
     margin-right: 20px;
 }
 
+nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+nav ul li a:hover {
+    background-color: #333;
+}
+
+/* Main Content Styles */
 main {
+    flex: 1; /* Grow to fill remaining space */
     padding: 20px;
 }
 
-footer {
-    background-color: #333;
-    color: #fff;
+/* Form Container Styles */
+.form-container {
+    max-width: 400px;
+    margin: 0 auto;
+    background-color: #fff;
+    border-radius: 8px;
     padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Form Styles */
+.form-container form {
+    display: flex;
+    flex-direction: column;
+}
+
+h2 {
+    margin-bottom: 10px;
+}
+
+input, button {
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+button {
+    background-color: #f57c00; 
+    color: #fff;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #e65100; 
+}
+
+/* Dashboard Styles */
+.welcome-message {
     text-align: center;
 }
 
-/* Course content page styles */
+/* Leaderboard Table Styles */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+th {
+    background-color: #4CAF50;
+    color: white;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+tr:hover {
+    background-color: #ddd; /* Hover effect on table rows */
+}
+
+/* Footer Styles */
+footer {
+    background-color: #4CAF50;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+    margin-top: auto; 
+}
+
+/* Course Content Page Styles */
 section {
     margin-bottom: 30px;
     border-bottom: 1px solid #ccc;
@@ -72,3 +173,4 @@ iframe {
     height: 400px;
     margin-top: 20px;
 }
+
