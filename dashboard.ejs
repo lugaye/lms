@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="style.css"> <!-- Include your CSS file -->
+</head>
+<body>
+    <header>
+        <h1>Welcome to Your Dashboard</h1>
+        <nav>
+            <ul>
+                <li><a href="/leaderboard">Leaderboard</a></li>
+                <li><a href="/course-content">Course Content</a></li>
+                <!-- Add more navigation links as needed -->
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section class="welcome-message">
+            <h2>Hello, <span id="user-fullname"></span>!</h2>
+            <p>Welcome to your course dashboard. Please select your courses.</p>
+        </section>
+        <section id="course-selection">
+            <h2>Select Your Preferred Courses</h2>
+            <form id="course-selection-form">
+                <label for="courseId">Select Course:</label>
+                <select name="courseId" id="courseId">
+                    <!-- Populate options dynamically -->
+                    <option value="1">Introduction to HTML</option>
+                    <option value="2">CSS fundamentals</option>
+                    <option value = "3">Javascript Basics</option>
+                    
+                </select>
+                <button type="submit" id="selectCoursesButton" onclick="window.location.href = 'course-content.html'">Select Course</button>
+            </form>
+        </section>
+
+        <!-- Display selected courses -->
+        <section id="selected-courses">
+            <h2>Your Selected Courses</h2>
+            <!-- Selected courses will be displayed here -->
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2024 Your LMS</p>
+    </footer>
+
+    <!-- Include your client-side JavaScript file -->
+    <script src="script.js"></script>
+</body>
+</html>
