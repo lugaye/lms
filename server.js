@@ -11,6 +11,8 @@ dotenv.config();
 const app = express();
 
 
+
+
 // Configure session middleware
 app.use(session({
     secret: 'secret-key',
@@ -49,6 +51,22 @@ app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
 });
 
+// Serve static files from the default directory
+app.use(express.static(__dirname));
+
+// Define a route for styles.css
+app.get('/styles.css', (req, res) => {
+    res.sendFile(__dirname + '/style.css', {
+        headers: {
+            'Content-Type': 'text/css'
+        }
+    });
+});
+
+// Define a route for course-content.html
+app.get('/course-content', (req, res) => {
+    res.sendFile(__dirname + '/course-content.html');
+});
 
   
 // Define a User representation for clarity
@@ -148,25 +166,92 @@ app.post('/logout', (req, res) => {
 
 //Dashboard route
 app.get('/dashboard', (req, res) => {
-    // Assuming you have middleware to handle user authentication and store user information in req.user
+    if (!req.session.user || !req.session.user.full_name) {
+        // Handle case where user is not logged in or full_name is not set
+        res.status(401).send('Unauthorized');
+        return;
+    }
     const userFullName = req.session.user.full_name;
-    //res.render('dashboard', { fullName: userFullName });
-    res.sendFile(__dirname + '/dashboard.html');
+    res.render(__dirname + '/dashboard.ejs', { fullName: userFullName });
 });
+
 
 
 // Route to retrieve course content
 app.get('/course/:id', (req, res) => {
     const courseId = req.params.id;
     const sql = 'SELECT * FROM courses WHERE id = ?';
-    db.query(sql, [courseId], (err, result) => {
+    connection.query(sql, [courseId], (err, result) => {
       if (err) {
-        throw err;
+        console.error('Error fetching vourse content:', err);
+        return res.status(500).json({error: 'Failed to fetch course content'});
+        
+      }
+      if (result.length === 0){
+        return res.status(404).json({error: 'Course not found'});
       }
       // Send course content as JSON response
       res.json(result);
     });
   });
+  // Add a route to handle course selection by the user
+app.post('/select-course', (req, res) => {
+    const userId = req.session.user.id;
+    const courseId = req.body.courseId; // Assuming courseId is sent in the request body
+    const sql = 'INSERT INTO user_courses (user_id, course_id) VALUES (?, ?)';
+    connection.query(sql, [userId, courseId], (err, result) => {
+        if (err) {
+            console.error('Error selecting course:', err);
+            return res.status(500).json({ error: 'Failed to select course' });
+        }
+        res.status(200).json({ message: 'Course selected successfully' });
+    });
+});
+
+// Create a route to display the selected courses for the logged-in user
+app.get('/selected-courses', (req, res) => {
+    const userId = req.session.user.id;
+    const sql = `
+        SELECT courses.id, courses.name
+        FROM user_courses
+        JOIN courses ON user_courses.course_id = courses.id
+        WHERE user_id = ?
+    `;
+    connection.query(sql, [userId], (err, results) => {
+        if (err) {
+            console.error('Error fetching selected courses:', err);
+            return res.status(500).json({ error: 'Failed to fetch selected courses' });
+        }
+        res.status(200).json(results);
+    });
+});
+// Define a route for course-content.html
+app.get('/course-content', async (req, res) => {
+    // Check if user is logged in
+    if (!req.session.user) {
+        return res.status(401).send('Unauthorized');
+    }
+
+    // Fetch selected courses for the logged-in user
+    const userId = req.session.user.id;
+    const sql = `
+        SELECT courses.id, courses.name
+        FROM user_courses
+        JOIN courses ON user_courses.course_id = courses.id
+        WHERE user_id = ?
+    `;
+    connection.query(sql, [userId], (err, results) => {
+        if (err) {
+            console.error('Error fetching selected courses:', err);
+            return res.status(500).json({ error: 'Failed to fetch selected courses' });
+        }
+
+        // Pass the selected courses to the course-content.html file for rendering
+        res.sendFile(__dirname + '/course-content.html', { selectedCourses: results });
+    });
+});
+
+
 
 // Start server
 const PORT = process.env.PORT || 3000;
