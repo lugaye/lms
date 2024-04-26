@@ -18,8 +18,8 @@ app.use(session({
 const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: '',
-    database: 'learning_management'
+    password: process.env.MYSQL_PASSWORD,
+    database: 'LMS'
 });
 
 // Connect to MySQL
@@ -65,7 +65,6 @@ const User = {
 app.post('/register', [
     // Validate email and username fields
     check('email').isEmail(),
-    check('username').isAlphanumeric().withMessage('Username must be alphanumeric'),
 
     // Custom validation to check if email and username are unique
     check('email').custom(async (value) => {
@@ -73,19 +72,14 @@ app.post('/register', [
         if (user) {
             throw new Error('Email already exists');
         }
-    }),
-    check('username').custom(async (value) => {
-        const user = await User.getUserByUsername(value);
-        if (user) {
-            throw new Error('Username already exists');
-        }
-    }),
+    }), 
 ], async (req, res) => {
     // Check for validation errors
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
     }
+    res.sendFile(__dirname + "./index.html")
 
     // Hash the password
     const saltRounds = 10;
@@ -94,9 +88,10 @@ app.post('/register', [
     // Create a new user object
     const newUser = {
         email: req.body.email,
-        username: req.body.username,
         password: hashedPassword,
-        full_name: req.body.full_name
+        first_name: req.body.first_name,
+        last_name: req.body.last_name,
+        phone_number: req.body.phone_number,
     };
 
     // Insert user into MySQL
@@ -107,14 +102,15 @@ app.post('/register', [
         }
         console.log('Inserted a new user with id ' + results.insertId);
         res.status(201).json(newUser);
-      });
+    });
+    res.sendFile(__dirname + "./index.html")
 });
 
 // Login route
 app.post('/login', (req, res) => {
-    const { username, password } = req.body;
+    const { email, password } = req.body;
     // Retrieve user from database
-    connection.query('SELECT * FROM users WHERE username = ?', [username], (err, results) => {
+    connection.query('SELECT * FROM users WHERE email = ?', [email], (err, results) => {
         if (err) throw err;
         if (results.length === 0) {
             res.status(401).send('Invalid username or password');
@@ -144,7 +140,7 @@ app.post('/logout', (req, res) => {
 //Dashboard route
 app.get('/dashboard', (req, res) => {
     // Assuming you have middleware to handle user authentication and store user information in req.user
-    const userFullName = req.user.full_name;
+    const userFullName = req.user.first_name + req.user.second_name;
     res.render('dashboard', { fullName: userFullName });
 });
 

@@ -1,0 +1,60 @@
+.courses-wrapper{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 80%;
+    margin: 20px auto;
+}
+.accordion-header{
+    padding: 10px;
+    border-bottom: 1px solid lightgray;
+    cursor: pointer;
+    white-space: nowrap;
+    line-clamp: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.course-title{
+font-weight: 500;
+}
+.accordion-body{
+    border: 1px solid lightgray;
+    padding: 10px 20px;
+    background-color: lightgray;
+    display: none;
+    flex-direction: column;
+    gap: 10px;
+    transition: all ease .5s;
+}
+.accordion-body p{
+    background: transparent;
+    transition: all ease-in-out 0.5s;
+}
+.btn-container{
+    background: transparent;
+    display: flex;
+    gap: 20px;
+}
+.primary-btn{
+    border: 1px solid var(--primary-color);
+}
+.primary-btn:hover{
+    background: transparent;
+}
+.secondary-btn{
+    border: 1px solid red;
+    color: red;
+}
+.secondary-btn:hover{
+    background: red;
+}
+input{
+    border: none;
+    width: 100%;
+    cursor: pointer;
+}
+@media(max-width: 500px){
+    .courses-wrapper{
+        width: 100%;
+    }
+}

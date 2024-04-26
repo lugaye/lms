@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile | LMS</title>
+
+    <!-- Include your CSS file -->
+    <link rel="stylesheet" href="../style.css" />
+    <link rel="stylesheet" href="./profile.css" />
+
+    <!--    link to fa icons    -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+</head>
+<body>
+    <!--    Navbar  -->
+    <nav>
+        <div class="navbar-content">
+          <h1>
+            <i class="fa fa-bars" id="openMenuBtn" aria-hidden="true"></i>
+            LMS
+          </h1>
+          <!--    navigation links    -->
+          <ul class="nav-links">
+            <li><a href="/dashboard">Dashboard</a></li>
+            <li><a href="/leaderboard">Leaderboard</a></li>
+            <li class="dropdown">
+              <a href=""
+                >Courses
+                <i class="fa fa-angle-down" aria-hidden="true"></i>
+              </a>
+              <ul class="dropdown-content">
+                <li><a href="/courses">All Courses</a></li>
+                <li><a href="/my-courses">My Courses</a></li>
+              </ul>
+            </li>
+            <li><a href="/webinars">Webinars</a></li>
+            <!-- Add more navigation links as needed -->
+          </ul>
+  
+          <!--    Responsive Menu     -->
+          <ul class="res-nav-links">
+            <h1>
+              LMS
+              <i class="fa fa-times" id="closeMenuBtn" aria-hidden="true"></i>
+            </h1>
+            <li><a href="/dashboard/">Dashboard</a></li>
+            <li><a href="/leaderboard/">Leaderboard</a></li>
+            <li><a href="/my-courses/">My Courses</a></li>
+            <li><a href="/courses/">All Courses</a></li>
+            <li><a href="/webinars/">Webinars</a></li>
+          </ul>
+  
+          <!--    profile -->
+          <div class="profile-section">
+            <a href="/profile/"><i class="fa fa-user-circle-o" aria-hidden="true"></i></a>
+          </div>
+        </div>
+    </nav>
+    
+    <section class="main-section">
+        <div class="main-wrapper">
+            <div class="details">
+                <h1>PROFILE DETAILS</h1>
+                <h3><b>Name:</b> Allan Njoroge</h3>
+                <h3><b>Email Address:</b> Allandavis254@gmail.com</h3>
+                <h3><b>Phone: Number:</b> 0700056642</h3>
+                <h3><b>Country:</b> Kenya</h3>
+                <h3><b>Occupation:</b> Student</h3>
+            </div>
+            <form action="">
+                <h1>Fill in the form to update your profile details</h1>
+                <input type="text" placeholder="First Name" required>
+                <input type="text" placeholder="Last Name" required>
+                <input type="email" placeholder="Email Address" required>
+                <input type="text" placeholder="Phone Number" required>
+                <input type="text" placeholder="Country" required>
+                <input type="text" placeholder="Occupation (eg. student)" required>
+
+                <button type="submit" class="primary-btn">Update</button>
+            </form>
+        </div>
+    </section>
+
+
+    <script src="../script.js"></script>
+    <script src="./profile.js"></script>
+</body>
+</html>

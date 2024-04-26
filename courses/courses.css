@@ -1,0 +1,126 @@
+.search-container{
+    text-align: center;
+}
+form{
+    flex-direction: row;
+    justify-content: center;
+    gap: 0;
+}
+form input{
+    width: 50%;
+    margin: auto 0;
+}
+
+/* Responsive Search bar */
+@media(max-width: 550px){
+    form input{
+        width: 80%;
+    }
+    
+}
+
+/* Courses Section */
+.courses-wrapper{
+    margin: 50px 0;
+}
+.courses-container{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+}
+.courses-card{
+    position: relative;
+    margin: 20px;
+    border-radius: 5px;
+    overflow: hidden;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+.img-container{
+    height: 150px;
+    background: var(--primary-color);
+}
+.course-description{
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.course-title{
+    color: var(--tertiary-color);
+    font-weight: 500;
+}
+.course-rating{
+    color: var(--tertiary-color);
+}
+.fa-star{
+    color: orange;
+}
+.course-time{
+    position: absolute;
+    top: 5px;
+    right:5px;
+    background: transparent;
+    color: var(--secondary-color);
+}
+/* Responsive cards section */
+@media (max-width: 768px){
+    .courses-container{
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+@media (max-width: 500px){
+    .courses-container{
+        display: grid;
+        grid-template-columns: repeat(1, 1fr);
+    }
+}
+
+
+/* Carousel section */
+.carousel-title{
+    margin-top: 50px;
+}
+.courses-carousel{
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(9, 1fr);
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+.courses-carousel .courses-card{
+    width: 300px;
+}
+
+/* responsive carousel section */
+@media (max-width: 320px){
+    .courses-carousel .courses-card{
+        width: 220px;
+    }
+}
+
+.courses-carousel::-webkit-scrollbar {
+    height: 5px; /* Adjust the height of the scrollbar */
+}
+.courses-carousel::-webkit-scrollbar-thumb {
+    background-color: var(--primary-color); /* Set the color of the thumb (the moving part) */
+}
+.courses-carousel::-webkit-scrollbar-track {
+    background-color: var(--secondary-color); /* Set the color of the track (the non-moving part) */
+}
+
+/* previous and next btn */
+/* .next, .prev{
+    color: #000;
+    position: absolute;
+    top: 50%;
+    background-color: var(--primary-color);
+    padding: 10px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+.next{
+    right: 0;
+}
+.prev{
+    left: 0;
+} */
