@@ -3,28 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Learning Management App</title>
+    <title>Learning Management System</title>
     <link rel="stylesheet" href="style.css">
 </head>
+<style>
+          body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: beige;
+}
+
+.container1 {
+    text-align: center;
+    
+}
+
+h1 {
+    margin-bottom: 100px;
+    text-align: center;
+    font-style: italic;
+    
+}
+
+.options {
+    display: flex;
+    justify-content: center;
+    
+}
+
+.button {
+    display: inline-block;
+    padding: 10px 20px;
+    margin: 0 10px;
+    text-decoration: none;
+    color: #fff;
+    background-color: green;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.button:hover {
+    background-color: green;
+}
+
+
+
+</style>
 <body>
-    <h1>Learning Management App</h1>
-    <form id="register-form">
-        <h2>Register</h2>
-        <input type="text" name="username" placeholder="Username" required>
-        <input type="password" name="password" placeholder="Password" required>
-        <input type="email" name="email" placeholder="Email" required>
-        <input type="text" name="full_name" placeholder="Full Name" required>
-        <button type="submit">Register</button>
-    </form>
-    <form id="login-form">
-        <h2>Login</h2>
-        <input type="text" name="username" placeholder="Username" required>
-        <input type="password" name="password" placeholder="Password" required>
-        <button type="submit">Login</button>
-    </form>
-    <form id="logout-form">
-        <button type="submit">Logout</button>
-    </form>
-    <script src="script.js"></script>
+    <div class="container1">
+        <h1>Learning Management system</h1>
+
+        <div class="options">
+            <a href="login.html" class="button">Login</a>
+            <a href="register.html" class="button">Register</a>
+        </div>
+    </div>
+     
 </body>
 </html>
