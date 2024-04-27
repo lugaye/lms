@@ -1,11 +1,11 @@
 const express  = require('express');
-const route = express.Router();
+const router = express.Router();
 const { check, validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
 
 
-route.get('/', (req, res) => {
-    res.sendFile(__dirname + '/index.html');
+router.get('/', (req, res) => {
+    res.render('index');
 });
 
   
@@ -23,8 +23,8 @@ const User = {
     }
 };
 
-// Registration route
-route.post('/register', [
+// Registration router
+router.post('/register', [
     // Validate email and username fields
     check('email').isEmail(),
     check('username').isAlphanumeric().withMessage('Username must be alphanumeric'),
@@ -69,11 +69,12 @@ route.post('/register', [
         }
         console.log('Inserted a new user with id ' + results.insertId);
         res.status(201).json(newUser);
-      });
+        res.redirect('/dashboard');
+    });
 });
 
-// Login route
-route.post('/login', (req, res) => {
+// Login router
+router.post('/login', (req, res) => {
     const { username, password } = req.body;
     // Retrieve user from database
     connection.query('SELECT * FROM users WHERE username = ?', [username], (err, results) => {
@@ -89,6 +90,7 @@ route.post('/login', (req, res) => {
                     // Store user in session
                     req.session.user = user;
                     res.send('Login successful');
+                    res.redirect('/dashboard');
                 } else {
                     res.status(401).send('Invalid username or password');
                 }
@@ -97,21 +99,22 @@ route.post('/login', (req, res) => {
     });
 });
 
-// Logout route
-route.post('/logout', (req, res) => {
+// Logout router
+router.post('/logout', (req, res) => {
     req.session.destroy();
     res.send('Logout successful');
+    res.redirect('/');
 });
 
-//Dashboard route
-route.get('/dashboard', (req, res) => {
+//Dashboard router
+router.get('/dashboard', (req, res) => {
     // Assuming you have middleware to handle user authentication and store user information in req.user
     const userFullName = req.user.full_name;
     res.render('dashboard', { fullName: userFullName });
 });
 
 // Route to retrieve course content
-route.get('/course/:id', (req, res) => {
+router.get('/course/:id', (req, res) => {
     const courseId = req.params.id;
     const sql = 'SELECT * FROM courses WHERE id = ?';
     db.query(sql, [courseId], (err, result) => {
@@ -124,4 +127,4 @@ route.get('/course/:id', (req, res) => {
 });
 
 
-module.exports = route;
+module.exports = router;

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learning Management App</title>
+    <link rel="stylesheet" href="/styles/style.css">
+    <script id="chatway" async="true" src="https://cdn.chatway.app/widget.js?id=DwcVxavIfeOk"></script>
+</head>
+<body>
+    <h1 class="mt-8 text-center font-bold text-3xl">Learning Management App</h1>
+    <div class="flex min-h-full flex-col justify-center items-center m-5 px-6 py-10 bg-scroll" style="background-image: url(/images/welcome.jpg);">
+        <form id="register-form" class="flex flex-col space-y-3 border-black mb-10 w-full">
+            <h2 class="font-bold text-xl">Register</h2>
+            <input type="text" name="username" placeholder="Username" required>
+            <input type="password" name="password" placeholder="Password" required>
+            <input type="email" name="email" placeholder="Email" required>
+            <input type="text" name="full_name" placeholder="Full Name" required>
+            <button type="submit" class="flex bg-sky-500 hover:bg-sky-700 justify-center items-center w-3/4 rounded-lg p-2 text-xl">Register</button>
+        </form>
+        <form id="login-form" class="flex flex-col space-y-2 mt-5 mb-10 w-full">
+            <h2 class="font-bold text-xl">Login</h2>
+            <input type="text" name="username" placeholder="Username" required>
+            <input type="password" name="password" placeholder="Password" required>
+            <button type="submit" class="flex items-center justify-center w-3/4 rounded-lg bg-green-400 hover:bg-green-700 p-2 text-xl">Login</button>
+        </form>
+        <form id="logout-form">
+            <button type="submit" class="justify-center rounded-md bg-red-500 hover:bg-red-700 py-2 px-8 text-xl">Logout</button>
+        </form>
+    </div>
+    <script src="/js/script.js"></script>
+</body>
+</html>
