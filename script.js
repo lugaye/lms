@@ -1,91 +1,102 @@
 // scripts.js
-document.addEventListener('DOMContentLoaded', () => {
-    const registerForm = document.getElementById('register-form');
-    const loginForm = document.getElementById('login-form');
-    const logoutForm = document.getElementById('logout-form');
+const registerForm = document.getElementById('register-form');
+const loginForm = document.getElementById('login-form');
+const logoutForm = document.getElementById('logout-form');
 
-    registerForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const formData = new FormData(registerForm);
-        const username = formData.get('username');
-        const password = formData.get('password');
-        const email = formData.get('email');
-        const full_name = formData.get('full_name');
-        try {
-            const response = await fetch('/register', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ username, password, email, full_name })
-            });
-            if (response.ok) {
-                alert('Registration successful');
-            } else {
-                alert('Registration failed');
-            }
-        } catch (error) {
-            console.error('Error:', error);
+registerForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const formData = new FormData(registerForm);
+    const username = formData.get('username');
+    const password = formData.get('password');
+    const email = formData.get('email');
+    const full_name = formData.get('full_name');
+    try {
+        const response = await fetch('/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ username, password, email, full_name })
+        });
+        if (response.ok) {
+            alert('Registration successful');
+        } else {
+            alert('Registration failed');
         }
-    });
-
-    loginForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const formData = new FormData(loginForm);
-        const username = formData.get('username');
-        const password = formData.get('password');
-        try {
-            const response = await fetch('/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ username, password })
-            });
-            if (response.ok) {
-                alert('Login successful');
-            } else {
-                alert('Invalid username or password');
-            }
-        } catch (error) {
-            console.error('Error:', error);
-        }
-    });
-
-    logoutForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        try {
-            const response = await fetch('/logout', {
-                method: 'POST'
-            });
-            if (response.ok) {
-                alert('Logout successful');
-            } else {
-                alert('Logout failed');
-            }
-        } catch (error) {
-            console.error('Error:', error);
-        }
-    });
-
-    // Check if the current page is the course content page
-    if (window.location.pathname === '/course-content') {
-        // Call the fetchCourseContent function
-        fetchCourseContent();
-    }
-
-     // Check if the current page is the course content page
-    if (window.location.pathname === '/leader-board') {
-        // Fetch course content from server
-        fetchLeaderboardData();
-    }
-
-    // Check if the current page is the course content page
-    if (window.location.pathname === '/dashboard') {
-        //fetch Logged in user's full name
-        fetchFullName();
+    } catch (error) {
+        console.error('Error:', error);
     }
 });
+
+loginForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const formData = new FormData(loginForm);
+    const username = formData.get('username');
+    const password = formData.get('password');
+    try {
+        const response = await fetch('/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ username, password })
+        });
+        if (response.ok) {
+            alert('Login successful');
+        } else {
+            alert('Invalid username or password');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+});
+
+logoutForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    try {
+        const response = await fetch('/logout', {
+            method: 'POST'
+        });
+        if (response.ok) {
+            alert('Logout successful');
+        } else {
+            alert('Logout failed');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+});
+
+const courseSelectionForm = document.getElementById('course-selection-form');
+
+courseSelectionForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const formData = new FormData(courseSelectionForm);
+    const selectedCourses = formData.getAll('course');
+    await selectCourses(selectedCourses);
+});
+
+
+// Check if the current page is the course content page
+if (window.location.pathname === '/course-content') {
+    // Call the fetchCourseContent function
+    fetchCourseContent();
+}
+
+    // Check if the current page is the course content page
+if (window.location.pathname === '/leader-board') {
+    // Fetch course content from server
+    fetchLeaderboardData();
+}
+
+// Check if the current page is the course content page
+if (window.location.pathname === '/dashboard') {
+    //fetch Logged in user's full name
+    fetchFullName();
+}
+
+
+
 
 function fetchCourseContent() {
     // Get course ID from URL parameter (assuming course ID is passed in the URL)
@@ -204,4 +215,26 @@ function displayFullName(fullName) {
     const fullNameElement = document.getElementById('user-fullname');
     // Set the inner HTML of the element to the user's full name
     fullNameElement.textContent = fullName;
+}
+
+async function selectCourses(courses) {
+    try {
+        const response = await fetch('/select-courses', 
+            {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ courses })
+            }
+        );
+        if (response.ok) {
+            alert('Courses selected successfully');
+        } else {
+            alert('Failed to select courses');
+        }
+    } catch (error) {
+        console.error('Error selecting courses:', error);
+        alert('Error selecting courses');
+    }
 }
