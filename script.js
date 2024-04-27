@@ -205,3 +205,65 @@ function displayFullName(fullName) {
     // Set the inner HTML of the element to the user's full name
     fullNameElement.textContent = fullName;
 }
+
+// Fetch available courses for selection
+fetchCourses();
+
+// Handle course selection form submission
+const courseSelectionForm = document.getElementById('course-selection-form');
+courseSelectionForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const formData = new FormData(courseSelectionForm);
+    const selectedCourses = formData.getAll('courses');
+    try {
+        const response = await fetch('/save-course-selection', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ courses: selectedCourses })
+        });
+        if (response.ok) {
+            alert('Course selection saved successfully');
+        } else {
+            alert('Failed to save course selection');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+});
+
+
+function fetchCourses() {
+// Make AJAX request to fetch available courses
+// Assuming the endpoint for fetching courses is '/courses'
+fetch('/courses')
+    .then(response => response.json())
+    .then(data => {
+        const selectElement = document.querySelector('select[name="courses"]');
+        data.forEach(course => {
+            const option = document.createElement('option');
+            option.value = course.id;
+            option.textContent = course.name;
+            selectElement.appendChild(option);
+        });
+    })
+    .catch(error => {
+        console.error('Error fetching courses:', error);
+    });
+}
+
+// Route to display selected courses for the logged-in user
+app.get('/selected-courses', (req, res) => {
+    const userId = req.session.user.id; // Assuming user ID is stored in session
+
+    // Retrieve selected courses for the user from user_courses table
+    const sql = 'SELECT courses.* FROM courses INNER JOIN user_courses ON courses.id = user_courses.course_id WHERE user_courses.user_id = ?';
+    connection.query(sql, [userId], (err, results) => {
+        if (err) {
+            console.error('Error retrieving selected courses:', err);
+            return res.status(500).json({ error: 'An error occurred while retrieving selected courses' });
+        }
+        res.render('selected-courses', { courses: results }); // Render the page with selected courses
+    });
+});
