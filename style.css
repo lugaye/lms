@@ -6,6 +6,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    height: 100vh;
 }
 
 form {
@@ -25,6 +26,7 @@ header {
     color: #fff;
     padding: 20px;
     text-align: center;
+    width: 100%;
 }
 
 nav ul {
@@ -40,6 +42,7 @@ nav ul li {
 
 main {
     padding: 20px;
+    height: 100%;
 }
 
 footer {
@@ -47,6 +50,7 @@ footer {
     color: #fff;
     padding: 20px;
     text-align: center;
+    width: 100%;
 }
 
 /* Course content page styles */
@@ -72,3 +76,71 @@ iframe {
     height: 400px;
     margin-top: 20px;
 }
+a{
+    color: white;
+}
+#display{
+    height: 100%;
+     display: flex; 
+     flex-direction: column; 
+     align-items: center;
+}
+.homepage{
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+span{
+    color: green;
+    
+}
+.direction{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.direct{
+    display: flex;
+    gap: 10px;
+}
+.pointer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: blue;
+}
+.success-message {
+    color: green;
+    margin-top: 10px; 
+}
+
+.course-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; 
+}
+
+.delete-course {
+    background-color: red;
+    color: white;
+    border: none; 
+    padding: 1px 10px;
+    cursor: pointer; 
+    border-radius: 4px;
+}
+
+.delete-course:hover {
+    background-color: darkred; 
+}
+.course-item{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    justify-content: space-between !important;
+}
+#leaderboard{
+    display: flex;
+}
+
+
