@@ -1,0 +1,112 @@
+/* styles.css */
+:root{
+    --darkblue: rgb(0, 0, 128);
+    --lightblue: rgb(28, 210, 255);
+}
+
+/* General reset */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* Set the body to occupy full height */
+body, html {
+    height: 100%;
+}
+
+/* Styling the top navigation bar */
+.top-nav{
+    background-color: var(--darkblue);
+    color: white;
+    padding: 10px;
+    text-align: center;
+}
+
+.top-nav ul{
+    list-style-type: none;
+    display: flex;
+    justify-content: center;
+}
+
+.top-nav ul li {
+    margin-right: 20px;
+}
+
+.top-nav ul li a {
+    color: white;
+    text-decoration: none;
+}
+
+.top-nav ul li a:hover {
+    text-decoration: underline;
+}
+
+/* Main layout*/
+.layout {
+    display: flex;
+    min-height: 100%;
+}
+
+/* Left sidebar*/
+.sidebar {
+    width: 200;
+    background-color: var(--lightblue);
+    padding: 15px;
+}
+
+.sidebar ul {
+    list-style-type: none;
+}
+
+.sidebar ul li {
+    margin-bottom: 10px;
+}
+
+.sidebar ul li a {
+    text-decoration: none;
+    color: #333;
+}
+
+.sidebar ul li a:hover {
+    text-decoration: underline;
+}
+
+/* Content Area */
+.content {
+    flex: 1;
+    padding: 15px;
+}
+
+/* Cards Layout */
+.cards {
+    display: flex;
+    justify-content: space-between;
+}
+
+.card {
+    border: 1px solid #ccc;
+    padding: 15px;
+    width: 48%;
+    background-color: white;
+}
+
+.courses-list ul {
+    list-style-type: none;
+}
+
+.courses-list ul li {
+    margin-bottom: 10px;
+}
+
+/* Footer */
+footer {
+    background-color: var(--darkblue);
+    color: white;
+    text-align: center;
+    padding: 15px;
+    margin-top: 15px;
+    
+}
+

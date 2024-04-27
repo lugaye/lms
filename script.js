@@ -1,207 +1,91 @@
-// scripts.js
 document.addEventListener('DOMContentLoaded', () => {
-    const registerForm = document.getElementById('register-form');
-    const loginForm = document.getElementById('login-form');
-    const logoutForm = document.getElementById('logout-form');
+    const loginForm = document.getElementById('loginForm');
+    const signupForm = document.getElementById('signupForm');
 
-    registerForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const formData = new FormData(registerForm);
-        const username = formData.get('username');
-        const password = formData.get('password');
-        const email = formData.get('email');
-        const full_name = formData.get('full_name');
-        try {
-            const response = await fetch('/register', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ username, password, email, full_name })
-            });
-            if (response.ok) {
-                alert('Registration successful');
-            } else {
-                alert('Registration failed');
-            }
-        } catch (error) {
-            console.error('Error:', error);
-        }
-    });
+    // Login event handler
+    loginForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
 
-    loginForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const formData = new FormData(loginForm);
-        const username = formData.get('username');
-        const password = formData.get('password');
+        const loginUsername = document.getElementById("loginUsername").value;
+        const loginPassword = document.getElementById("loginPassword").value;
+
         try {
             const response = await fetch('/login', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ username, password })
+                body: JSON.stringify({
+                    username: loginUsername,
+                    password: loginPassword,
+                }),
             });
+
+            const result = await response.json();
+
             if (response.ok) {
-                alert('Login successful');
+                // Redirect to dashboard on successful login
+                window.location.href = 'dashboard.html';
             } else {
-                alert('Invalid username or password');
+                // Display error message
+                document.getElementById('loginMessage').innerText = result.error;
             }
         } catch (error) {
-            console.error('Error:', error);
+            console.error('Error during login:', error);
+            document.getElementById('loginMessage').innerText = 'An error occurred during login. Please try again later.';
         }
     });
 
-    logoutForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
+    // Signup event handler
+    signupForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        const signupUsername = document.getElementById("signupUsername").value;
+        const signupFullname = document.getElementById("signupFullname").value;
+        const signupEmail = document.getElementById("signupEmail").value;
+        const signupPassword = document.getElementById("signupPassword").value;
+
         try {
-            const response = await fetch('/logout', {
-                method: 'POST'
+            // POST request to /register with JSON data
+            const response = await fetch('/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    username: signupUsername,
+                    full_name: signupFullname,
+                    email: signupEmail,
+                    password: signupPassword,
+                }),
             });
-            if (response.ok) {
-                alert('Logout successful');
+
+            if (response.ok) { // If the response is successful
+                // Notify the user of success
+                document.getElementById("signupMessage").innerText = "Signup successful. Redirecting to dashboard...";
+                // Redirect to dashboard after a delay to show success message
+                setTimeout(() => {
+                    window.location.href = 'dashboard.html'; // Redirect to the dashboard
+                }, 2000); // Delay for 2 seconds
             } else {
-                alert('Logout failed');
+                // Try to read the JSON error message
+                const errorResult = await response.json();
+                document.getElementById("signupMessage").innerText = errorResult.error;
             }
         } catch (error) {
-            console.error('Error:', error);
+            console.error('Error during signup:', error); // Log the specific error
+            document.getElementById("signupMessage").innerText = "An error occurred. Please try again later.";
         }
     });
 
-    // Check if the current page is the course content page
-    if (window.location.pathname === '/course-content') {
-        // Call the fetchCourseContent function
-        fetchCourseContent();
-    }
 
-     // Check if the current page is the course content page
-    if (window.location.pathname === '/leader-board') {
-        // Fetch course content from server
-        fetchLeaderboardData();
-    }
+    document.getElementById("showSignupButton").addEventListener("click", function() {
+        document.getElementById("loginSection").style.display = "none";
+        document.getElementById("signupSection").style.display = "block";
+    });
 
-    // Check if the current page is the course content page
-    if (window.location.pathname === '/dashboard') {
-        //fetch Logged in user's full name
-        fetchFullName();
-    }
+    document.getElementById("backToLoginButton").addEventListener("click", function() {
+        document.getElementById("signupSection").style.display = "none";
+        document.getElementById("loginSection").style.display = "block";
+    });
 });
-
-function fetchCourseContent() {
-    // Get course ID from URL parameter (assuming course ID is passed in the URL)
-    const urlParams = new URLSearchParams(window.location.search);
-    const courseId = urlParams.get('id');
-
-    // Make AJAX request to fetch course content from server
-    fetch(`/course/${courseId}`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            // Display course content on the page
-            displayCourseContent(data);
-        })
-        .catch(error => {
-            console.error('Error fetching course content:', error);
-        });
-}
-
-function displayCourseContent(courseContent) {
-    // Get the course name element
-    const courseNameElement = document.getElementById('course-name');
-    // Set the course name
-    courseNameElement.textContent = courseContent.name;
-
-    // Get the course content element
-    const courseContentElement = document.getElementById('course-content');
-    // Clear previous content
-    courseContentElement.innerHTML = '';
-
-    // Loop through the modules and display them
-    courseContent.modules.forEach(module => {
-        const moduleSection = document.createElement('section');
-        moduleSection.innerHTML = `
-            <h2>${module.title}</h2>
-            <p>${module.description}</p>
-            <!-- Add more elements as needed (e.g., videos, quizzes) -->
-        `;
-        courseContentElement.appendChild(moduleSection);
-    });
-}
-
-function fetchLeaderboardData() {
-    // Make AJAX request to fetch leaderboard data from server
-    fetch('/leaderboard')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            // Display leaderboard data on the page
-            displayLeaderboardData(data);
-        })
-        .catch(error => {
-            console.error('Error fetching leaderboard data:', error);
-        });
-}
-
-function displayLeaderboardData(leaderboardData) {
-    // Get the leaderboard element
-    const leaderboardElement = document.getElementById('leaderboard');
-    // Clear previous content
-    leaderboardElement.innerHTML = '';
-
-    // Create a table to display leaderboard data
-    const table = document.createElement('table');
-    table.innerHTML = `
-        <tr>
-            <th>Rank</th>
-            <th>Name</th>
-            <th>Score</th>
-        </tr>
-    `;
-
-    // Loop through the leaderboard data and add rows to the table
-    leaderboardData.forEach((entry, index) => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>${index + 1}</td>
-            <td>${entry.name}</td>
-            <td>${entry.score}</td>
-        `;
-        table.appendChild(row);
-    });
-
-    // Append the table to the leaderboard element
-    leaderboardElement.appendChild(table);
-}
-
-function fetchFullName() {
-    // Make AJAX request to fetch the user's full name from the server
-    fetch('/get-fullname')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            // Display the user's full name on the dashboard
-            displayFullName(data.fullName);
-        })
-        .catch(error => {
-            console.error('Error fetching user full name:', error);
-        });
-}
-
-function displayFullName(fullName) {
-    // Get the element where the full name will be displayed
-    const fullNameElement = document.getElementById('user-fullname');
-    // Set the inner HTML of the element to the user's full name
-    fullNameElement.textContent = fullName;
-}
