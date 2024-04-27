@@ -271,3 +271,7 @@ document.getElementById('courseForm').addEventListener('submit', function(e) {
     // Call the function to display courses
     displayCourses();
 });
+function redirectToDashboard() {
+    // Redirect to dashboard.html
+    window.location.href = "index.html";
+}

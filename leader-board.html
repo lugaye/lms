@@ -10,15 +10,15 @@
     <header>
         <h1>Leaderboard</h1>
         <nav>
-            <ul>
-                <li><a href="/">Home</a></li>
-                <li><a href="/course-content.html">Course Content</a></li>
-               
-                
-                <!-- Add more navigation links as needed -->
-            </ul>
+            <div class="nav-left">
+                <a href="dashboard.html">Dashboard</a>
+                <a href="course-content.html">Course Content</a>
+            </div>
+            <div class="nav-right">
+                <button id="logoutBtn" onclick="redirectToDashboard()">Logout</button>
+            </div>
         </nav>
-    </header>
+    <header>
     <main id="leaderboard">
         <!-- Leaderboard data will be dynamically populated here -->
     </main>

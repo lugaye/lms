@@ -3,15 +3,17 @@
 /* General styles */
 body {
   font-family: Arial, sans-serif;
-  background-color: #f2f2f2;
+  background-color: #e2d9d9;
   padding: 20px;
 }
 
 #heading,
 h1,
 h2 {
-  color: #333;
+  color: #261313;
   text-align: center;
+  font-size: 4em;
+  font-family: Georgia, 'Times New Roman', Times, serif;
 }
 
 form {
@@ -62,22 +64,29 @@ header {
   background-color: #333;
   color: #fff;
   padding: 10px 20px;
+  
 }
 
 nav {
   display: flex;
   justify-content: space-between;
+  font-size: 15px;
   align-items: center;
+  background-color: #333;
+  color: #fff;
+  padding: 10px 20px;
 }
 
 .nav-left {
   display: flex;
+  font-size: 15px;
 }
 
 .nav-left a {
   color: #fff;
   text-decoration: none;
   margin-right: 20px;
+  font-size: 15px;
 }
 
 .nav-left a:hover {
@@ -113,15 +122,17 @@ nav {
 
 .course-title {
   cursor: pointer; /* Change cursor to pointer when hovering over course titles */
-  color: blue; /* Change color of course titles */
+  color: rgb(1, 1, 14); /* Change color of course titles */
 }
-
+.course-title:hover{
+  text-decoration: underline;
+}
 .c_content {
-  color: black;
-  font-size: 15px;
+  color: rgb(161, 13, 241);
+  font-size: 16px;
   font-family: 'Times New Roman', Times, serif;
   margin-top: 10px;
   margin-bottom: 10px;
-  border: none;
+  border: solid auto;
   
 }

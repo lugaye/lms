@@ -9,16 +9,18 @@
 <body>
     <header>
         <h1 id="course-name">Course Name</h1>
-        <nav class="c_content">
-            <ul>
-                <li><a href="/dashboard.html">Home</a></li>
-                <li><a href="/course-content.html">Course Content</a></li>
-                <li><a href="/leader-board.html">Leaderbard</a></li>
-                <!-- Add more navigation links as needed -->
-            </ul>
+        <nav>
+            <div class="nav-left">
+                <a href="dashboard.html">Dashboard</a>
+                <a href="leader-board.html">Leaderboard</a>
+                <a href="course-content.html">Course Content</a>
+            </div>
+            <div class="nav-right">
+                <button id="logoutBtn" onclick="redirectToDashboard()">Logout</button>
+            </div>
         </nav>
-    </header>
-    <main id="course-content">
+    </header>   
+        <main id="course-content">
 
             <h1>Course Outlines</h1>
             

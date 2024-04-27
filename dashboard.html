@@ -4,25 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <header>
         <nav>
             <div class="nav-left">
                 <a href="dashboard.html">Dashboard</a>
-                <a href="leaderboard.html">Leaderboard</a>
+                <a href="leader-board.html">Leaderboard</a>
                 <a href="course-content.html">Course Content</a>
             </div>
             <div class="nav-right">
-                <button id="logoutBtn">Logout</button>
+                <button id="logoutBtn" onclick="redirectToDashboard()">Logout</button>
             </div>
         </nav>
     </header>
     <div class="container">
         <h1>Welcome to your Dashboard</h1>
-        <div id="courses"></div>
-        <button id="listCoursesBtn">List Chosen Courses</button>
         <form id="courseForm">
             <label for="course">Choose your course:</label>
             <select id="course" name="course">
@@ -36,7 +34,9 @@
             <button type="submit">Submit</button>
         </form>
     </div>
+    <div id="courses"></div>
+    <button id="listCoursesBtn">List Chosen Courses</button>
 
-    <script src="script.js"></script>
+    <script src="script.js"></script> 
 </body>
 </html>
