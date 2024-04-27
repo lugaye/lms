@@ -4,30 +4,167 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Include your CSS file -->
+    <style>
+        /* CSS styles for course overview */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .topnav {
+            overflow: hidden;
+            background-color: #333;
+        }
+
+        .topnav a {
+            float: left;
+            display: block;
+            color: #f2f2f2;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+        .topnav a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+
+        .topnav a.active {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        main {
+            padding: 20px;
+        }
+
+        .welcome-message {
+            margin-bottom: 20px;
+        }
+
+        footer {
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        /* CSS styles for course overview */
+        .course-overview {
+            margin-top: 20px;
+        }
+
+        .course {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+
+        .course h3 {
+            margin-top: 0;
+        }
+
+        .course p {
+            margin-top: 5px;
+            margin-bottom: 10px;
+        }
+
+        .course ul {
+            margin: 0;
+            padding: 0;
+            list-style-type: none;
+        }
+
+        .course ul li {
+            margin-bottom: 5px;
+        }
+
+        .course progress {
+            width: 100%;
+        }
+    </style>
 </head>
 <body>
     <header>
         <h1>Welcome to Your Dashboard</h1>
-        <nav>
-            <ul>
-                <li><a href="/leaderboard">Leaderboard</a></li>
-                <li><a href="/course-content">Course Content</a></li>
-                <!-- Add more navigation links as needed -->
-            </ul>
-        </nav>
+        <div class="topnav">
+            <a class="active" href="/">Home</a>
+            <a href="/course-content">Course Content</a>
+            <a href="/dashboard.html">Dashboard</a>
+            <a href="leader-board.html">Leaderboard</a>
+            <!-- Add more navigation links as needed -->
+        </div>
     </header>
     <main>
         <section class="welcome-message">
-            <h2>Hello, <span id="user-fullname"></span>!</h2>
+            <h2>Hello <span id="user-fullname"></span></h2>
             <p>Welcome to your personalized dashboard.</p>
+        </section>
+
+        <!-- Course Overview Section -->
+        <section class="course-overview" id="courses-container">
+            <h2>Course Overview</h2>
         </section>
     </main>
     <footer>
         <p>&copy; 2024 Your LMS</p>
     </footer>
 
-    <!-- Include your client-side JavaScript file -->
-    <script src="script.js"></script>
+    <script>
+        // Sample course data
+        const courses = [
+            {
+                name: "Course Name 1",
+                description: "Description of Course 1",
+                assignments: ["Assignment 1", "Assignment 2", "Assignment 3"],
+                progress: 30
+            },
+            {
+                name: "Course Name 2",
+                description: "Description of Course 2",
+                assignments: ["Assignment 1", "Assignment 2", "Assignment 3"],
+                progress: 50
+            }
+            // Add more course objects as needed
+        ];
+
+        // Function to create course elements
+        function createCourseElement(course) {
+            const courseElement = document.createElement('div');
+            courseElement.classList.add('course');
+            courseElement.innerHTML = `
+                <h3>${course.name}</h3>
+                <p>${course.description}</p>
+                <ul>${course.assignments.map(assignment => `<li>${assignment}</li>`).join('')}</ul>
+                <progress value="${course.progress}" max="100"></progress>
+            `;
+            return courseElement;
+        }
+
+        // Function to populate course overview
+        function populateCourseOverview() {
+            const coursesContainer = document.getElementById('courses-container');
+            courses.forEach(course => {
+                const courseElement = createCourseElement(course);
+                coursesContainer.appendChild(courseElement);
+            });
+        }
+
+        // Call populateCourseOverview when the page loads
+        window.addEventListener('load', populateCourseOverview);
+    </script>
 </body>
 </html>

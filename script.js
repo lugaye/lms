@@ -44,6 +44,8 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             if (response.ok) {
                 alert('Login successful');
+                //redirect to course content page
+                window.location.href = '/course-content.html';
             } else {
                 alert('Invalid username or password');
             }
@@ -74,15 +76,15 @@ document.addEventListener('DOMContentLoaded', () => {
         fetchCourseContent();
     }
 
-     // Check if the current page is the course content page
+    // Check if the current page is the leaderboard page
     if (window.location.pathname === '/leader-board') {
-        // Fetch course content from server
+        // Fetch leaderboard data from server
         fetchLeaderboardData();
     }
 
-    // Check if the current page is the course content page
+    // Check if the current page is the dashboard page
     if (window.location.pathname === '/dashboard') {
-        //fetch Logged in user's full name
+        // Fetch logged-in user's full name
         fetchFullName();
     }
 });
@@ -181,9 +183,10 @@ function displayLeaderboardData(leaderboardData) {
     leaderboardElement.appendChild(table);
 }
 
+// Function to populate user's full name dynamically after login
 function fetchFullName() {
     // Make AJAX request to fetch the user's full name from the server
-    fetch('/get-fullname')
+    fetch('/dashboard')
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
@@ -199,6 +202,7 @@ function fetchFullName() {
         });
 }
 
+// Function to display full name on the dashboard
 function displayFullName(fullName) {
     // Get the element where the full name will be displayed
     const fullNameElement = document.getElementById('user-fullname');
