@@ -4,30 +4,161 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Course Content</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Include your CSS file -->
+    <style>
+        /* CSS styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .topnav {
+            overflow: hidden;
+            background-color: #333;
+        }
+
+        .topnav a {
+            float: left;
+            display: block;
+            color: #f2f2f2;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+        .topnav a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+
+        .topnav a.active {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        main {
+            padding: 20px;
+        }
+
+        .course-box {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 10px;
+            cursor: pointer;
+        }
+
+        .course-box:hover {
+            background-color: #f0f0f0;
+        }
+
+        .course-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .syllabus {
+            display: none;
+        }
+
+        .syllabus-title {
+            font-weight: bold;
+        }
+
+        .syllabus-list {
+            margin-top: 5px;
+        }
+
+        footer {
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
 </head>
 <body>
     <header>
-
         <div class="topnav">
-            
-                <a class="active" href="/">Home</a>
-                <a href="/course-content">Course Content</a>
-                <a href="/dashboard.html">Dashboard</a>
-                <a href="leader-board.html">Leaderboard</a>
-                <!-- Add more navigation links as needed -->
-        
+            <a href="/">Login page</a>
+            <a class="active" href="/course-content">Course Content</a>
+            <a href="/dashboard.html">Dashboard</a>
+            <a href="leader-board.html">Leaderboard</a>
+            <!-- Add more navigation links as needed -->
         </div>
         <h1 id="course-name">Course Content</h1>
     </header>
     <main id="course-content">
         <!-- Course content will be dynamically populated here -->
+        <div class="course-box" onclick="toggleSyllabus('html')">
+            <div class="course-title">Introduction to HTML</div>
+            <div class="syllabus" id="html-syllabus">
+                <div class="syllabus-title">Syllabus:</div>
+                <ul class="syllabus-list">
+                    <li>HTML Basics</li>
+                    <li>HTML Elements</li>
+                    <li>HTML Attributes</li>
+                    <li>HTML Forms</li>
+                    <!-- Add more syllabus items as needed -->
+                </ul>
+                <button onclick="startCourse('html')">Start Course</button>
+            </div>
+        </div>
+        <div class="course-box" onclick="toggleSyllabus('css')">
+            <div class="course-title">CSS FUNDAMENTALS</div>
+            <div class="syllabus" id="css-syllabus">
+                <div class="syllabus-title">Syllabus:</div>
+                <ul class="syllabus-list">
+                    <li>CSS Syntax</li>
+                    <li>Types of CSS</li>
+                    <li>CSS Basics</li>
+                    <li>Div Tags & ID Selectors</li>
+                    <!-- Add more syllabus items as needed -->
+                </ul>
+                <button onclick="startCourse('css')">Start Course</button>
+            </div>
+        </div>
+        <div class="course-box" onclick="toggleSyllabus('javascript')">
+            <div class="course-title">JAVASCRIPT BASICS</div>
+            <div class="syllabus" id="javascript-syllabus">
+                <div class="syllabus-title">Syllabus:</div>
+                <ul class="syllabus-list">
+                    <li>Writing Arrays</li>
+                    <li>Creating Loops</li>
+                    <li>Data Types</li>
+                    <li>Operators</li>
+                    <!-- Add more syllabus items as needed -->
+                </ul>
+                <button onclick="startCourse('javascript')">Start Course</button>
+            </div>
+        </div>
+        
     </main>
     <footer>
         <p>&copy; 2024 Your LMS</p>
     </footer>
 
-    <!-- Include your client-side JavaScript file -->
-    <script src="script.js"></script>
+    <script>
+        // JavaScript functions
+        function toggleSyllabus(course) {
+            const syllabus = document.getElementById(course + '-syllabus');
+            syllabus.style.display = syllabus.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function startCourse(course) {
+            // Redirect user to the course page or take any other action
+            alert('Starting ' + course + ' course...');
+        }
+    </script>
 </body>
 </html>

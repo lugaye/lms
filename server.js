@@ -1,3 +1,5 @@
+// server.js
+
 const express = require('express');
 const session = require('express-session');
 const bcrypt = require('bcryptjs');
@@ -106,7 +108,6 @@ app.post('/register', [
         res.status(201).json(newUser);
       });
 });
-
 // Login route
 app.post('/login', (req, res) => {
     const { username, password } = req.body;
@@ -163,16 +164,16 @@ app.get('/course/:id', (req, res) => {
     const courseId = req.params.id;
     const sql = 'SELECT * FROM courses WHERE id = ?';
     connection.query(sql, [courseId], (err, result) => {
-      if (err) {
-        throw err;
-      }
-      // Send course content as JSON response
-      res.json(result);
+        if (err) {
+            throw err;
+        }
+        // Send course content as JSON response
+        res.json(result);
     });
-  });
+});
 
 // Start server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
-}); 
+});
