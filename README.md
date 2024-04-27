@@ -83,8 +83,8 @@ node server.js
 
 ### Create a `script.js` file to handle frontend interactions.
 
-## Step 4: Testing
-Open your web browser and navigate to http://127.0.0.1:5500
+## Step 4: Testing and deployment
+Open your web browser and navigate to the live site  https://aakinyi-lms-app.netlify.app/
 
 # Hackathon Instructions
 Finish up the project by: 
