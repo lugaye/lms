@@ -68,6 +68,58 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // Course Selection Form Submission
+    courseSelectionForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = new FormData(courseSelectionForm);
+        const selectedCourses = formData.getAll('course'); // Assuming courses are selected via checkboxes
+        try {
+            const response = await fetch('/select-courses', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ selectedCourses })
+            });
+            if (response.ok) {
+                alert('Course selection successful');
+            } else {
+                alert('Course selection failed');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    });
+
+    // Fetching and Displaying Selected Courses
+    fetchSelectedCourses();
+});
+
+async function fetchSelectedCourses() {
+    try {
+        const response = await fetch('/selected-courses');
+        if (response.ok) {
+            const selectedCourses = await response.json();
+            displaySelectedCourses(selectedCourses);
+        } else {
+            console.error('Failed to fetch selected courses');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
+function displaySelectedCourses(selectedCourses) {
+    const selectedCoursesList = document.getElementById('selected-courses-list');
+    selectedCoursesList.innerHTML = ''; // Clear previous content
+
+    selectedCourses.forEach(course => {
+        const listItem = document.createElement('li');
+        listItem.textContent = course.name;
+        selectedCoursesList.appendChild(listItem);
+    });
+}
+
     // Check if the current page is the course content page
     if (window.location.pathname === '/course-content') {
         // Call the fetchCourseContent function
@@ -85,7 +137,7 @@ document.addEventListener('DOMContentLoaded', () => {
         //fetch Logged in user's full name
         fetchFullName();
     }
-});
+
 
 function fetchCourseContent() {
     // Get course ID from URL parameter (assuming course ID is passed in the URL)

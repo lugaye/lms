@@ -123,6 +123,41 @@ app.get('/dashboard', (req, res) => {
     res.render('dashboard', { fullName: userFullName });
 });
 
+// Course Selection route
+app.post('/select-courses', (req, res) => {
+    const { selectedCourses } = req.body;
+    const userId = req.session.user.id; // Assuming you store user id in session
+
+    // Insert selected courses into database
+    const sql = 'INSERT INTO user_courses (user_id, course_id) VALUES ?';
+    const values = selectedCourses.map(courseId => [userId, courseId]);
+    connection.query(sql, [values], (err, result) => {
+        if (err) {
+            console.error('Error inserting selected courses:', err);
+            res.status(500).send('Failed to select courses');
+        } else {
+            res.status(200).send('Courses selected successfully');
+        }
+    });
+});
+
+// Fetch selected courses for the current user
+app.get('/selected-courses', (req, res) => {
+    const userId = req.session.user.id; // Assuming you store user id in session
+
+    // Fetch selected courses from database for the current user
+    const sql = 'SELECT * FROM courses INNER JOIN user_courses ON courses.id = user_courses.course_id WHERE user_courses.user_id = ?';
+    connection.query(sql, [userId], (err, results) => {
+        if (err) {
+            console.error('Error fetching selected courses:', err);
+            res.status(500).send('Failed to fetch selected courses');
+        } else {
+            res.status(200).json(results);
+        }
+    });
+});
+
+
 // Route to retrieve course content
 app.get('/course/:id', (req, res) => {
     const courseId = req.params.id;

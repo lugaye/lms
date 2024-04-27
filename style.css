@@ -45,7 +45,7 @@ main {
 footer {
     background-color: #333;
     color: #fff;
-    padding: 20px;
+    padding: 22px;
     text-align: center;
 }
 
@@ -53,7 +53,7 @@ footer {
 section {
     margin-bottom: 30px;
     border-bottom: 1px solid #ccc;
-    padding-bottom: 20px;
+    padding-bottom: 22px;
 }
 
 h2 {
