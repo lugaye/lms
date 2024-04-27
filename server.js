@@ -148,6 +148,12 @@ app.get('/dashboard', (req, res) => {
     res.render('dashboard', { fullName: userFullName });
 });
 
+//route to serve course-content.html
+app.get('/course-content', (req, res) => {
+    res.sendFile(__dirname + '/course-content.html');
+});
+
+
 // Route to retrieve course content
 app.get('/course/:id', (req, res) => {
     const courseId = req.params.id;
