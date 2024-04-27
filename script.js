@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 body: JSON.stringify({ username, password })
             });
             if (response.ok) {
-                alert('Login successful');
+                window.location.href = '/dashboard.html'
             } else {
                 alert('Invalid username or password');
             }
@@ -193,15 +193,112 @@ function fetchFullName() {
         .then(data => {
             // Display the user's full name on the dashboard
             displayFullName(data.fullName);
+            
         })
         .catch(error => {
             console.error('Error fetching user full name:', error);
         });
 }
 
+const selectCoursesForm = document.getElementById('select-courses-form');
+
+selectCoursesForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const selectedCourses = Array.from(document.querySelectorAll('input[type="checkbox"]:checked'))
+        .map(checkbox => checkbox.value);
+    
+   
+   
+    try {
+        const responses = await Promise.all(selectedCourses.map(courseName => {
+            return fetch('/addCourseToUser', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ userId, courseName }) // Change to courseName
+            });
+        }));
+        await Promise.all(responses.map(response => response.json()));
+        // Redirect to selected courses page after courses are added
+        window.location.href = '/selectedCourses.html';
+    } catch (error) {
+        console.error('Error adding courses:', error);
+    }
+});
+
+
+// Fetch and display courses
+fetchCourses();
+
+
+async function fetchCourses() {
+try {
+    const response = await fetch('/courses');
+    if (!response.ok) {
+        throw new Error('Failed to fetch courses');
+    }
+    const courses = await response.json();
+    displayCourses(courses);
+} catch (error) {
+    console.error('Error fetching courses:', error);
+}
+}
+
+function displayCourses(courses) {
+const coursesList = document.getElementById('courses-list');
+courses.forEach(course => {
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.name = 'courses';
+    checkbox.value = course.id;
+    checkbox.id = `course-${course.id}`;
+
+    const label = document.createElement('label');
+    label.htmlFor = `course-${course.id}`;
+    label.textContent = course.name;
+
+    coursesList.appendChild(checkbox);
+    coursesList.appendChild(label);
+    coursesList.appendChild(document.createElement('br'));
+});
+
 function displayFullName(fullName) {
     // Get the element where the full name will be displayed
     const fullNameElement = document.getElementById('user-fullname');
     // Set the inner HTML of the element to the user's full name
     fullNameElement.textContent = fullName;
+}
+
+    // Fetch and display selected courses
+    fetchSelectedCourses();
+
+
+async function fetchSelectedCourses() {
+    try {
+        const response = await fetch('/selectedCourses');
+        if (!response.ok) {
+            throw new Error('Failed to fetch selected courses');
+        }
+        const selectedCourses = await response.json();
+        displaySelectedCourses(selectedCourses);
+    } catch (error) {
+        console.error('Error fetching selected courses:', error);
+    }
+}
+
+function displaySelectedCourses(selectedCourses) {
+    const selectedCoursesList = document.getElementById('selected-courses-list');
+    if (selectedCoursesList) {
+        selectedCourses.forEach(course => {
+            const listItem = document.createElement('li');
+            listItem.textContent = course;
+            selectedCoursesList.appendChild(listItem);
+        });
+    } else {
+        console.error("Selected courses list element not found.");
+    }
+}
+
+
 }
