@@ -3,7 +3,7 @@ const express = require('express');
 const session = require('express-session');
 const bcrypt = require('bcryptjs');
 const bodyParser = require('body-parser');
-const mysql = require('mysql');
+const mysql2 = require('mysql2');
 const { check, validationResult } = require('express-validator');
 const app = express();
 
@@ -15,10 +15,10 @@ app.use(session({
 }));
 
 // Create MySQL connection
-const connection = mysql.createConnection({
+const connection = mysql2.createConnection({
     host: 'localhost',
     user: 'root',
-    password: '',
+    password: 'Spice@033Dkw',
     database: 'learning_management'
 });
 
