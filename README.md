@@ -66,6 +66,18 @@ INSERT INTO leaderboard (name, score) VALUES
 ('Emily Jones', 80);
 ```
 
+#### Create a user_courses table in the database to store the user's course selections. 
+
+```bash
+CREATE TABLE user_courses (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    course_id INT,
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    FOREIGN KEY (course_id) REFERENCES courses(id)
+);
+```
+
 ### Run the server.
 ```bash
 node server.js
@@ -78,6 +90,8 @@ node server.js
 ### Create a `course-content.html` file for the course content.
 
 ### Create a `leader-board.html` file for the leader board.
+
+#### Create a page to display selected courses. Create `my-courses.html` that will display the courses selected by the logged-in user.
 
 ### Create a `style.css` file to style your HTML.
 
