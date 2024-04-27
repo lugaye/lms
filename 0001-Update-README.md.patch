@@ -1,0 +1,29 @@
+From ea4e11a2a61daaa54d3833a2f6db117ac8cba00a Mon Sep 17 00:00:00 2001
+From: lugaye <160602222+lugaye@users.noreply.github.com>
+Date: Tue, 23 Apr 2024 20:29:25 +0300
+Subject: [PATCH] Update README.md
+
+---
+ README.md | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/README.md b/README.md
+index f1f02fc..b38dbd2 100644
+--- a/README.md
++++ b/README.md
+@@ -88,9 +88,9 @@ Open your web browser and navigate to http://localhost:3000.
+ 
+ # Hackathon Instructions
+ Finish up the project by: 
+-1. creating functionality for the user to select their preferred courses.
+-2. storing the selection in the database
+-3. create a page where the selected courses for each student is displayed
++1. creating functionality for the logged in user to select their preferred courses.
++2. store the selection in the database
++3. create a page where the selected courses for each specific logged in user is displayed.
+    
+ ## Submission Guidelines
+ Fork this repository and clone it to your local machine. 
+-- 
+2.43.0.windows.1
+
