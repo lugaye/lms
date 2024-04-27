@@ -4,6 +4,8 @@ const bcrypt = require('bcryptjs');
 const bodyParser = require('body-parser');
 const sql = require('mssql');
 const { check, validationResult } = require('express-validator');
+const { body } = require('express-validator');
+
 const app = express();
 
 // Configure session middleware
@@ -95,14 +97,48 @@ const User = {
     }
 };
 
-// Registration route
+// Validation middleware
 app.post('/register', [
-    // Validation middleware here
+    body('email').isEmail().normalizeEmail(),
+    body('username').isLength({ min: 5 }),
+    body('password').isLength({ min: 8 }),
+    body('full_name').isLength({ min: 3 })
 ], async(req, res) => {
-    // Registration logic here
-});
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
 
-// Login, logout, dashboard, and other routes here
+    const { email, username, password, full_name } = req.body;
+
+    try {
+        // Check if user already exists with the provided email or username
+        const existingEmailUser = await User.getUserByEmail(email);
+        const existingUsernameUser = await User.getUserByUsername(username);
+        if (existingEmailUser) {
+            return res.status(400).json({ message: 'Email already exists' });
+        }
+        if (existingUsernameUser) {
+            return res.status(400).json({ message: 'Username already exists' });
+        }
+
+        // Hash the password before saving it to the database
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        // Create new user in the database
+        await User.createUser({
+            email,
+            username,
+            password: hashedPassword,
+            full_name
+        });
+
+        return res.status(201).json({ message: 'User registered successfully' });
+    } catch (err) {
+        console.error('Error registering user:', err);
+        return res.status(500).json({ message: 'Internal server error' });
+    }
+});
 
 // Start server
 const PORT = process.env.PORT || 3000;
