@@ -44,6 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             if (response.ok) {
                 alert('Login successful');
+                window.location.href='/course-selection.html';
             } else {
                 alert('Invalid username or password');
             }

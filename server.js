@@ -19,7 +19,7 @@ const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: '',
-    database: 'learning_management'
+    database: 'lms_app'
 });
 
 // Connect to MySQL
@@ -160,6 +160,62 @@ app.get('/course/:id', (req, res) => {
       res.json(result);
     });
   });
+
+
+// Route to retrieve courses
+app.get('/courses', (req, res) => {
+    const sql = 'SELECT id, name FROM courses'; // Adjust the query based on your database schema
+    connection.query(sql, (err, results) => {
+        if (err) {
+            console.error('Error fetching courses: ' + err.message);
+            return res.status(500).json({ error: err.message });
+        }
+        res.json(results);
+    });
+});
+
+// Route to retrieve user data (user ID) based on username
+app.get('/user-data/:username', async (req, res) => {
+    try {
+        const { username } = req.params;
+
+        // Assuming you have a "users" table with columns (id, username)
+        const [rows] = await pool.query('SELECT id FROM users WHERE username = ?', [username]);
+        if (rows.length > 0) {
+            res.status(200).json({ userId: rows[0].id });
+        } else {
+            res.status(404).json({ error: 'User not found' });
+        }
+    } catch (error) {
+        console.error('Error fetching user data:', error.message);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+
+// Route to save selected courses
+app.post('/selected-courses', async (req, res) => {
+    try {
+        const { userId, selectedCourses } = req.body;
+
+        // Assuming you have a "selected_courses" table with columns (user_id, course_id)
+        const insertSql = 'INSERT INTO selected_courses (user_id, course_id) VALUES (?, ?)';
+        const values = selectedCourses.map(courseId => [userId, courseId]);
+
+        connection.query(insertSql, [values], (err, results) => {
+            if (err) {
+                console.error('Error saving selected courses: ' + err.message);
+                return res.status(500).json({ error: err.message });
+            }
+            console.log('Selected courses saved successfully');
+            res.sendStatus(200);
+        });
+    } catch (error) {
+        console.error('Error saving selected courses:', error.message);
+        res.status(500).json({ error: error.message });
+    }
+});
+
 
 // Start server
 const PORT = process.env.PORT || 3000;
