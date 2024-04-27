@@ -15,9 +15,6 @@
         <nav>
             <ul>
                 <li><a href="/">Home</a></li>
-                <li><a href="/dashboard">Dashboard</a></li>
-                <li><a href="/leaderboard">Leaderboard</a></li>
-                <li><a href="/course-content">Course Content</a></li>
             </ul>
         </nav>
     </header>
@@ -26,16 +23,32 @@
         <div class="form-container">
             <form id="register-form">
                 <h2>Register</h2>
-                <input type="text" name="username" placeholder="Username" required>
-                <input type="password" name="password" placeholder="Password" required>
-                <input type="email" name="email" placeholder="Email" required>
-                <input type="text" name="full_name" placeholder="Full Name" required>
+                <div class="input-group">
+                    <input type="text" name="username" placeholder="Username" required>
+                </div>
+                <div class="input-group">
+                    <input type="password" name="password" id="register-password" placeholder="Password" required>
+                    
+                    <input type="checkbox" id="show-register-password" class="show-password"><label for="show-register-password">Show Password</label>
+                
+                </div>
+                <div class="input-group">
+                    <input type="email" name="email" placeholder="Email" required>
+                </div>
+                <div class="input-group">
+                    <input type="text" name="full_name" placeholder="Full Name" required>
+                </div>
                 <button type="submit">Register</button>
             </form>
             <form id="login-form">
                 <h2>Login</h2>
-                <input type="text" name="username" placeholder="Username" required>
-                <input type="password" name="password" placeholder="Password" required>
+                <div class="input-group">
+                    <input type="text" name="username" placeholder="Username" required>
+                </div>
+                <div class="input-group">
+                    <input type="password" name="password" id="login-password" placeholder="Password" required>
+                    <input type="checkbox" id="show-login-password" class="show-password"><label for="show-login-password">Show Password</label>
+                </div>
                 <button type="submit">Login</button>
             </form>
             <form id="logout-form">

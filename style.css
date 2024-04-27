@@ -37,13 +37,11 @@ header {
     width: 50px; /* Adjust the width of the logo */
     height: auto; /* Maintain aspect ratio */
     margin-right: 10px;
-    
 }
 
 .logo h1 {
     font-size: 24px;
 }
-
 
 nav ul {
     list-style-type: none;
@@ -59,12 +57,13 @@ nav ul li {
 nav ul li a {
     color: #fff;
     text-decoration: none;
-    padding: 5px 10px;
+    padding: 10px 20px;
     border-radius: 5px;
+    transition: background-color 0.3s;
 }
 
 nav ul li a:hover {
-    background-color: #333;
+    background-color: #357a38;
 }
 
 /* Main Content Styles */
@@ -79,7 +78,7 @@ main {
     margin: 0 auto;
     background-color: #fff;
     border-radius: 8px;
-    padding: 20px;
+    padding: 30px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
@@ -90,30 +89,102 @@ main {
 }
 
 h2 {
+    margin-bottom: 20px;
+    color: #333;
+    font-size: 24px;
+}
+
+.input-group {
     margin-bottom: 10px;
 }
 
-input, button {
-    margin-top: 10px;
+.input-group input {
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
+    width: 100%;
+    margin: 1px;
+}
+
+.input-group label {
+    margin-left: 5px;
+    color: #666;
+    margin: 10px;
 }
 
 button {
-    background-color: #f57c00; 
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #f57c00;
     color: #fff;
     cursor: pointer;
+    width: 100%;
+    transition: background-color 0.3s;
+    margin-bottom: 10px;
 }
 
 button:hover {
     background-color: #e65100; 
 }
 
+/* Show Password Styles */
+.show-password {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.show-password input[type="checkbox"] {
+    margin-right: 5px;
+   
+    
+}
+
+.show-password label {
+    margin: 0;
+    color: #666;
+    
+}
+
+.show-password-container {
+    display: inline-block;
+    margin-left: 50px; 
+}
+
+
+
 /* Dashboard Styles */
 .welcome-message {
     text-align: center;
 }
+/* Selected Courses Page Styles */
+.selected-courses {
+    margin-top: 30px;
+}
+
+.selected-courses h2 {
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.selected-courses ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.selected-courses ul li {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.selected-courses ul li:hover {
+    background-color: #f0f0f0;
+}
+
 
 /* Leaderboard Table Styles */
 table {
@@ -160,12 +231,14 @@ section {
 h2 {
     color: #333;
     font-size: 24px;
+    margin-bottom: 10px;
 }
 
 p {
     color: #666;
     font-size: 16px;
     line-height: 1.5;
+    margin-bottom: 15px;
 }
 
 iframe {
