@@ -1,8 +1,20 @@
-// scripts.js
 document.addEventListener('DOMContentLoaded', () => {
     const registerForm = document.getElementById('register-form');
     const loginForm = document.getElementById('login-form');
-    const logoutForm = document.getElementById('logout-form');
+    const logoutForm = document.getElementById('logout-form'); 
+
+    if (window.location.pathname === '/dashboard') {
+        fetchFullName();
+    }
+
+    function handlePageLoad() {
+        if (window.location.pathname === '/dashboard.html') {
+            fetchFullName();
+        }
+    }
+    
+    document.addEventListener('DOMContentLoaded', handlePageLoad);
+    window.addEventListener('load', handlePageLoad);
 
     registerForm.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -43,7 +55,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 body: JSON.stringify({ username, password })
             });
             if (response.ok) {
-                alert('Login successful');
+                // Redirect to the dashboard page
+                window.location.href = '/dashboard';
             } else {
                 alert('Invalid username or password');
             }
@@ -68,22 +81,23 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    
+
     // Check if the current page is the course content page
-    if (window.location.pathname === '/course-content') {
-        // Call the fetchCourseContent function
+    if (window.location.pathname === '/course-content.html') {
         fetchCourseContent();
+        fetchAvailableCourses();
     }
 
-     // Check if the current page is the course content page
+    // Check if the current page is the leader board page
     if (window.location.pathname === '/leader-board') {
         // Fetch course content from server
         fetchLeaderboardData();
     }
 
-    // Check if the current page is the course content page
-    if (window.location.pathname === '/dashboard') {
-        //fetch Logged in user's full name
-        fetchFullName();
+    // Check if the current page is the "My Courses" page
+    if (window.location.pathname === '/my-courses.html') {
+        fetchUserCourses();
     }
 });
 
@@ -130,6 +144,82 @@ function displayCourseContent(courseContent) {
         `;
         courseContentElement.appendChild(moduleSection);
     });
+}
+
+function fetchAvailableCourses() {
+    fetch('/courses')
+        .then(response => response.json())
+        .then(data => {
+            displayAvailableCourses(data);
+        })
+        .catch(error => {
+            console.error('Error fetching available courses:', error);
+        });
+}
+
+function displayAvailableCourses(courses) {
+    const courseListElement = document.getElementById('course-list');
+    courseListElement.innerHTML = '';
+
+    courses.forEach(course => {
+        const listItem = document.createElement('li');
+        listItem.textContent = course.name;
+        const selectButton = document.createElement('button');
+        selectButton.textContent = 'Select';
+        selectButton.addEventListener('click', () => {
+            selectCourse(course.id);
+        });
+        listItem.appendChild(selectButton);
+        courseListElement.appendChild(listItem);
+    });
+}
+
+function selectCourse(courseId) {
+    fetch('/select-course', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ courseId })
+    })
+    .then(response => {
+        if (response.ok) {
+            alert('Course selected successfully');
+        } else {
+            alert('Failed to select course');
+        }
+    })
+    .catch(error => {
+        console.error('Error selecting course:', error);
+    });
+}
+
+function fetchUserCourses() {
+    fetch('/my-courses')
+        .then(response => response.json())
+        .then(data => {
+            displayUserCourses(data);
+        })
+        .catch(error => {
+            console.error('Error fetching user courses:', error);
+        });
+}
+
+function displayUserCourses(courses) {
+    const selectedCoursesElement = document.getElementById('selected-courses');
+    selectedCoursesElement.innerHTML = '';
+
+    if (courses.length === 0) {
+        selectedCoursesElement.innerHTML = '<p>You have not selected any courses yet.</p>';
+    } else {
+        const courseList = document.createElement('ul');
+        courses.forEach(course => {
+            const listItem = document.createElement('li');
+            listItem.textContent = course.name;
+            courseList.appendChild(listItem);
+        });
+        selectedCoursesElement.appendChild(courseList);
+    }
 }
 
 function fetchLeaderboardData() {
@@ -182,16 +272,9 @@ function displayLeaderboardData(leaderboardData) {
 }
 
 function fetchFullName() {
-    // Make AJAX request to fetch the user's full name from the server
     fetch('/get-fullname')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
+        .then(response => response.json())
         .then(data => {
-            // Display the user's full name on the dashboard
             displayFullName(data.fullName);
         })
         .catch(error => {
@@ -200,8 +283,17 @@ function fetchFullName() {
 }
 
 function displayFullName(fullName) {
-    // Get the element where the full name will be displayed
     const fullNameElement = document.getElementById('user-fullname');
-    // Set the inner HTML of the element to the user's full name
     fullNameElement.textContent = fullName;
+}
+
+// Check if the current page is the "My Courses" page
+if (window.location.pathname === '/my-courses.html') {
+    fetchUserCourses();
+}
+
+// Check if the current page is the course content page
+if (window.location.pathname === '/course-content.html') {
+    fetchCourseContent();
+    fetchAvailableCourses();
 }
