@@ -22,20 +22,22 @@
     <div class="container">
         <h1>Welcome to your Dashboard</h1>
         <form id="courseForm">
-            <label for="course">Choose your course:</label>
-            <select id="course" name="course">
-                <option value="quantum">Quantum Computing</option>
-                <option value="data-science">Data Science</option>
-                <option value="python">Python</option>
-                <option value="software-dev">Software Development</option>
-                <option value="ai">Artificial Intelligence</option>
-                <option value="entrepreneurship">Entrepreneurship Skills</option>
-            </select>
+             <h1>Select Your Courses</h1>
+            <form id="courseForm">
+                <label for="course">Select a Course:</label>
+                <select id="course" name="course">
+                    <!-- Courses will be populated dynamically from the database -->
+                </select>
+                <button type="submit">Add Course</button>
+            </form>
+            <div id="courses">
+                
+            </div>
+        
             <button type="submit">Submit</button>
         </form>
     </div>
     <div id="courses"></div>
-    <button id="listCoursesBtn">List Chosen Courses</button>
 
     <script src="script.js"></script> 
 </body>
