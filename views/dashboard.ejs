@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Include your CSS file -->
+</head>
+<body>
+    <header>
+        <h1>Welcome to Your Dashboard</h1>
+        <nav>
+            <ul>
+                <li><a href="/leaderboard">Leaderboard</a></li>
+                <li><a href="/course-content">Course Content</a></li>
+                <!-- Add more navigation links as needed -->
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section class="welcome-message">
+          <% if (userFullName) { %>
+            <h2>Hello, <%= userFullName %>!</h2>
+          <% } else { %>
+            <h2>Hello, Guest!</h2> <!-- Provide a default message if userFullName is not available -->
+          <% } %>
+          <p>Welcome to your personalized dashboard.</p>
+        </section>
+      </main>
+        <form id="course-selection-form">
+            <h2>Select Courses</h2>
+            <p>Select the courses you're interested in:</p>
+            <input type="checkbox" name="course" value="1" id="course1">
+            <label for="course1">Introduction to HTML</label><br>
+            <input type="checkbox" name="course" value="2" id="course2">
+            <label for="course2">CSS Fundamentals</label><br>
+            <input type="checkbox" name="course" value="3" id="course3">
+            <label for="course3">JavaScript Basics</label><br>
+            <!-- Add more course options as needed -->
+            <button type="submit">Submit</button>
+        </form>
+        <h3>Your Selected Courses:</h3> <!-- Corrected the closing tag -->
+        <ul id="selected-courses">
+            <!-- Selected courses will be dynamically populated here -->
+        </ul>
+    </main>
+    <footer>
+        <p>&copy; 2024 Your LMS</p>
+    </footer>
+   
+    <!-- Include your client-side JavaScript file -->
+    <script src="script.js"></script>
+</body>
+</html>

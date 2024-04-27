@@ -1,9 +1,9 @@
-// scripts.js
 document.addEventListener('DOMContentLoaded', () => {
     const registerForm = document.getElementById('register-form');
     const loginForm = document.getElementById('login-form');
     const logoutForm = document.getElementById('logout-form');
-
+    const courseSelectionForm = document.getElementById('course-selection-form');
+    
     registerForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const formData = new FormData(registerForm);
@@ -19,8 +19,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 },
                 body: JSON.stringify({ username, password, email, full_name })
             });
+            
             if (response.ok) {
                 alert('Registration successful');
+                window.location.href = '/dashboard'; // Redirect to dashboard
+
             } else {
                 alert('Registration failed');
             }
@@ -67,6 +70,18 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Error:', error);
         }
     });
+     // Add event listener to course selection form
+     
+     if (courseSelectionForm) {
+         courseSelectionForm.addEventListener('submit', async (e) => {
+             e.preventDefault();
+             const formData = new FormData(courseSelectionForm);
+             const selectedCourses = Array.from(formData.getAll('course'));
+ 
+             // Call function to handle course selection
+             selectCourses(selectedCourses);
+         });
+     }
 
     // Check if the current page is the course content page
     if (window.location.pathname === '/course-content') {
@@ -85,7 +100,72 @@ document.addEventListener('DOMContentLoaded', () => {
         //fetch Logged in user's full name
         fetchFullName();
     }
+    
+
+
+   
+
+    // Check if the current page is the page to display selected courses
+    if (window.location.pathname === '/selected-courses') {
+        // Fetch and display selected courses
+        fetchSelectedCourses();
+    }
 });
+
+
+
+   
+
+
+// Function to handle course selection
+async function selectCourses(selectedCourses) {
+    try {
+        const response = await fetch('/select-courses', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ selectedCourses })
+        });
+        if (response.ok) {
+            // Redirect to page displaying selected courses
+            window.location.href = '/selected-courses';
+        } else {
+            throw new Error('Failed to select courses');
+        }
+    } catch (error) {
+        console.error('Error selecting courses:', error);
+        alert('An error occurred while selecting courses');
+    }
+}
+
+
+// Function to fetch and display selected courses
+function fetchSelectedCourses() {
+    fetch('/selected-courses')
+    .then(response => {
+        if (response.ok) {
+            return response.json();
+        } else {
+            throw new Error('Failed to fetch selected courses');
+        }
+    })
+    .then(selectedCourses => {
+        // Display selected courses on the page
+        const selectedCoursesElement = document.getElementById('selected-courses');
+        selectedCoursesElement.innerHTML = ''; // Clear previous content
+        selectedCourses.forEach(courseId => {
+            const courseElement = document.createElement('li');
+            courseElement.textContent = courseId; // You can fetch course names from the server if needed
+            selectedCoursesElement.appendChild(courseElement);
+        });
+    })
+    .catch(error => {
+        console.error('Error fetching selected courses:', error);
+        alert('An error occurred while fetching selected courses');
+    });
+}
+
 
 function fetchCourseContent() {
     // Get course ID from URL parameter (assuming course ID is passed in the URL)

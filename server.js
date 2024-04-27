@@ -1,11 +1,14 @@
 // server.js
 const express = require('express');
+const path = require('path');
 const session = require('express-session');
 const bcrypt = require('bcryptjs');
 const bodyParser = require('body-parser');
 const mysql = require('mysql');
 const { check, validationResult } = require('express-validator');
 const app = express();
+
+
 
 // Configure session middleware
 app.use(session({
@@ -14,11 +17,19 @@ app.use(session({
     saveUninitialized: true
 }));
 
+
+// Set EJS as the templating engine
+app.set('view engine', 'ejs');
+
+// Specify the directory where your view files are located
+app.set('views', path.join(__dirname, 'views'));
+
+
 // Create MySQL connection
 const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: '',
+    password: '39021886',
     database: 'learning_management'
 });
 
@@ -109,8 +120,25 @@ app.post('/register', [
         res.status(201).json(newUser);
       });
 });
+// Registration route
+app.post('/register', [
+    // Validation middleware...
+
+], async (req, res) => {
+    // Registration logic...
+
+    // Redirect to dashboard after successful registration
+    res.redirect('/dashboard');
+});
+
 
 // Login route
+// GET route for rendering the login form
+app.get('/login', (req, res) => {
+    res.render('login'); // Assuming you have a login.ejs or login.html file for the login form
+});
+
+
 app.post('/login', (req, res) => {
     const { username, password } = req.body;
     // Retrieve user from database
@@ -126,7 +154,8 @@ app.post('/login', (req, res) => {
                 if (isMatch) {
                     // Store user in session
                     req.session.user = user;
-                    res.send('Login successful');
+                    // Redirect to dashboard
+                    res.redirect('/dashboard');
                 } else {
                     res.status(401).send('Invalid username or password');
                 }
@@ -135,18 +164,49 @@ app.post('/login', (req, res) => {
     });
 });
 
+// Assuming you have already configured your Express app and set up routes
+
+
+// Dashboard route
+app.get('/dashboard', (req, res) => {
+    // Check if user is authenticated
+    if (!req.session.user) {
+        // If user is not authenticated, redirect to login page
+        res.redirect('/login');
+        return;
+    }
+    // Assuming you have middleware to handle user authentication and store user information in req.user
+    const userFullName = req.session.user.full_name;
+    res.render('dashboard', { fullName: userFullName });
+});
+
+
 // Logout route
 app.post('/logout', (req, res) => {
     req.session.destroy();
     res.send('Logout successful');
 });
 
-//Dashboard route
+
+
+
+// Dashboard route
 app.get('/dashboard', (req, res) => {
-    // Assuming you have middleware to handle user authentication and store user information in req.user
-    const userFullName = req.user.full_name;
-    res.render('dashboard', { fullName: userFullName });
+    // Check if user is authenticated
+    if (req.session.user) {
+        // Retrieve user data from session and extract full name
+        const userFullName = req.user.full_name;
+        console.log("userFullName:", userFullName);
+
+        // Render dashboard with user information
+        res.render('dashboard', { userFullName });
+    } else {
+        // Redirect to login page if not authenticated
+        res.redirect('/login');
+    }
 });
+
+
 
 // Route to retrieve course content
 app.get('/course/:id', (req, res) => {
@@ -161,8 +221,38 @@ app.get('/course/:id', (req, res) => {
     });
   });
 
+  // API endpoint to handle course selection
+app.post('/select-courses', (req, res) => {
+    const userId = req.session.user.id; // Assuming user information is stored in the session
+    const selectedCourses = req.body.selectedCourses; // Assuming selected courses are sent in the request body
+
+    // Store selected courses in the database
+    const insertions = selectedCourses.map(courseId => {
+        return new Promise((resolve, reject) => {
+            connection.query('INSERT INTO user_courses (user_id, course_id) VALUES (?, ?)', [userId, courseId], (err, result) => {
+                if (err) {
+                    console.error('Error selecting courses:', err);
+                    reject(err);
+                } else {
+                    resolve(result);
+                }
+            });
+        });
+    });
+
+    // Wait for all insertions to complete
+    Promise.all(insertions)
+        .then(() => {
+            res.send('Courses selected successfully');
+        })
+        .catch(error => {
+            res.status(500).send('Error selecting courses');
+        });
+});
+
+
 // Start server
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3008;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });

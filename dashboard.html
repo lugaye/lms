@@ -22,6 +22,23 @@
             <h2>Hello, <span id="user-fullname"></span>!</h2>
             <p>Welcome to your personalized dashboard.</p>
         </section>
+        <form id="course-selection-form">
+            <h2>Select Courses</h2>
+            <p>Select the courses you're interested in:</p>
+            <input type="checkbox" name="course" value="1" id="course1">
+            <label for="course1">Introduction to HTML</label><br>
+            <input type="checkbox" name="course" value="2" id="course2">
+            <label for="course2">CSS Fundamentals</label><br>
+            <input type="checkbox" name="course" value="3" id="course3">
+            <label for="course3">JavaScript Basics</label><br>
+            <!-- Add more course options as needed -->
+            <button type="submit">Submit</button>
+        </form>
+        <h3>Your Selected Courses:</h2>
+        <ul id="selected-courses">
+            <!-- Selected courses will be dynamically populated here -->
+        </ul>
+        
     </main>
     <footer>
         <p>&copy; 2024 Your LMS</p>
