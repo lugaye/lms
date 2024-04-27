@@ -132,6 +132,67 @@ function displayCourseContent(courseContent) {
     });
 }
 
+// Fetch available courses from the server and render them as checkboxes
+fetch('/api/courses')
+.then(response => response.json())
+.then(courses => {
+    const coursesContainer = document.getElementById('coursesContainer');
+    
+    courses.forEach(course => {
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.id = `course_${course.course_id}`;
+        checkbox.name = 'courses';
+        checkbox.value = course.course_id;
+
+        const label = document.createElement('label');
+        label.htmlFor = checkbox.id;
+        label.innerText = course.course_name;
+
+        const courseDiv = document.createElement('div');
+        courseDiv.appendChild(checkbox);
+        courseDiv.appendChild(label);
+
+        coursesContainer.appendChild(courseDiv);
+    });
+});
+
+// Handle form submission
+document.getElementById('selectCoursesForm').addEventListener('submit', event => {
+event.preventDefault();
+
+const formData = new FormData(event.target);
+const selectedCourses = formData.getAll('courses');
+
+fetch('/select-courses', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ courses: selectedCourses })
+})
+.then(response => {
+    if (response.ok) {
+        window.location.href = '/my-courses'; // Redirect to the user's courses page
+    } else {
+        alert('Failed to submit courses selection');
+    }
+});
+});
+
+// Fetch the user's selected courses from the server and render them as a list
+fetch('/api/my-courses')
+.then(response => response.json())
+.then(courses => {
+    const coursesList = document.getElementById('coursesList');
+    
+    courses.forEach(course => {
+        const listItem = document.createElement('li');
+        listItem.innerText = course.course_name;
+        coursesList.appendChild(listItem);
+    });
+});
+
 function fetchLeaderboardData() {
     // Make AJAX request to fetch leaderboard data from server
     fetch('/leaderboard')

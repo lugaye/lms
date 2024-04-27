@@ -18,8 +18,8 @@ app.use(session({
 const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: '',
-    database: 'learning_management'
+    password: 'Tehilla@2020',
+    database: 'learning_management_system'
 });
 
 // Connect to MySQL
@@ -28,7 +28,7 @@ connection.connect((err) => {
         console.error('Error connecting to MySQL: ' + err.stack);
         return;
     }
-    console.log('Connected to MySQL as id ' + connection.threadId);
+    console.log('Connected to MySQL ' + connection.threadId);
 });
 
 // Serve static files from the default directory
@@ -41,6 +41,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Define routes
+//Landing page
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
 });
@@ -134,6 +135,60 @@ app.post('/login', (req, res) => {
         }
     });
 });
+// Middleware to check if the user is logged in
+function isAuthenticated(req, res, next) {
+    if (!req.cookies || !req.cookies.user_id) {
+      return res.redirect('/login');
+    }
+    next();
+  }
+  // Route to display available courses and allow the user to select them
+app.get('/select-courses', isAuthenticated, (req, res) => {
+    // Fetch available courses from the database
+    connection.query('SELECT * FROM courses', (err, courses) => {
+      if (err) throw err;
+      
+      // Render the select courses page with the available courses
+      res.render('select_courses', { courses });
+    });
+  });
+
+ // Route to handle form submission of selected courses
+app.post('/select-courses', isAuthenticated, (req, res) => {
+    const userId = req.cookies.user_id;  // Assuming user_id is stored in cookies after login
+    const selectedCourses = req.body.courses;  // Array of selected course IDs from the form
+    
+    // Clear previous selections for the user
+    connection.query('DELETE FROM user_courses WHERE user_id = ?', [userId], err => {
+      if (err) throw err;
+      
+      // Insert new selections for the user
+      selectedCourses.forEach(courseId => {
+        connection.query('INSERT INTO user_courses (user_id, course_id) VALUES (?, ?)', [userId, courseId], err => {
+          if (err) throw err;
+        });
+      });
+      
+      res.redirect('/my-courses');
+    });
+  });
+  
+  // Route to display the selected courses for the logged-in user
+  app.get('/my-courses', isAuthenticated, (req, res) => {
+    const userId = req.cookies.user_id;  // Assuming user_id is stored in cookies after login
+  
+    // Fetch the selected courses for the user
+    connection.query(`
+      SELECT c.course_id, c.course_name 
+      FROM user_courses uc 
+      JOIN courses c ON uc.course_id = c.course_id 
+      WHERE uc.user_id = ?
+    `, [userId], (err, courses) => {
+      if (err) throw err; 
+      // Render the my courses page with the selected courses
+    res.render('my_courses', { courses });
+});
+});
 
 // Logout route
 app.post('/logout', (req, res) => {
@@ -162,7 +217,7 @@ app.get('/course/:id', (req, res) => {
   });
 
 // Start server
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3200;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });

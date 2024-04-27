@@ -1,18 +1,27 @@
 /* styles.css */
 body {
     font-family: Arial, sans-serif;
+    color: aqua;
     margin: 0;
     padding: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
+h2 {
+    color: aquamarine;
+}
 
 form {
     margin-top: 20px;
+    color: bisque;
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+#register-form {
+    color: bisque;
+
 }
 
 input, button {
