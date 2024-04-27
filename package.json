@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
-    "dev": "nodemon server.js"
+    "dev": "nodemon server.js",
+    "watch": "npx tailwindcss -i ./src/public/styles/tailwind.css -o ./src/public/styles/style.css --watch",
   },
   "repository": {
     "type": "git",

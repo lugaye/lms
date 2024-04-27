@@ -16,7 +16,7 @@ app.use(session({
     saveUninitialized: true
 }));
 
-//connectdb();
+connectdb();
 
 // Serve static files from the default directory
 app.use('public', express.static('/src/public'));
