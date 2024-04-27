@@ -4,30 +4,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Include your CSS file -->
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <header>
-        <h1>Welcome to Your Dashboard</h1>
         <nav>
-            <ul>
-                <li><a href="/leader-board.html">Leaderboard</a></li>
-                <li><a href="/course-content.html">Course Content</a></li>
-                <!-- Add more navigation links as needed -->
-            </ul>
+            <div class="nav-left">
+                <a href="dashboard.html">Dashboard</a>
+                <a href="leaderboard.html">Leaderboard</a>
+                <a href="course-content.html">Course Content</a>
+            </div>
+            <div class="nav-right">
+                <button id="logoutBtn">Logout</button>
+            </div>
         </nav>
     </header>
-    <main>
-        <section class="welcome-message">
-            <h2>Hello, <span id="user-fullname"></span>!</h2>
-            <p>Welcome to your personalized dashboard.</p>
-        </section>
-    </main>
-    <footer>
-        <p>&copy; 2024 Your LMS</p>
-    </footer>
+    <div class="container">
+        <h1>Welcome to your Dashboard</h1>
+        <div id="courses"></div>
+        <button id="listCoursesBtn">List Chosen Courses</button>
+        <form id="courseForm">
+            <label for="course">Choose your course:</label>
+            <select id="course" name="course">
+                <option value="quantum">Quantum Computing</option>
+                <option value="data-science">Data Science</option>
+                <option value="python">Python</option>
+                <option value="software-dev">Software Development</option>
+                <option value="ai">Artificial Intelligence</option>
+                <option value="entrepreneurship">Entrepreneurship Skills</option>
+            </select>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
 
-    <!-- Include your client-side JavaScript file -->
-    <script src="script.js"></script>
+    <script src="dashboard.js"></script>
 </body>
 </html>

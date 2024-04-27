@@ -43,7 +43,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 body: JSON.stringify({ username, password })
             });
             if (response.ok) {
-                alert('Login successful');
+                // Redirect user to dashboard after successful login
+                window.location.href = '/dashboard.html?';
             } else {
                 alert('Invalid username or password');
             }
@@ -51,7 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Error:', error);
         }
     });
-
+    
     logoutForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         try {
@@ -204,4 +205,12 @@ function displayFullName(fullName) {
     const fullNameElement = document.getElementById('user-fullname');
     // Set the inner HTML of the element to the user's full name
     fullNameElement.textContent = fullName;
+}
+
+// script.js
+
+// Function to toggle visibility of course outlines
+function toggleOutline(courseId) {
+    var outline = document.getElementById(courseId);
+    outline.classList.toggle('active');
 }

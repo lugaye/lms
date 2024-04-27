@@ -1,74 +1,57 @@
-/* styles.css */
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-form {
-    margin-top: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-input, button {
-    margin-top: 10px;
-    padding: 5px;
-}
-
 header {
     background-color: #333;
     color: #fff;
-    padding: 20px;
-    text-align: center;
+    padding: 10px 20px;
 }
 
-nav ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-nav ul li {
-    display: inline;
+.nav-left {
+    display: flex;
+}
+
+.nav-left a {
+    color: #fff;
+    text-decoration: none;
     margin-right: 20px;
 }
 
-main {
-    padding: 20px;
+.nav-left a:hover {
+    text-decoration: underline;
 }
 
-footer {
-    background-color: #333;
+.nav-right button {
+    background-color: transparent;
     color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+.nav-right button:hover {
+    text-decoration: underline;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
     padding: 20px;
-    text-align: center;
 }
 
-/* Course content page styles */
-section {
-    margin-bottom: 30px;
-    border-bottom: 1px solid #ccc;
-    padding-bottom: 20px;
-}
+/* styles.css */
 
-h2 {
-    color: #333;
-    font-size: 24px;
-}
-
-p {
-    color: #666;
-    font-size: 16px;
-    line-height: 1.5;
-}
-
-iframe {
-    width: 100%;
-    height: 400px;
+/* Additional styling specific to the course outlines */
+.course-outline {
+    display: none; /* Hide course outlines by default */
     margin-top: 20px;
+}
+.course-outline.active {
+    display: block; /* Display the active course outline */
+}
+.course-title {
+    cursor: pointer; /* Change cursor to pointer when hovering over course titles */
+    color: blue; /* Change color of course titles */
 }

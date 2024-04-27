@@ -126,7 +126,8 @@ app.post('/login', (req, res) => {
                 if (isMatch) {
                     // Store user in session
                     req.session.user = user;
-                    res.send('Login successful');
+                    // Redirect user to dashboard
+                    res.redirect('/dashboard.html');
                 } else {
                     res.status(401).send('Invalid username or password');
                 }
