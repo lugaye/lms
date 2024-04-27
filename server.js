@@ -18,7 +18,7 @@ app.use(session({
 const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: '',
+    password: 'shelby',
     database: 'learning_management'
 });
 
@@ -135,6 +135,8 @@ app.post('/login', (req, res) => {
     });
 });
 
+
+
 // Logout route
 app.post('/logout', (req, res) => {
     req.session.destroy();
@@ -142,10 +144,11 @@ app.post('/logout', (req, res) => {
 });
 
 //Dashboard route
-app.get('/dashboard', (req, res) => {
+app.get('/dashboard',requireLogin, (req, res) => {
     // Assuming you have middleware to handle user authentication and store user information in req.user
     const userFullName = req.user.full_name;
     res.render('dashboard', { fullName: userFullName });
+
 });
 
 // Route to retrieve course content
@@ -160,6 +163,53 @@ app.get('/course/:id', (req, res) => {
       res.json(result);
     });
   });
+
+  // Route to fetch courses
+app.get('/courses', (req, res) => {
+    const sql = 'SELECT * FROM courses';
+    connection.query(sql, (err, result) => {
+        if (err) {
+            console.error('Error fetching courses:', err);
+            res.status(500).json({ error: 'Internal server error' });
+            return;
+        }
+        res.json(result);
+    });
+});
+
+/// Route to add selected course to a user
+app.post('/addCourseToUser', (req, res) => {
+    const { courseName } = req.body;
+    const sql = 'INSERT INTO selected_courses (course_name) VALUES (?)';
+    connection.query(sql, [courseName], (err, result) => {
+        if (err) {
+            console.error('Error adding course to user:', err);
+            return res.status(500).send('Error adding course to user');
+        }
+        res.status(200).send('Course added to user successfully');
+    });
+});
+
+// Route to fetch selected courses
+app.get('/selectedCourses', (req, res) => {
+    // Assuming you have middleware to handle user authentication and store user information in req.session.user
+    const userId = req.session.user.id; // Assuming user ID is stored in the session
+
+    const sql = `
+        SELECT * 
+        FROM selected_courses 
+        WHERE id = ?
+    `;
+    connection.query(sql, [userId], (err, results) => {
+        if (err) {
+            console.error('Error fetching selected courses:', err);
+            return res.status(500).send('Error fetching selected courses');
+        }
+        const selectedCourses = results.map(row => row.course_name);
+        res.json(selectedCourses);
+    });
+});
+
 
 // Start server
 const PORT = process.env.PORT || 3000;
