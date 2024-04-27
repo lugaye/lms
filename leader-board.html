@@ -4,27 +4,58 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Leaderboard</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Include your CSS file -->
+    <link rel="stylesheet" href="style.css"> <!-- Include your CSS file -->
 </head>
 <body>
     <header>
-        <h1>Leaderboard</h1>
+        <div class="logo">
+            <img src="img/logo.png" alt="Logo">
+            <h1>Learning Management App</h1>
+        </div>
         <nav>
             <ul>
                 <li><a href="/">Home</a></li>
                 <li><a href="/course-content">Course Content</a></li>
-                <!-- Add more navigation links as needed -->
+                <li><a href="/leader-board.html">Leaderboard</a></li>
+                <li><a href="/dashboard">Dashboard</a></li>
             </ul>
         </nav>
     </header>
-    <main id="leaderboard">
+    <main id="leader-board">
         <!-- Leaderboard data will be dynamically populated here -->
+        <table>
+            <tr>
+                <th>Rank</th>
+                <th>Name</th>
+                <th>Score</th>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>John Doe</td>
+                <td>100</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>Jane Smith</td>
+                <td>90</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>Michael Brown</td>
+                <td>85</td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td>Emily Jones</td>
+                <td>80</td>
+            </tr>
+        </table>
     </main>
     <footer>
         <p>&copy; 2024 Your LMS</p>
     </footer>
 
-    <!-- Include your client-side JavaScript file -->
+    
     <script src="script.js"></script>
 </body>
 </html>
