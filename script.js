@@ -183,27 +183,54 @@ function displayLeaderboardData(leaderboardData) {
     leaderboardElement.appendChild(table);
 }
 
-function fetchFullName() {
-    // Make AJAX request to fetch the user's full name from the server
-    fetch('/get-fullname')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            // Display the user's full name on the dashboard
-            displayFullName(data.fullName);
-        })
-        .catch(error => {
-            console.error('Error fetching user full name:', error);
-        });
+// Function to populate user's full name dynamically after login
+function populateFullName() {
+    // Check if the user is logged in
+    if (sessionStorage.getItem('user')) {
+        const user = JSON.parse(sessionStorage.getItem('user'));
+        // Assuming the user object has a 'fullname' property
+        displayFullName(user.fullname);
+    } else {
+        // If the user is not logged in, fetch the full name from the server
+        fetchFullName();
+    }
 }
 
+// Function to fetch full name from the server
+function fetchFullName() {
+    // Make AJAX request to fetch the user's full name from the server
+    fetch('/login', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            username: sessionStorage.getItem('user'), // Fetch username from session storage
+            password: sessionStorage.getItem('password') // Fetch password from session storage
+        })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        // Display the user's full name on the dashboard
+        displayFullName(data.user.fullname);
+    })
+    .catch(error => {
+        console.error('Error fetching user full name:', error);
+    });
+}
+
+// Function to display full name on the dashboard
 function displayFullName(fullName) {
     // Get the element where the full name will be displayed
     const fullNameElement = document.getElementById('user-fullname');
     // Set the inner HTML of the element to the user's full name
     fullNameElement.textContent = fullName;
 }
+
+// Call the populateFullName function when the page loads
+populateFullName();
