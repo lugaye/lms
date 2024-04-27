@@ -182,6 +182,16 @@ app.get("/course/:id", (req, res) => {
     res.json(result);
   });
 });
+//show selected course
+app.get("/course/:name", (req, res) => {
+  const sql = "SELECT * FROM courses";
+  db.query(sql, (err, result) => {
+    if (err) {
+      throw err;
+    }
+    res.json(result);
+  });
+});
 
 // Start server
 const PORT = process.env.PORT || 3000;
