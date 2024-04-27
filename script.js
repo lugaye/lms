@@ -1,4 +1,3 @@
-// scripts.js
 document.addEventListener('DOMContentLoaded', () => {
     const registerForm = document.getElementById('register-form');
     const loginForm = document.getElementById('login-form');
@@ -43,7 +42,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 body: JSON.stringify({ username, password })
             });
             if (response.ok) {
-                alert('Login successful');
+                // Redirect user to dashboard after successful login
+                window.location.href = '/dashboard.html?';
             } else {
                 alert('Invalid username or password');
             }
@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Error:', error);
         }
     });
-
+    
     logoutForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         try {
@@ -74,15 +74,15 @@ document.addEventListener('DOMContentLoaded', () => {
         fetchCourseContent();
     }
 
-     // Check if the current page is the course content page
+    // Check if the current page is the leader-board page
     if (window.location.pathname === '/leader-board') {
-        // Fetch course content from server
+        // Fetch leaderboard data from server
         fetchLeaderboardData();
     }
 
-    // Check if the current page is the course content page
+    // Check if the current page is the dashboard page
     if (window.location.pathname === '/dashboard') {
-        //fetch Logged in user's full name
+        // Fetch logged-in user's full name
         fetchFullName();
     }
 });
@@ -205,3 +205,35 @@ function displayFullName(fullName) {
     // Set the inner HTML of the element to the user's full name
     fullNameElement.textContent = fullName;
 }
+
+// Function to toggle visibility of course outlines
+function toggleOutline(courseId) {
+    var outline = document.getElementById(courseId);
+    outline.classList.toggle('active');
+}
+
+document.getElementById('courseForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const course = document.getElementById('course').value;
+    // Redirect user to course-content.html with selected course
+    window.location.href = 'course-content.html?course=' + course;
+});
+
+// Sample data of chosen courses (replace with actual data from server if available)
+const chosenCourses = [];
+
+// Function to display chosen courses
+function displayCourses() {
+    const coursesContainer = document.getElementById('courses');
+    coursesContainer.innerHTML = '<h2>Your Chosen Courses:</h2>';
+    const ul = document.createElement('ul');
+    chosenCourses.forEach(course => {
+        const li = document.createElement('li');
+        li.textContent = course;
+        ul.appendChild(li);
+    });
+    coursesContainer.appendChild(ul);
+}
+
+// Call the function to display courses when the page loads
+

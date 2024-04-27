@@ -18,7 +18,7 @@ app.use(session({
 const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: '',
+    password: 'modal',
     database: 'learning_management'
 });
 
@@ -126,7 +126,8 @@ app.post('/login', (req, res) => {
                 if (isMatch) {
                     // Store user in session
                     req.session.user = user;
-                    res.send('Login successful');
+                    // Redirect user to dashboard
+                    res.redirect('/dashboard.html');
                 } else {
                     res.status(401).send('Invalid username or password');
                 }
@@ -166,3 +167,4 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
+

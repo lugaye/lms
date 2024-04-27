@@ -4,21 +4,106 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Course Content</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Include your CSS file -->
+    <link rel="stylesheet" href="style.css"> <!-- Include your CSS file -->
 </head>
 <body>
     <header>
         <h1 id="course-name">Course Name</h1>
         <nav>
-            <ul>
-                <li><a href="/">Home</a></li>
-                <li><a href="/course-content">Course Content</a></li>
-                <!-- Add more navigation links as needed -->
-            </ul>
+            <div class="nav-left">
+                <a href="dashboard.html">Dashboard</a>
+                <a href="leader-board.html">Leaderboard</a>
+                <a href="course-content.html">Course Content</a>
+            </div>
+            <div class="nav-right">
+                <button id="logoutBtn" onclick="redirectToDashboard()">Logout</button>
+            </div>
         </nav>
-    </header>
-    <main id="course-content">
-        <!-- Course content will be dynamically populated here -->
+    </header>   
+        <main id="course-content">
+
+            <h1>Course Outlines</h1>
+            
+            <!-- Quantum Computing -->
+            <h2 class="course-title" onclick="toggleOutline('quantum')">Quantum Computing</h2>
+            <div class="course-outline" id="quantum">
+                <h3>Quantum Computing</h3>
+                <ol>
+                    <li>Introduction to Quantum Mechanics</li>
+                    <li>Quantum Computing Fundamentals</li>
+                    <li>Quantum Programming</li>
+                    <li>Quantum Applications</li>
+                    <li>Advanced Topics in Quantum Computing</li>
+                </ol>
+            </div>
+            
+            <!-- Data Science -->
+            <h2 class="course-title" onclick="toggleOutline('data-science')">Data Science</h2>
+            <div class="course-outline" id="data-science">
+                <h3>Data Science</h3>
+                <ol>
+                    <li>Introduction to Data Science</li>
+                    <li>Data Wrangling and Preprocessing</li>
+                    <li>Statistical Analysis and Machine Learning</li>
+                    <li>Data Visualization</li>
+                    <li>Big Data and Advanced Topics</li>
+                </ol>
+            </div>
+            
+            <!-- Python -->
+            <h2 class="course-title" onclick="toggleOutline('python')">Python</h2>
+            <div class="course-outline" id="python">
+                <h3>Python</h3>
+                <ol>
+                    <li>Introduction to Python</li>
+                    <li>Intermediate Python</li>
+                    <li>Python Libraries</li>
+                    <li>Advanced Python</li>
+                    <li>Python Project</li>
+                </ol>
+            </div>
+            
+            <!-- Software Development -->
+            <h2 class="course-title" onclick="toggleOutline('software-dev')">Software Development</h2>
+            <div class="course-outline" id="software-dev">
+                <h3>Software Development</h3>
+                <ol>
+                    <li>Introduction to Software Development</li>
+                    <li>Programming Fundamentals</li>
+                    <li>Web Development</li>
+                    <li>Database Management</li>
+                    <li>Software Testing and Deployment</li>
+                </ol>
+            </div>
+            
+            <!-- Artificial Intelligence -->
+            <h2 class="course-title" onclick="toggleOutline('ai')">Artificial Intelligence</h2>
+            <div class="course-outline" id="ai">
+                <h3>Artificial Intelligence</h3>
+                <ol>
+                    <li>Introduction to AI</li>
+                    <li>Machine Learning Basics</li>
+                    <li>Deep Learning</li>
+                    <li>Natural Language Processing</li>
+                    <li>AI Applications and Future Trends</li>
+                </ol>
+            </div>
+            
+            <!-- Entrepreneurship Skills -->
+            <h2 class="course-title" onclick="toggleOutline('entrepreneurship')">Entrepreneurship Skills</h2>
+            <div class="course-outline" id="entrepreneurship">
+                <h3>Entrepreneurship Skills</h3>
+                <ol>
+                    <li>Introduction to Entrepreneurship</li>
+                    <li>Market Research and Validation</li>
+                    <li>Business Planning</li>
+                    <li>Marketing and Sales</li>
+                    <li>Startup Operations and Management</li>
+                </ol>
+            </div>
+            
+            <script src="script.js"></script>
+            <!-- Course content will be dynamically populated here -->
     </main>
     <footer>
         <p>&copy; 2024 Your LMS</p>

@@ -4,30 +4,41 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Include your CSS file -->
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <header>
-        <h1>Welcome to Your Dashboard</h1>
         <nav>
-            <ul>
-                <li><a href="/leaderboard">Leaderboard</a></li>
-                <li><a href="/course-content">Course Content</a></li>
-                <!-- Add more navigation links as needed -->
-            </ul>
+            <div class="nav-left">
+                <a href="dashboard.html">Dashboard</a>
+                <a href="leader-board.html">Leaderboard</a>
+                <a href="course-content.html">Course Content</a>
+            </div>
+            <div class="nav-right">
+                <button id="logoutBtn" onclick="redirectToDashboard()">Logout</button>
+            </div>
         </nav>
     </header>
-    <main>
-        <section class="welcome-message">
-            <h2>Hello, <span id="user-fullname"></span>!</h2>
-            <p>Welcome to your personalized dashboard.</p>
-        </section>
-    </main>
-    <footer>
-        <p>&copy; 2024 Your LMS</p>
-    </footer>
+    <div class="container">
+        <h1>Welcome to your Dashboard</h1>
+        <form id="courseForm">
+             <h1>Select Your Courses</h1>
+            <form id="courseForm">
+                <label for="course">Select a Course:</label>
+                <select id="course" name="course">
+                    <!-- Courses will be populated dynamically from the database -->
+                </select>
+                <button type="submit">Add Course</button>
+            </form>
+            <div id="courses">
+                
+            </div>
+        
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+    <div id="courses"></div>
 
-    <!-- Include your client-side JavaScript file -->
-    <script src="script.js"></script>
+    <script src="script.js"></script> 
 </body>
 </html>
