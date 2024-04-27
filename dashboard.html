@@ -4,30 +4,64 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Include your CSS file -->
+    <link rel="stylesheet" href="style.css"> <!-- Include your CSS file -->
 </head>
 <body>
     <header>
-        <h1>Welcome to Your Dashboard</h1>
+        
         <nav>
             <ul>
-                <li><a href="/leaderboard">Leaderboard</a></li>
-                <li><a href="/course-content">Course Content</a></li>
+                <header>
+       
+                    <nav>
+                        <ul>
+                            <li><a href="/dashboard.html">Home</a></li>
+                            <li><a href="/course-content">Course Content</a></li>
+                            <li><a href="/leader-board.html">Leaderboard</a></li>
+                            <li><a href="/index.html">Register</a></li>
+                            <li><a href="/login.html">Login</a></li>
+                        </ul>
+                    </nav>
+                </header>
                 <!-- Add more navigation links as needed -->
             </ul>
         </nav>
     </header>
-    <main>
+    <main style="height: 70vh;">
         <section class="welcome-message">
             <h2>Hello, <span id="user-fullname"></span>!</h2>
             <p>Welcome to your personalized dashboard.</p>
         </section>
+
+        <p>Please select a course to view the content:</p>
+        <p>We are excited to offer a variety of courses to help you enhance your skills in web
+             development. Whether you are just starting out or looking to advance your knowledge,
+              we have something for everyone. Please select a course to view the content:</p>
+  
+        <form method="POST" class="box">
+            <div class="checks">
+
+          <input type="checkbox" id="intro" name="intro" value="html">
+          <label for ="intro">Introduction to HTML</label><br>
+
+          <input type="checkbox" id="fund" name="fund">
+          <label for ="fund">Fundamentals of CSS</label><br>
+
+          <input type="checkbox" id="basic" name="basic">
+          <label for="basic">JavaScript Basi</label>
+
+          <input type="submit" value="Submit">
+        </div>
+        </form>
+
     </main>
-    <footer>
-        <p>&copy; 2024 Your LMS</p>
-    </footer>
 
     <!-- Include your client-side JavaScript file -->
     <script src="script.js"></script>
+
+    <footer>
+        <p style="color: rgb(1, 7, 14);">&copy; 2024 Ms-Eve LMS</p>
+    </footer>
+
 </body>
 </html>

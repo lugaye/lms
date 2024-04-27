@@ -4,27 +4,77 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Course Content</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Include your CSS file -->
+    <link rel="stylesheet" href="style.css"> <!-- Include your CSS file -->
 </head>
 <body>
     <header>
-        <h1 id="course-name">Course Name</h1>
+       
         <nav>
             <ul>
-                <li><a href="/">Home</a></li>
+                <li><a href="/dashboard.html">Home</a></li>
                 <li><a href="/course-content">Course Content</a></li>
-                <!-- Add more navigation links as needed -->
+                <li><a href="/leader-board.html">Leaderboard</a></li>
+                <li><a href="/index.html">Register</a></li>
+                <li><a href="/login.html">Login</a></li>
             </ul>
         </nav>
     </header>
+
+    <h1 id="course-name" class="head1">Course Content</h1>
     <main id="course-content">
         <!-- Course content will be dynamically populated here -->
+        <div id="html" class="content">
+            <h2>Introduction to HTML</h2>
+            <p>This course covers the basics of HTML, including creating webpages and working with HTML elements.</p>
+            <h3>Topics Covered:</h3>
+    <ul>
+      <li>HTML Structure</li>
+      <li>Headings</li>
+      <li>Paragraphs</li>
+      <li>Images</li>
+      <li>Links</li>
+    </ul>
+    <p><strong>Conclusion:</strong> By completing this course, you will have a solid foundation in HTML and 
+        be able to create basic webpages.</p>
+          </div>
+          
+          <div id="css" class="content">
+            <h2>Fundamentals of CSS</h2>
+            <p>In this course, you will learn how to style webpages using CSS, including adding colors, fonts, and layouts.</p>
+            <h3>Topics Covered:</h3>
+    <ul>
+      <li>CSS Syntax</li>
+      <li>Selectors and Properties</li>
+      <li>Layouts and Positioning</li>
+      <li>Responsive Design</li>
+    </ul>
+    <p><strong>Conclusion:</strong> Upon completion of this course, you will be able to create visually appealing and 
+        responsive web designs using CSS.</p>
+          </div>
+          
+          <div id="js" class="content">
+            <h2>JavaScript Basics</h2>
+            <p>This course introduces the fundamentals of JavaScript programming, including variables, functions, and DOM manipulation.</p>
+            <h3>Topics Covered:</h3>
+            <ul>
+              <li>Variables and Data Types</li>
+              <li>Functions</li>
+              <li>Conditionals and Loops</li>
+              <li>DOM Manipulation</li>
+            </ul>
+            <p><strong>Conclusion:</strong> After completing this course, you will have a strong understanding of JavaScript and be able
+                 to create interactive web applications.</p>
+          </div>
     </main>
-    <footer>
-        <p>&copy; 2024 Your LMS</p>
-    </footer>
+    
 
     <!-- Include your client-side JavaScript file -->
     <script src="script.js"></script>
+    
+
+    <footer>
+        <p style="color: rgb(1, 7, 14);">&copy; 2024 Ms-Eve LMS</p>
+    </footer>
+
 </body>
 </html>
