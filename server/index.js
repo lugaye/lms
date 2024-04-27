@@ -99,7 +99,7 @@ app.post('/api/login', async (req, res) => {
           if (passwordMatch) {
             // You got it buddy
             const { email, full_name } = userData;
-            return res.status(200).json({ message: "Login Successful", userData: { email, fullName: full_name } });
+            return res.status(200).json({ message: "Login Successful", userData: { email: email, fullName: full_name } });
           } else {
             // Nope thats dumb
             return res.status(400).json({ error: "Wrong Username or Password" });
@@ -133,6 +133,105 @@ app.get('/api/leaderboard', (req, res) => {
     return res.status(500).json({ error: "Server Error" });
   }
 });
+
+app.post('/api/update-name', (req, res) => {
+  const email = req.body.email;
+  const name = req.body.name;
+
+  try{
+    db.query(
+      "UPDATE users SET full_name = ? WHERE email = ?",
+      [name, email],
+      (err, result) => {
+        if (err) {
+          console.log(err);
+          return res.status(500).json({ error: "Server Error"});
+        }
+        return res.status(200).json({ message: "Update successful" });
+      }
+    );
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Server Error" });
+  }
+})
+
+app.post('/api/update-username', (req, res) => {
+  const email = req.body.email;
+  const name = req.body.name;
+
+  try{
+    db.query(
+      "UPDATE users SET username = ? WHERE email = ?",
+      [name, email],
+      (err, result) => {
+        if (err) {
+          console.log(err);
+          return res.status(500).json({ error: "Server Error"});
+        }
+        return res.status(200).json({ message: "Update successful" });
+      }
+    );
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Server Error" });
+  }
+});
+
+app.post('/api/delete', (req, res) => {
+  const email = req.body.email;
+
+  try{
+    // Find the user's ID based on their email
+    db.query(
+      "SELECT id FROM users WHERE email = ?",
+      [email],
+      (err, result) => {
+        if (err) {
+          console.log(err);
+          return res.status(500).json({ error: "Server Error"});
+        }
+
+        // If the user exists
+        if (result.length > 0) {
+          const userId = result[0].id;
+
+          // Delete all records from usercourses table where user_id matches the user's ID
+          db.query(
+            "DELETE FROM usercourses WHERE user_id = ?",
+            [userId],
+            (err, result) => {
+              if (err) {
+                console.log(err);
+                return res.status(500).json({ error: "Server Error"});
+              }
+
+              // Now delete the user from the users table
+              db.query(
+                "DELETE FROM users WHERE email = ?",
+                [email],
+                (err, result) => {
+                  if (err) {
+                    console.log(err);
+                    return res.status(500).json({ error: "Server Error"});
+                  }
+                  return res.status(200).json({ message: "User Deleted" });
+                }
+              );
+            }
+          );
+        } else {
+          // User not found
+          return res.status(404).json({ error: "User not found" });
+        }
+      }
+    );
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Server Error" });
+  }
+})
+
 
 app.get('/api/courses', (req, res) => {
   try {
