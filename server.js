@@ -21,7 +21,7 @@ const connection = mysql.createConnection({
   host: "localhost",
   user: "root",
   password: "password",
-  database: "learning_management",
+  database: "learning_mgmt",
 });
 
 // Connect to MySQL
