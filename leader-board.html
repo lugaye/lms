@@ -4,27 +4,71 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Leaderboard</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Include your CSS file -->
+    <link rel="stylesheet" href="style.css"> <!-- Include your CSS file -->
 </head>
 <body>
-    <header>
-        <h1>Leaderboard</h1>
-        <nav>
-            <ul>
-                <li><a href="/">Home</a></li>
-                <li><a href="/course-content">Course Content</a></li>
-                <!-- Add more navigation links as needed -->
-            </ul>
-        </nav>
+<section id="dashboard-container">
+    <nav>
+        <div class="container">
+            <div class="navigation">
+                <div class="logo-nav-container">
+                    <div class="logo-container">
+
+                    </div>
+                    <div class="nav-container">
+                        <a class="nav-link" href="/dashboard">Home</a>
+                        <a class="nav-link active" href="/course-content">Leaderboard</a>
+                    </div>
+                </div>
+                <div class="user-details">
+                    <p></p>
+                    <form id="logout-form">
+                        <button type="submit">Logout</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <header class="main-header shadow">
+        <div class="container main-title">
+            <h1>Leaderboard</h1>
+        </div>
     </header>
-    <main id="leaderboard">
-        <!-- Leaderboard data will be dynamically populated here -->
+    <main class="dashboard-content">
+        <div class="container">
+            <div class="welcome-message shadow-sm">
+                <div id="leaderboard">
+
+                </div>
+            </div>
+        </div>
     </main>
+</section>
+
     <footer>
         <p>&copy; 2024 Your LMS</p>
     </footer>
 
     <!-- Include your client-side JavaScript file -->
-    <script src="script.js"></script>
+<script>
+    const logoutForm = document.getElementById('logout-form');
+
+    logoutForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        try {
+            const response = await fetch('/logout', {
+                method: 'POST'
+            });
+            if (response.ok) {
+                window.location.href = '/';
+            } else {
+                alert('Logout failed');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    });
+</script>
+<script src="script.js"></script>
 </body>
 </html>

@@ -5,26 +5,67 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Learning Management App</title>
     <link rel="stylesheet" href="style.css">
+
+    <style>
+        body {
+            height: 100vh;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
 </head>
 <body>
-    <h1>Learning Management App</h1>
-    <form id="register-form">
-        <h2>Register</h2>
-        <input type="text" name="username" placeholder="Username" required>
-        <input type="password" name="password" placeholder="Password" required>
-        <input type="email" name="email" placeholder="Email" required>
-        <input type="text" name="full_name" placeholder="Full Name" required>
-        <button type="submit">Register</button>
-    </form>
-    <form id="login-form">
-        <h2>Login</h2>
-        <input type="text" name="username" placeholder="Username" required>
-        <input type="password" name="password" placeholder="Password" required>
-        <button type="submit">Login</button>
-    </form>
-    <form id="logout-form">
-        <button type="submit">Logout</button>
-    </form>
+    <section id="guest" class="flex">
+        <h1>Learning Management App</h1>
+
+        <div id="login-form-container" class="form">
+            <div class="form-title">
+                <h2>Login</h2>
+            </div>
+            <form id="login-form" class="">
+                <input type="text" name="username" placeholder="Username" required>
+                <input type="password" name="password" placeholder="Password" required>
+                <a id="toRegister" style="display: block; margin-top: 20px" href="">Don't have account? Register</a>
+                <button class="btn" type="submit">Login</button>
+            </form>
+        </div>
+        <div id="register-form-container" class="form">
+            <div class="form-title">
+                <h2>Register</h2>
+            </div>
+            <form id="register-form">
+                <div class="form-group">
+                    <input id="username" type="text" name="username" placeholder="Username" required>
+                    <small></small>
+                </div>
+                <div class="form-group">
+                    <input id="password" type="password" name="password" placeholder="Password" required>
+                    <small></small>
+                </div>
+                <div class="form-group">
+                    <input id="c-password" type="password" name="c-password" placeholder="Confirm Password" required>
+                    <small></small>
+                </div>
+                <div class="form-group">
+                    <input id="email" type="email" name="email" placeholder="Email" required>
+                    <small></small>
+                </div>
+                <div class="form-group">
+                    <input id="full_name" type="text" name="full_name" placeholder="Full Name" required>
+                    <small></small>
+                </div>
+                <a id="toLogin" style="display: block; margin-top: 20px" href="">Have an account? Login</a>
+                <button class="btn" type="submit">Register</button>
+            </form>
+        </div>
+    </section>
+
+<!--    <form id="logout-form">-->
+<!--        <button type="submit">Logout</button>-->
+<!--    </form>-->
+    <script src="validation.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
