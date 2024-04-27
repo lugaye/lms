@@ -5,6 +5,66 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Course Content</title>
     <link rel="stylesheet" href="styles.css"> <!-- Include your CSS file -->
+    <style>
+      
+body, h1, h2, h3, p, ul, li {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+}
+
+header {
+    background-color: #343a40;
+    color: #fff;
+    padding: 20px 0;
+    text-align: center;
+}
+
+header h1 {
+    margin: 0;
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin-right: 20px;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #fff;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+nav ul li a:hover {
+    color: #ffc107;
+}
+
+main {
+    padding: 20px;
+}
+
+h2 {
+    color: #343a40;
+}
+
+footer {
+    background-color: #343a40;
+    color: #fff;
+    padding: 10px 0;
+    text-align: center;
+}
+
+        </style>
 </head>
 <body>
     <header>
@@ -13,7 +73,7 @@
             <ul>
                 <li><a href="/">Home</a></li>
                 <li><a href="/course-content">Course Content</a></li>
-                <!-- Add more navigation links as needed -->
+                <li><a href="/Grade-content">Grade-content</a></li>
             </ul>
         </nav>
     </header>
@@ -25,6 +85,48 @@
     </footer>
 
     <!-- Include your client-side JavaScript file -->
-    <script src="script.js"></script>
+    <script>
+     
+
+document.addEventListener('DOMContentLoaded', () => {
+    const courseContentElement = document.getElementById('course-content');
+    
+    const courseContentData = [
+        { module: 'Module 1', title: 'Introduction to HTML', description: 'Learn the basics of HTML.' },
+        { module: 'Module 2', title: 'CSS Fundamentals', description: 'Explore the fundamentals of CSS.' },
+        { module: 'Module 3', title: 'JavaScript Basics', description: 'Get started with JavaScript programming.' },
+    ];
+    
+    function populateCourseContent(data) {
+    
+        courseContentElement.innerHTML = '';
+        
+        data.forEach(module => {
+            const moduleSection = document.createElement('section');
+            moduleSection.classList.add('module');
+
+            const moduleTitle = document.createElement('h2');
+            moduleTitle.textContent = module.module;
+            moduleSection.appendChild(moduleTitle);
+
+            const contentDiv = document.createElement('div');
+            const contentTitle = document.createElement('h3');
+            contentTitle.textContent = module.title;
+            const contentDescription = document.createElement('p');
+            contentDescription.textContent = module.description;
+            contentDiv.appendChild(contentTitle);
+            contentDiv.appendChild(contentDescription);
+
+            moduleSection.appendChild(contentDiv);
+            courseContentElement.appendChild(moduleSection);
+        });
+    }
+
+    populateCourseContent(courseContentData);
+});
+   
+            
+           
+    </script>
 </body>
 </html>
