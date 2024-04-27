@@ -126,6 +126,36 @@ app.get('/get-user-info', (req, res) => {
         email: req.session.user.email,
     });
 });
+// route for getting all courses
+// Define a route to get all courses
+// Endpoint to fetch all courses
+app.get('/courses', (req, res) => {
+    connection.query('SELECT * FROM courses', (err, results) => {
+        if (err) {
+            console.error('Error fetching courses:', err);
+            return res.status(500).json({ error: 'Internal server error' });
+        }
+
+        res.json(results); // Return all courses as JSON
+    });
+});
+//details
+app.get('/courses/:id', (req, res) => {
+    const courseId = req.params.id; // Get course ID from URL parameter
+
+    connection.query('SELECT * FROM courses WHERE id = ?', [courseId], (err, results) => {
+        if (err) {
+            console.error('Error fetching course details:', err);
+            return res.status(500).json({ error: 'Internal server error' });
+        }
+
+        if (results.length === 0) {
+            return res.status(404).json({ error: 'Course not found' }); // Handle course not found
+        }
+
+        res.json(results[0]); // Return course details
+    });
+});
 
 // Start server
 const PORT = process.env.PORT || 3000;

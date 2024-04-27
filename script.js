@@ -1,4 +1,75 @@
 document.addEventListener('DOMContentLoaded', () => {
+    const courseList = document.getElementById("courseList"); // Section for course cards
+    const courseDetails = document.getElementById("courseDetails"); // Section for course details
+
+    // Function to fetch all courses
+    function fetchCourses() {
+        fetch('/courses')
+            .then(response => response.json())
+            .then(courses => {
+                displayCourses(courses); // Display all courses
+            })
+            .catch(error => {
+                console.error('Error fetching courses:', error);
+                courseList.innerHTML = "<p>Could not load courses. Try again later.</p>"; // Error handling
+            });
+    }
+
+    // Function to display the list of courses
+    function displayCourses(courses) {
+        courseList.innerHTML = ""; // Clear existing content
+
+        courses.forEach(course => {
+            const courseCard = document.createElement("div"); // Create a card for each course
+            courseCard.classList.add("course-card");
+
+            courseCard.innerHTML = `
+                <h4>${course.name}</h4>
+                
+            `;
+
+            // Event listener to fetch course details on click
+            courseCard.addEventListener("click", () => {
+                fetch(`/courses/${course.id}`) // Fetch course details by ID
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`Error fetching course details: ${response.status}`);
+                        }
+                        return response.json(); // Convert to JSON
+                    })
+                    .then(courseDetail => {
+                        displayCourseDetails(courseDetail); // Display course details
+                    })
+                    .catch(error => {
+                        console.error('Error fetching course details:', error);
+                        courseDetails.innerHTML = "<p>Could not load course details. Try again later.</p>"; // Error handling
+                    });
+            });
+
+            courseList.appendChild(courseCard); // Add the course card to the list
+        });
+    }
+
+    // Function to display course details
+    function displayCourseDetails(course) {
+        courseDetails.innerHTML = `
+            <h2>${course.name}</h2>
+            <p>${course.description}</p>
+        `;
+    }
+
+    fetchCourses(); // Fetch all courses when the page loads
+});
+
+
+
+
+
+
+
+
+//-----------------------------------------------------------------------------------------------//
+document.addEventListener('DOMContentLoaded', () => {
     const loginForm = document.getElementById('loginForm');
     const signupForm = document.getElementById('signupForm');
 
