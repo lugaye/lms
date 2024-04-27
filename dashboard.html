@@ -1,18 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Include your CSS file -->
+    <link rel="stylesheet" href="/style.css"> <!-- Include your CSS file -->
 </head>
+
 <body>
     <header>
         <h1>Welcome to Your Dashboard</h1>
         <nav>
             <ul>
-                <li><a href="/leaderboard">Leaderboard</a></li>
-                <li><a href="/course-content">Course Content</a></li>
+                <li><a href="/dashboard.html">Home</a></li>
+                <li><a href="/course-content.html">Courses</a></li>
+                <li><a href="/leader-board.html">leaderboard</a></li>
+                <li><a href="/index.html">Logout</a></li>
                 <!-- Add more navigation links as needed -->
             </ul>
         </nav>
@@ -22,12 +26,39 @@
             <h2>Hello, <span id="user-fullname"></span>!</h2>
             <p>Welcome to your personalized dashboard.</p>
         </section>
+        <section>
+            <h2>Selected Courses</h2>
+            <ul class="course-list">
+                <li>
+                    <P>Introduction to HTML</P>
+                    <button>Start learning</button>
+                </li>
+            </ul>
+        </section>
+        <section>
+            <h2>Available Courses</h2>
+            <ul class="course-list">
+                <li>
+                    <P>Introduction to HTML</P>
+                    <button>Select</button>
+                </li>
+                <li>
+                    <P>CSS Fundamentals</P>
+                    <button>Select</button>
+                </li>
+                <li>
+                    <P>JavaScript Basics</P>
+                    <button>Select</button>
+                </li>
+            </ul>
+        </section>
     </main>
     <footer>
         <p>&copy; 2024 Your LMS</p>
     </footer>
 
     <!-- Include your client-side JavaScript file -->
-    <script src="script.js"></script>
+    <script src="/script.js"></script>
 </body>
+
 </html>
