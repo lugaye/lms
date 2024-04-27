@@ -7,19 +7,21 @@ const mysql = require('mysql');
 const { check, validationResult } = require('express-validator');
 const app = express();
 
+require('dotenv').config();
+
 // Configure session middleware
 app.use(session({
     secret: 'secret-key',
     resave: false,
-    saveUninitialized: true
+    saveUninitialized: false
 }));
 
 // Create MySQL connection
 const connection = mysql.createConnection({
-    host: 'localhost',
+    host: 'roundhouse.proxy.rlwy.net',
     user: 'root',
-    password: '',
-    database: 'learning_management'
+    password: 'vSqfaOuSPJSOCOFxjnpeLGUrWVqpHxkI',
+    database: 'railway'
 });
 
 // Connect to MySQL
@@ -51,14 +53,14 @@ app.get('/', (req, res) => {
 const User = {
     tableName: 'users', 
     createUser: function(newUser, callback) {
-        connection.query('INSERT INTO ' + this.tableName + ' SET ?', newUser, callback);
-    },  
+                    connection.query('INSERT INTO ' + this.tableName + ' SET ?', newUser, callback);
+                },  
     getUserByEmail: function(email, callback) {
-        connection.query('SELECT * FROM ' + this.tableName + ' WHERE email = ?', email, callback);
-    },
+                    connection.query('SELECT * FROM ' + this.tableName + ' WHERE email = ?', email, callback);
+                },
     getUserByUsername: function(username, callback) {
-        connection.query('SELECT * FROM ' + this.tableName + ' WHERE username = ?', username, callback);
-    }
+                    connection.query('SELECT * FROM ' + this.tableName + ' WHERE username = ?', username, callback);
+                }
 };
 
 // Registration route
@@ -161,8 +163,59 @@ app.get('/course/:id', (req, res) => {
     });
   });
 
+
+// Add new route for storing course selection
+app.post('/select-courses', async (req, res) => {
+    const selectedCourses = req.body.courses;
+    const userId = req.session.user.id;
+
+    // Store selected courses in the database
+    try {
+        await storeSelectedCourses(userId, selectedCourses);
+        res.sendStatus(200);
+    } catch (error) {
+        console.error('Error storing selected courses:', error);
+        res.sendStatus(500);
+    }
+});
+
+async function storeSelectedCourses(userId, selectedCourses) {
+    const connection = mysql.createConnection({
+        host: 'roundhouse.proxy.rlwy.net',
+        user: 'root',
+        password: 'vSqfaOuSPJSOCOFxjnpeLGUrWVqpHxkI',
+        database: 'railway'
+    });
+
+    connection.connect();
+
+    const deleteQuery = 'DELETE FROM user_courses WHERE user_id = ?';
+    await promisifyQuery(connection, deleteQuery, [userId]);
+
+    const insertQuery = 'INSERT INTO user_courses (user_id, course_id) VALUES (?, ?)';
+    for (const courseId of selectedCourses) {
+        await promisifyQuery(connection, insertQuery, [userId, courseId]);
+    }
+
+    connection.end();
+}
+
+function promisifyQuery(connection, query, values) {
+    return new Promise((resolve, reject) => {
+        connection.query(query, values, (error, results) => {
+            if (error) {
+                reject(error);
+            } else {
+                resolve(results);
+            }
+        });
+    });
+}
+
+
+
 // Start server
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3002;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
