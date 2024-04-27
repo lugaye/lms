@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Selection</title>
+</head>
+<body>
+    <h1>Select Your Courses</h1>
+    <form id="courseForm">
+        <div id="courseCheckboxes"></div>
+        <button type="submit">Save Selected Courses</button>
+    </form>
+
+    <script>
+        // Fetch courses from the server
+        fetch('/courses')
+            .then(response => response.json())
+            .then(courses => {
+                const courseCheckboxes = document.getElementById('courseCheckboxes');
+                courses.forEach(course => {
+                    const checkbox = document.createElement('input');
+                    checkbox.type = 'checkbox';
+                    checkbox.name = 'selectedCourses';
+                    checkbox.value = course.id;
+                    checkbox.id = `course${course.id}`;
+                    const label = document.createElement('label');
+                    label.htmlFor = `course${course.id}`;
+                    label.textContent = course.name;
+                    courseCheckboxes.appendChild(checkbox);
+                    courseCheckboxes.appendChild(label);
+                    courseCheckboxes.appendChild(document.createElement('br'));
+                });
+            });
+
+        // Handle form submission
+        document.getElementById('courseForm').addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const selectedCourses = Array.from(document.querySelectorAll('input[name="selectedCourses"]:checked'))
+                .map(checkbox => checkbox.value);
+
+            // Send selected course IDs to the server
+            try {
+                const response = await fetch('/selected-courses', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ userId, selectedCourses }) // Replace with actual user ID
+                });
+                if (response.ok) {
+                    console.log('Selected courses saved successfully');
+                } else {
+                    console.error('Error saving selected courses');
+                }
+            } catch (error) {
+                console.error('Error saving selected courses:', error);
+            }
+        });
+    </script>
+</body>
+</html>
