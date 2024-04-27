@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Your Selected Courses</title>
+    <link rel="stylesheet" href="./style.css"> <!-- Add your styles here -->
+</head>
+<body style="height: 100vh;">
+    <header style="width: 100%; display: flex; justify-content: space-evenly;">
+        <ul style="display: flex; list-style-type: none; gap: 20px;">
+            <li title="Go back to Home page"><a href="/">Home</a></li>
+            <li title="click to go back to course-content page"><a href="/course-content">course content</a></li>
+            <li title="click to go back to your dashboard"><a href="/dashboard">Dashboard</a></li>
+            <li title="click to see leaders"><a href="/leader-board.html">Leader Board</a></li>
+        </ul>
+    </header>
+<main id="display" >
+    <h2>SELECTED COURSES</h2>
+<div id="selected-courses" class="course-container">
+    
+    <!-- Selected courses will be populated here -->
+</div>
+   
+</main>
+<footer style="width: 100%;">
+    <p>&copy; 2024 Your LMS</p>
+</footer>
+
+    <!-- Place the script at the end of the body -->
+    <script src="/scripts.js"></script> <!-- Include the script file -->
+    <script>
+        fetchSelectedCourses(); // Call the function to fetch selected courses
+    </script>
+    <script src="../script.js"></script>
+</body>
+</html>

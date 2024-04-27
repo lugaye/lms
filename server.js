@@ -14,6 +14,20 @@ app.use(session({
     saveUninitialized: true
 }));
 
+app.set('view engine', 'ejs'); // Set EJS as the templating engine
+app.set('views', __dirname + '/views'); // Set the correct views directory
+// Serving static files
+app.use(express.static(__dirname + '/public'));
+app.use(express.static(__dirname + '/public', {
+    setHeaders: (res, path) => {
+        if (path.endsWith('.css')) {
+            res.setHeader('Content-Type', 'text/css'); // Ensure correct MIME type
+        }
+    }
+}));
+
+
+
 // Create MySQL connection
 const connection = mysql.createConnection({
     host: 'localhost',
@@ -25,11 +39,11 @@ const connection = mysql.createConnection({
 // Connect to MySQL
 connection.connect((err) => {
     if (err) {
-        console.error('Error connecting to MySQL: ' + err.stack);
-        return;
+      console.error('Error connecting to MySQL:', err);
+    } else {
+      console.log('Connected to MySQL');
     }
-    console.log('Connected to MySQL as id ' + connection.threadId);
-});
+  });
 
 // Serve static files from the default directory
 app.use(express.static(__dirname));
@@ -141,28 +155,126 @@ app.post('/logout', (req, res) => {
     res.send('Logout successful');
 });
 
-//Dashboard route
 app.get('/dashboard', (req, res) => {
-    // Assuming you have middleware to handle user authentication and store user information in req.user
-    const userFullName = req.user.full_name;
-    res.render('dashboard', { fullName: userFullName });
+    if (!req.session.user) {
+        return res.redirect('/'); // Redirect to home if not authenticated
+    }
+
+    // Render the dashboard and pass the full name
+    res.render('dashboard', { fullName: req.session.user.full_name });
 });
 
-// Route to retrieve course content
-app.get('/course/:id', (req, res) => {
-    const courseId = req.params.id;
-    const sql = 'SELECT * FROM courses WHERE id = ?';
-    db.query(sql, [courseId], (err, result) => {
-      if (err) {
-        throw err;
-      }
-      // Send course content as JSON response
-      res.json(result);
+app.get('/course-content', (req, res) => {
+    const sql = 'SELECT * FROM courses'; // Retrieve all courses from the database
+    connection.query(sql, (err, results) => {
+        if (err) {
+            return res.status(500).send('Error retrieving course content.');
+        }
+
+        // Render the EJS template and pass the courses as a variable
+        res.render('course-content', { courses: results });
     });
-  });
+});
+
+
+app.post('/select-courses', (req, res) => {
+    const userId = req.session.user ? req.session.user.id : null; // Validate session data
+    const courseIds = req.body.courseIds; // Ensure this is an array of course IDs
+
+    if (!userId) {
+        return res.status(401).send('User not authenticated.'); // Handle missing session data
+    }
+
+    if (!courseIds || courseIds.length === 0) {
+        return res.status(400).send('No courses selected.'); // Handle missing course selections
+    }
+
+    const values = courseIds.map(courseId => [userId, courseId]); // Prepare the values
+
+    const query = 'INSERT INTO usercourses (user_id, course_id) VALUES ?';
+
+    connection.query(query, [values], (err, results) => {
+        if (err) {
+            console.error('Error storing course selections:', err);
+            return res.status(500).send('Error storing course selections.');
+        }
+
+        res.status(200).send('Courses selected successfully.');
+    });
+});
+
+app.get('/user-courses', (req, res) => {
+    const userId = req.session.user ? req.session.user.id : null; // Validate session data
+
+    if (!userId) {
+        return res.status(401).send('User not authenticated.');
+    }
+
+    const query = `
+        SELECT Courses.id, Courses.name
+        FROM usercourses
+        JOIN Courses ON usercourses.course_id = Courses.id
+        WHERE usercourses.user_id = ?;
+    `;
+
+    connection.query(query, [userId], (err, results) => {
+        if (err) {
+            console.error('Error retrieving user courses:', err);
+            return res.status(500).send('Error retrieving user courses.');
+        }
+
+        res.json(results); // Return the selected courses for this user
+    });
+});
+
+app.delete('/delete-course/:id', (req, res) => {
+    const courseId = req.params.id;
+    const userId = req.session.user.id; // Ensure user ID is in the session
+
+    const query = `
+        DELETE FROM usercourses
+        WHERE user_id = ? AND course_id = ?;
+    `;
+
+    connection.query(query, [userId, courseId], (err, results) => {
+        if (err) {
+            console.error('Error deleting course:', err);
+            return res.status(500).send('Error deleting course.');
+        }
+
+        if (results.affectedRows === 0) {
+            return res.status(404).send('Course not found.');
+        }
+
+        res.status(200).send('Course deleted successfully.');
+    });
+});
+
+
+
+app.get('/leaderboard', (req, res) => {
+    const query = `
+        SELECT name, score
+        FROM leaderboard
+        ORDER BY score DESC
+    `;
+
+    connection.query(query, (err, results) => {
+        if (err) {
+            console.error('Error retrieving leaderboard data:', err);
+            return res.status(500).send('Error retrieving leaderboard data.');
+        }
+
+        res.json(results); // Return the leaderboard data as JSON
+    });
+});
+
+
+
+
 
 // Start server
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
