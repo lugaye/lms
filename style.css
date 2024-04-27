@@ -1,5 +1,7 @@
 /* styles.css */
 body {
+    background-color: #d9d0b4;
+    color: #7d6b57;
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
@@ -21,21 +23,34 @@ input, button {
 }
 
 header {
-    background-color: #333;
-    color: #fff;
+    background-color: #666b5e;
+    color: #d9d0b4;
     padding: 20px;
     text-align: center;
+    width: 100%;
 }
 
-nav ul {
+nav ul, a{
     list-style-type: none;
     margin: 0;
     padding: 0;
+    list-style-type: none;
+    text-decoration: none;
 }
 
-nav ul li {
+nav ul li, a {
     display: inline;
     margin-right: 20px;
+    list-style-type: none;
+    text-decoration: none;
+    color: #879e82;
+}
+
+nav a:hover, :active{
+    background-color: #d9d0b4;
+    color: #7d6b57;
+    border-radius: 10px;
+    padding: 7px;
 }
 
 main {
@@ -43,26 +58,35 @@ main {
 }
 
 footer {
-    background-color: #333;
-    color: #fff;
-    padding: 20px;
+    background-color: #666b5e;
+    color: #d9d0b4;
+    margin: 0;
+    padding: 10px;
+    height: 50px;
     text-align: center;
+    width: 100%;
 }
+
+.long{
+    height: 300px;
+    padding: 0;
+}
+
 
 /* Course content page styles */
 section {
     margin-bottom: 30px;
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid #d9d0b4;
     padding-bottom: 20px;
 }
 
 h2 {
-    color: #333;
+    color: #7d6b57;
     font-size: 24px;
 }
 
 p {
-    color: #666;
+    color: #879e82;
     font-size: 16px;
     line-height: 1.5;
 }
@@ -72,3 +96,13 @@ iframe {
     height: 400px;
     margin-top: 20px;
 }
+
+.container{
+    background-color: #7d6b57;
+    color: #879e82;
+    margin: 20px;
+    padding: 20px;
+    border-radius: 6px;
+    border: 2px solid black;
+}
+
