@@ -200,3 +200,36 @@ footer {
     color: white; /* White text on hover */
     border-radius: 10px;
 }
+
+
+/***************************************************/
+
+.course-card-container {
+    display: flex;
+    flex-wrap: wrap; /* Allows course cards to wrap if needed */
+    gap: 10px; /* Spacing between course cards */
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Light shadow for card effect */
+}
+
+.course-card {
+    flex: 1 1 30%; /* Adjust size and allow for wrapping */
+    padding: 15px;
+    background: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.course-details-card {
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Light shadow for card effect */
+}
+
+#course-details-section {
+    margin-top: 20px;
+}

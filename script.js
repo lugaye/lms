@@ -201,6 +201,28 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 //-----------------------------------------------------------//
+//-- Get user info -- //
+document.addEventListener('DOMContentLoaded', () => {
+    // Fetch the user's information and update the dashboard
+    function fetchUserInfo() {
+        fetch('/get-user-info') // Fetch user information from the server
+            .then(response => response.json())
+            .then(user => {
+                // Update the welcome message with the user's full name
+                const userFullNameSpan = document.getElementById("user-fullname");
+                if (userFullNameSpan) {
+                    userFullNameSpan.innerText = user.full_name || user.username; // Display the full name or username
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching user info:', error);
+            });
+    }
+
+    fetchUserInfo(); // Fetch user information when the page loads
+});
+
+//------------------------------------------------------------//
 // profile //
 document.addEventListener('DOMContentLoaded', () => {
     const profileDropdownToggle = document.getElementById("profile-dropdown-toggle");

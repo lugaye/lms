@@ -156,6 +156,21 @@ app.get('/courses/:id', (req, res) => {
         res.json(results[0]); // Return course details
     });
 });
+//--------------------------------------------------------//
+//-- Get user info--//
+app.get('/get-user-info', (req, res) => {
+    if (!req.session.user) {
+        return res.status(403).json({ error: 'User not logged in.' });
+    }
+
+    // Return the user's information from the session
+    res.json({
+        username: req.session.user.username,
+        full_name: req.session.user.full_name,
+    });
+});
+
+//-----------------------------------------------------//
 
 // Start server
 const PORT = process.env.PORT || 3000;
