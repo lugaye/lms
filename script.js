@@ -44,6 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             if (response.ok) {
                 alert('Login successful');
+                window.location.pathname="/dashboard"
             } else {
                 alert('Invalid username or password');
             }
@@ -92,8 +93,10 @@ function fetchCourseContent() {
     const urlParams = new URLSearchParams(window.location.search);
     const courseId = urlParams.get('id');
 
+    const endpoint = courseId ? `/course-content/${courseId}` : '/course-content'; 
+
     // Make AJAX request to fetch course content from server
-    fetch(`/course/${courseId}`)
+    fetch(endpoint)
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
@@ -180,7 +183,10 @@ function displayLeaderboardData(leaderboardData) {
     // Append the table to the leaderboard element
     leaderboardElement.appendChild(table);
 }
-
+// function displayFullName(fullName) {
+//     const fullNameElement=document.getElementById('user-fullName')
+//     fullNameElement.textContent=fullName
+// }
 function fetchFullName() {
     // Make AJAX request to fetch the user's full name from the server
     fetch('/get-fullname')
