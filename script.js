@@ -55,8 +55,8 @@ document.addEventListener('DOMContentLoaded', () => {
         courseDetails.innerHTML = `
             <h2>${course.name}</h2>
             <p>${course.description}</p>
-            <button onclick="selectCourse(${course.id})">SELECT</button>
-            <button>DROP</button>
+            <button onclick="selectCourse(${course.id}, '${course.name}')">SELECT</button>
+            <button onclick="dropCourse(${course.id})">DROP</button>
         `;
     }
 
@@ -242,3 +242,59 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
+function selectCourse(courseId, courseName) {
+    fetch('/enroll-course', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            course_id: courseId,
+            course_name: courseName,
+        }),
+    })
+    .then(response => response.json()) // Get the JSON data
+    .then(result => { // This is where we handle the parsed result
+        if (result.success) { // Check for success in the result, not response
+            alert(result.success); // Display success message
+        } else {
+            console.error(result.error); // Log error message
+            alert('Error enrolling in course. Please try again.'); // Display a generic error message
+        }
+    })
+    .catch((error) => {
+        console.error('Error enrolling in course:', error);
+        alert('An error occurred. Please try again later.');
+    });
+}
+
+// delete selected //
+function dropCourse(courseId) {
+    // Send a DELETE request to the server to remove the specified course
+    fetch('/drop-course', {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            course_id: courseId, // The course to drop
+        }),
+    })
+    .then((response) => response.json()) // Parse the JSON response
+    .then((result) => {
+        // Check for successful response
+        if (result.success) {
+            alert(result.success); // Display success message
+        } else {
+            // If there was an error in the result
+            console.error(result.error);
+            alert('Error dropping course. Please try again.'); // Display a user-friendly message
+        }
+    })
+    .catch((error) => {
+        // Catch unexpected errors and log them
+        console.error('Error dropping course:', error);
+        alert('An unexpected error occurred. Please try again later.'); // Provide general feedback
+    });
+}

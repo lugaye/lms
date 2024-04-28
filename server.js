@@ -169,6 +169,40 @@ app.get('/get-user-info', (req, res) => {
         full_name: req.session.user.full_name,
     });
 });
+//-----------------------------------------------------//
+app.post('/enroll-course', (req, res) => {
+    const userId = req.session.user.id; // Get the user ID from the session
+    const { course_id, course_name } = req.body; // Get course details from the request body
+
+    const query = 'INSERT INTO my_courses (user_id, course_id, course_name) VALUES (?, ?, ?)';
+
+    connection.query(query, [userId, course_id, course_name], (err) => {
+        if (err) {
+            console.error('Error enrolling in course:', err);
+            return res.status(500).json({ error: 'Error enrolling in course' });
+        }
+
+        res.json({ success: 'Successfully enrolled in the course' });
+    });
+});
+
+app.delete('/drop-course', (req, res) => {
+    const userId = req.session.user.id; // Get the user ID from the session
+    const { course_id } = req.body; // Get course ID from the request body
+
+    const query = 'DELETE FROM my_courses WHERE user_id = ? AND course_id = ?';
+
+    connection.query(query, [userId, course_id], (err) => {
+        if (err) {
+            console.error('Error dropping course:', err);
+            return res.status(500).json({ error: 'Error dropping course' });
+        }
+
+        res.json({ success: 'Successfully dropped the course' });
+    });
+});
+
+
 
 //-----------------------------------------------------//
 
