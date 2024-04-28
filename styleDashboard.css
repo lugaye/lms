@@ -233,3 +233,58 @@ footer {
 #course-details-section {
     margin-top: 20px;
 }
+
+/*-----------------------------------------------------------------*/
+/*styling select and drop buttons*/
+/* Base button styling */
+.button-container {
+    display: flex; 
+    justify-content:space-between;
+    align-items: center; 
+    width: 100%; 
+  }
+
+.button {
+    padding: 8px 15px; 
+    border: none;
+    border-radius: 5px; 
+    font-size: 16px; 
+    cursor: pointer; 
+    margin-top: 1rem;
+    transition: background-color 0.3s; 
+  }
+  
+  /* Specific styling for SELECT button */
+  .select-button {
+    background-color: var(--primary-color); 
+    color: white; 
+  }
+  
+  .select-button:hover {
+    background-color: var(--secondary-color);
+  }
+  
+  /* Specific styling for DROP button */
+  .drop-button {
+    background-color: var(--primary-color); 
+    color: white; 
+  }
+  
+  .drop-button:hover {
+    background-color: var(--secondary-color); 
+  }
+  
+/*-----------------------------------------------------------------*/
+/* Styling for the course image */
+.course-title{
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.course-image {
+    max-width: 15%; 
+    height: auto; 
+    display: block; 
+    margin: 0 auto;
+    margin-bottom: 1rem; 
+  }

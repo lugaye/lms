@@ -1,7 +1,8 @@
 /* Container for login and signup card with light blue background */
 .container {
   position: relative; /* Needed for the pseudo-element */
-  height: 100vh;
+  min-height: 100vh;
+  height: auto;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -9,6 +10,7 @@
   background-size: cover;
   background-position: center;
   z-index: 1; /* Ensure container has a lower z-index */
+  overflow-y: auto;
 }
 
 /* Light blue background below the login/signup card */
@@ -34,11 +36,31 @@
   margin-top: 50px;
   color: white;
   z-index: 2; /* Higher z-index than the pseudo-element */
+
+  display: flex; /* Use flexbox */
+  flex-direction: column; /* Stack elements vertically */
+  justify-content: center; /* Center content vertically */
+  align-items: center; 
+  margin-bottom: 3rem;
+ 
+}
+
+#loginForm,
+#signupForm {
+  width: 80%; /* Give some width to the forms */
+  margin: 0 auto; /* Center the forms horizontally */
+  
+}
+
+#loginForm label,
+#signupForm label {
+  margin-top: 10px; /* Consistent margin above each label */
+  display: block;  /* Ensure each label starts on a new line */
 }
 
 /* Style the image logo */
 #loginSignupCard .logo {
-  width: 200px; /* Adjust logo width */
+  width: 150px; /* Adjust logo width */
   height: auto; /* Keep aspect ratio */
   margin-bottom: 5px; /* Margin below the logo */
   align-items: center;
@@ -54,6 +76,7 @@ input, button {
   border-radius: 5px;
   width: 100%; /* Make inputs full width */
   box-sizing: border-box; /* Include padding and border in the total width */
+  margin-top: 10px;
 }
 
 button {
@@ -61,6 +84,7 @@ button {
   color: #fff; /* Change button text color */
   font-size: 16px; /* Adjust button font size */
   cursor: pointer;
+  margin-top: 30px;
 }
 
 button:hover {
@@ -84,6 +108,7 @@ a:hover {
   font-size: 14px;
   margin-top: 10px; /* Add some spacing at the top */
 }
+
 
 /* Specific styles for sections */
 #loginSection {

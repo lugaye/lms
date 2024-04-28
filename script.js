@@ -1,4 +1,3 @@
-//Displaying all courses//
 document.addEventListener('DOMContentLoaded', () => {
     const courseList = document.getElementById("courseList"); // Section for course cards
     const courseDetails = document.getElementById("courseDetails"); // Section for course details
@@ -25,6 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
             courseCard.classList.add("course-card");
 
             courseCard.innerHTML = `
+                
                 <h4>${course.name}</h4>
                 
             `;
@@ -52,12 +52,17 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Function to display course details
-    function displayCourseDetails(course) {
+    function displayCourseDetails(course) { 
+        console.log('Image URL:', course.links);      
+
         courseDetails.innerHTML = `
-            <h2>${course.name}</h2>
+            <h2 class="course-title">${course.name}</h2>
+            <img src="${course.links}" alt="${course.name} image" class="course-image">
             <p>${course.description}</p>
-            <button onclick="selectCourse(${course.id}, '${course.name}')">SELECT</button>
-            <button onclick="dropCourse(${course.id})">DROP</button>
+            <div class="button-container">
+                <button class="button select-button" onclick="selectCourse(${course.id}, '${course.name}')">SELECT</button>
+                <button class="button drop-button" onclick="dropCourse(${course.id})">DROP</button>
+            </div>
         `;
     }
 
@@ -65,9 +70,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 });
-
-
-
 
  ///--------------------------------------------------------------------------------------------//
  document.addEventListener('DOMContentLoaded', () => {
@@ -264,7 +266,7 @@ function selectCourse(courseId, courseName) {
             alert(result.success); // Display success message
         } else {
             console.error(result.error); // Log error message
-            alert('You are already enrolled in this course.'); // Display a generic error message
+            alert('Error enrolling in course. Please try again.'); // Display a generic error message
         }
     })
     .catch((error) => {
