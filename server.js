@@ -18,8 +18,8 @@ app.use(session({
 const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: '',
-    database: 'learning_management'
+    password: '123456',
+    database: 'learning_app'
 });
 
 // Connect to MySQL
@@ -126,9 +126,10 @@ app.post('/login', (req, res) => {
                 if (isMatch) {
                     // Store user in session
                     req.session.user = user;
-                    res.send('Login successful');
+                   return res.redirect('/dashboard');
+                    
                 } else {
-                    res.status(401).send('Invalid username or password');
+                   return res.status(401).send('Invalid username or password');
                 }
             });
         }
@@ -138,14 +139,19 @@ app.post('/login', (req, res) => {
 // Logout route
 app.post('/logout', (req, res) => {
     req.session.destroy();
-    res.send('Logout successful');
+    res.send('Logout Successful');
 });
 
 //Dashboard route
 app.get('/dashboard', (req, res) => {
-    // Assuming you have middleware to handle user authentication and store user information in req.user
-    const userFullName = req.user.full_name;
-    res.render('dashboard', { fullName: userFullName });
+    // Assuming you have middleware to handle user authentication and store user information in req.session.user
+    if (req.session.user) {
+        // User is authenticated, serve dashboard.html
+        res.sendFile(__dirname + '/dashboard.html');
+    } else {
+        // User is not authenticated, redirect to login page
+        res.redirect('/login');
+    }
 });
 
 // Route to retrieve course content
@@ -160,6 +166,23 @@ app.get('/course/:id', (req, res) => {
       res.json(result);
     });
   });
+
+  // Route to handle form submission
+app.post('/specialize', (req, res) => {
+    const { fullName, email, courses} = req.body;
+
+    // Insert data into specialized courses table
+    const sql = 'INSERT INTO specialization ( full_name, email, courseName) VALUES (?, ?, ?, ?)';
+    db.query(sql, [fullName, email, JSON.stringify(courses)], (err, result) => {
+        if (err) {
+            res.status(500).json({ error: 'Internal Server Error' });
+            throw err;
+        }
+        res.status(200).json({ message: 'Data inserted successfully' });
+    });
+
+});
+
 
 // Start server
 const PORT = process.env.PORT || 3000;

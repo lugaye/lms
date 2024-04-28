@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const registerForm = document.getElementById('register-form');
     const loginForm = document.getElementById('login-form');
     const logoutForm = document.getElementById('logout-form');
+    const specializationForm = document.getElementById('specializationForm');
 
     registerForm.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -43,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 body: JSON.stringify({ username, password })
             });
             if (response.ok) {
-                alert('Login successful');
+                window.location.href = '/dashboard.html';
             } else {
                 alert('Invalid username or password');
             }
@@ -67,9 +68,34 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Error:', error);
         }
     });
+    specializationForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = new FormData(specializationForm);
+        const fullName = formData.get('full_name');
+        const email = formData.get('email');
+        const courses = formData.get('courseName');
+        
+        try {
+            const response = await fetch('/specialize', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ fullName, email ,courses})
+            });
+            if (response.ok) {
+                alert('Specialization successful');
+            } else {
+                alert('Specialization failed');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    });
 
-    // Check if the current page is the course content page
-    if (window.location.pathname === '/course-content') {
+
+       // Check if the current page is the course content page
+       if (window.location.pathname === '/course-content') {
         // Call the fetchCourseContent function
         fetchCourseContent();
     }
@@ -108,7 +134,17 @@ function fetchCourseContent() {
             console.error('Error fetching course content:', error);
         });
 }
-
+const courseContent = [
+    {
+        title: 'Introduction to Web Development',
+        description: 'This module covers the basics of web development, including HTML, CSS, and JavaScript.'
+    },
+    {
+        title: 'Responsive Web Design',
+        description: 'Learn how to create responsive web designs that adapt to various screen sizes.'
+    },
+    // Add more course modules as needed
+];
 function displayCourseContent(courseContent) {
     // Get the course name element
     const courseNameElement = document.getElementById('course-name');
