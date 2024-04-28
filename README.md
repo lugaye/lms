@@ -88,9 +88,9 @@ Open your web browser and navigate to http://localhost:3000.
 
 # Hackathon Instructions
 Finish up the project by: 
-1. creating functionality for the logged in user to select their preferred courses.
-2. store the selection in the database
-3. create a page where the selected courses for each specific logged in user is displayed.
+1. creating functionality for the user to select their preferred courses.
+2. storing the selection in the database
+3. create a page where the selected courses for each student is displayed
    
 ## Submission Guidelines
 Fork this repository and clone it to your local machine. 

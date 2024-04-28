@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course List</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <nav>
+        <ul class="nav-list">
+            <li class="active">
+                <a href="/course-list" aria-current="home">All Course</a>
+            </li>
+            <li >
+                <a href="/leadboard">Leader Board</a>
+            </li>
+            <li >
+                <a href="/mycourse">My course</a>
+            </li>
+            <li >
+                <a href="/logout">logout</a>
+            </li>
+        </ul>
+    </nav>
+    <main>
+        <div class="mainclss">
+            
+               
+            <% course.forEach(element => { %>
+                <div class="card">
+                    <div>
+                        <%= element.name %>
+                    </div>
+
+                        
+                        
+                    <div class="leftmar"> 
+                        <!-- <form id="selectedCourseForm">
+                            <input type="text" id="fff"/>
+                            <input type="hidden" id="selectedCourse" name="selectedCourse" value="<%=   element.id  %> "/>
+                             <input type="hidden" id="selectedUser"  value="<%= element.username %>" />
+                            <input type="submit" value="Select">
+                        </form>  -->                      
+                    
+                       <!--  <a href="course-list" >course content</a> -->
+                    
+                        <a href=<%="course/"+ element.id  %> >course content</a>
+                        
+                    </div>
+                </div>
+             
+            <% }) %>
+
+        </div>
+       
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>
