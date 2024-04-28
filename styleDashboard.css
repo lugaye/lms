@@ -1,8 +1,5 @@
-/* styles.css */
-:root{
-    --darkblue: rgb(0, 0, 128);
-    --lightblue: rgb(28, 210, 255);
-}
+
+/*************************************************************************************************************/
 
 /* General reset */
 * {
@@ -11,127 +8,195 @@
     padding: 0;
 }
 
-/* Set the body to occupy full height */
-body, html {
-    height: 100%;
+/* Define color variables */
+:root {
+    --primary-color: rgb(20, 150, 200); /* Blue */
+    --secondary-color: rgb(0, 0, 128); /* Dark blue */
+    --hover-color: rgb(20, 150, 200); /* Gold color for hover */
+    --background-color: rgb(0, 0, 128); /* Light background */
+    --text-color: #333; /* Dark text color */
 }
 
-/* Styling the top navigation bar */
-.top-nav{
-    background-color: var(--darkblue);
+/*********************************************************************/
+/* body */
+body {
+    background-color:rgb(0, 0, 128) ;
+}
+
+/* Header styling */
+header {
+    background-color: var(--primary-color); /* Blue background */
     color: white;
     padding: 10px;
-    text-align: center;
+    display: flex; /* Use flex to align content */
+    align-items: center; /* Vertically center the content */
+    justify-content: flex-start; /* Align items to the left */
+    position: fixed; /* Fixed position at the top */
+    width: 100%;
+    height: 70px;
 }
 
-.top-nav ul{
-    list-style-type: none;
-    display: flex;
-    justify-content: center;
+/* Logo styling */
+.logo {
+    height: 70px; /* Set a fixed height for the logo */
+    width: auto;
+    margin-right: 10px; /* Space between logo and other elements */
 }
 
-.top-nav ul li {
-    margin-right: 20px;
+/* Layout for sidebar and content */
+.dashboard-layout {
+    display: flex; /* Use flexbox for layout */
+    height: 100vh; /* Full viewport height */
 }
 
-.top-nav ul li a {
-    color: white;
-    text-decoration: none;
-}
 
-.top-nav ul li a:hover {
-    text-decoration: underline;
-}
-
-/* Main layout*/
-.layout {
-    display: flex;
-    min-height: 100%;
-}
-
-/* Left sidebar*/
+/* Sidebar styling */
 .sidebar {
-    width: 200;
-    background-color: var(--lightblue);
-    padding: 15px;
+    width: 180px; 
+    background-color: var(--secondary-color); 
+    height: 100vh;
+    padding: 20px; 
+  
 }
 
 .sidebar ul {
-    list-style-type: none;
+    list-style-type: none; 
+    padding-top:100px; 
 }
 
 .sidebar ul li {
-    margin-bottom: 10px;
+    margin-bottom: 15px; 
 }
 
 .sidebar ul li a {
-    text-decoration: none;
-    color: #333;
+    text-decoration: none; /* No underline */
+    color: white; /* White text */
+    display: flex; /* Align icons and text */
+    align-items: center; /* Center icons vertically */
+    font-size: 18px; /* Increased font size */
+    padding: 10px; /* Padding for clickable area */
+    border-radius: 5px; /* For hover effect */
 }
 
-.sidebar ul li a:hover {
-    text-decoration: underline;
+.sidebar ul li a svg {
+    margin-right: 10px; /* Space between icon and text */
 }
 
-/* Content Area */
-.content {
-    flex: 1;
-    padding: 15px;
+.sidebar ul li a:hover,
+.sidebar ul li a.selected {
+    background-color: var(--hover-color); /* Background color on hover */
+    text-decoration: none; /* No underline on hover */
+    border-radius: 20px; /* Rounded corners */
+    transition: all 0.3s; /* Smooth transition */
+    width: 140px;
 }
-
-/* Cards Layout */
-.cards {
-    display: flex;
-    justify-content: space-between;
-}
-
-.card {
-    border: 1px solid #ccc;
-    padding: 15px;
-    width: 48%;
-    background-color: white;
-}
-
-.courses-list ul {
-    list-style-type: none;
-}
-
-.courses-list ul li {
-    margin-bottom: 10px;
-}
-
-/* Footer */
-footer {
-    background-color: var(--darkblue);
-    color: white;
-    text-align: center;
-    padding: 15px;
-    margin-top: 15px;
+/*****************************************************************************/
+/* body container */
+/* Container styling for the body */
+/* Responsive container with border radius */
+body .container {
+   
+    min-height: 400px;
+    width: 100%; /* Responsive width */
+    margin-right: 50px; /* Center the container */
+    background-color: white; /* Background color */
+    border-radius: 10px; /* Border radius for rounded corners */
+    padding: 20px; /* Inner padding */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Light shadow */
+    margin-top: 120px; /* Space between the container and the header */
+    margin-bottom: 20px;
+    overflow-y: auto; /* Allow scrolling if content overflows */
     
 }
 
-/****************************************************************************************/
-.course-card {
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 15px;
-    margin: 10px;
-    background-color: #fff;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: box-shadow 0.3s;
+/* Content within the container */
+/* .container .content {
+    overflow-y: auto; Allow vertical scrolling if needed
+} */
+/* Footer styling */
+footer {
+    background-color: var(--primary-color); /* Gray background */
+    color: white; /* White text */
+    text-align: center; /* Centered text */
+    padding: 10px;
+    
+    bottom: 0; /* Align at the bottom */
+    width: 100%; /* Full width */
+    box-shadow: 0px -2px 5px rgba(0, 0, 0, 0.1); /* Light shadow */
 }
 
-.course-card:hover {
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); // Hover effect for the card
+/*search bar*/
+/* Search bar styling */
+.search-bar {
+    display: flex; /* Flex layout for the form */
+    align-items: center; /* Align items vertically */
+    justify-content: flex-start; /* Align items to the left */
+    margin-left: auto; /* Push the search bar to the right side of the header */
+    margin-right: 20px; /* Margin on the right side */
+    background-color: white; /* Background color for the search bar */
+    border-radius: 20px; /* Rounded corners */
+    padding: 5px 10px; /* Padding inside the search bar */
+    box-shadow: 0 2px 4px rgb(0, 0, 128, 0.1); /* Light shadow */
 }
 
-.course-card h4 {
-    margin: 0;
-    font-size: 1.2em;
+.search-input {
+    border: none; /* No border */
+    background: transparent; /* Transparent background */
+    padding: 5px; /* Padding for the input field */
+    flex: 1; /* Take up remaining space */
 }
 
-.course-card p {
-    margin: 0.5em 0 0;
-    font-size: 1em;
-    color: #555;
+.search-button {
+    background: transparent; 
+    border: none; 
+    cursor: pointer; 
+    padding: 5px; 
+    font-size: 16px;
+}
+
+.search-button:hover {
+    color: var(--primary-color); 
+}
+
+/************************************************/
+/* Profile */
+/* Profile dropdown styling */
+.profile-dropdown {
+    position: relative; /* Position relative to the parent */
+    display: inline-block; /* Allow inline elements to align properly */
+}
+
+.profile-icon {
+    background: transparent; /* Transparent background */
+    border: none; /* No border */
+    font-size: 20px; /* Icon size */
+    cursor: pointer; /* Pointer cursor */
+    width: 50px;
+    height: auto;
+    color: white;
+}
+
+.dropdown-menu {
+    display: none; /* Initially hidden */
+    position: absolute; /* Absolute positioning for dropdown */
+    top: 100%; /* Position below the profile icon */
+    right: 0; /* Align to the right */
+    background-color: white; /* Background color for the dropdown */
+    border-radius: 5px; /* Rounded corners */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Light shadow */
+    padding: 10px; /* Padding for the dropdown */
+    z-index: 10; /* Ensure it stays above other elements */
+}
+
+.dropdown-menu a {
+    text-decoration: none; /* No underline */
+    color: var(--text-color); /* Text color */
+    display: block; /* Block level to fill the width */
+    padding: 10px; /* Padding for spacing */
+}
+
+.dropdown-menu a:hover {
+    background-color: var(--primary-color); /* Background color on hover */
+    color: white; /* White text on hover */
+    border-radius: 10px;
 }
