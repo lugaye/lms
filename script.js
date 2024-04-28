@@ -1,11 +1,17 @@
 // scripts.js
 document.addEventListener('DOMContentLoaded', () => {
+    //console.log("ggggggggg");
     const registerForm = document.getElementById('register-form');
     const loginForm = document.getElementById('login-form');
     const logoutForm = document.getElementById('logout-form');
-
+    const selectedCourseForm = document.getElementById('selectedCourse_Form');
+    //alert(selectedCourseForm);
+    //alert('top');
+    if(registerForm){
     registerForm.addEventListener('submit', async (e) => {
         e.preventDefault();
+        //console.log("hhhhhhhhhh22222");
+        //console.log("1111111111111");
         const formData = new FormData(registerForm);
         const username = formData.get('username');
         const password = formData.get('password');
@@ -28,13 +34,15 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Error:', error);
         }
     });
-
+}
+if(loginForm){
     loginForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const formData = new FormData(loginForm);
         const username = formData.get('username');
         const password = formData.get('password');
         try {
+            //console.log("hhhhhhhhhh22222");
             const response = await fetch('/login', {
                 method: 'POST',
                 headers: {
@@ -43,15 +51,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 body: JSON.stringify({ username, password })
             });
             if (response.ok) {
-                alert('Login successful');
-            } else {
-                alert('Invalid username or password');
+                //document.getElementById("demo").innerText="gggg";
+                    //alert("okay");
+                    window.location.replace("course-list");
+  
+                } else {
+                //alert('Invalid username or password');
+                document.getElementById("demo").innerText="Invalid username or password";
             }
         } catch (error) {
             console.error('Error:', error);
         }
     });
-
+}
+if(logoutForm){
     logoutForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         try {
@@ -67,11 +80,45 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Error:', error);
         }
     });
+}
+if(selectedCourseForm){
+    alert('selectedCourseForm');
+    selectedCourseForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = new FormData(selectedCourseForm);
+        const courseId = formData.get('selectedCourse');
+        const userId = formData.get('selectedUser');
+        //console.log(courseId, userId);
+        //alert(courseId);
+        try {
+            const response = await fetch('/addcourse', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ courseId, userId })
+            });
+            if (response.ok) {
+                //document.getElementById("demo").innerText="gggg";
+                    alert("okay");
+                    window.location.href("course-list");
+  
+                } else {
+                alert('Try your selection');
+                //document.getElementById("demo").innerText="Invalid username or password";
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
 
+    });
+}
+//alert(window.location.pathname);
     // Check if the current page is the course content page
     if (window.location.pathname === '/course-content') {
         // Call the fetchCourseContent function
-        fetchCourseContent();
+        //alert(window.location.pathname);
+       // fetchCourseContent();
     }
 
      // Check if the current page is the course content page
@@ -85,6 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
         //fetch Logged in user's full name
         fetchFullName();
     }
+
 });
 
 function fetchCourseContent() {
@@ -131,7 +179,6 @@ function displayCourseContent(courseContent) {
         courseContentElement.appendChild(moduleSection);
     });
 }
-
 function fetchLeaderboardData() {
     // Make AJAX request to fetch leaderboard data from server
     fetch('/leaderboard')
@@ -149,7 +196,6 @@ function fetchLeaderboardData() {
             console.error('Error fetching leaderboard data:', error);
         });
 }
-
 function displayLeaderboardData(leaderboardData) {
     // Get the leaderboard element
     const leaderboardElement = document.getElementById('leaderboard');

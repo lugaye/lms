@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course List</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <nav>
+        <ul class="nav-list">
+            <li >
+                <a href="/course-list" aria-current="home">All Course</a>
+            </li>
+            <li >
+                <a href="/leadboard">Leader Board</a>
+            </li>
+            <li >
+                <a href="/mycourse">My course</a>
+            </li>
+            <li >
+                <a href="/logout">logout</a>
+            </li>
+        </ul>
+    </nav>
+    <main>
+        <div class="mainclssd">
+
+
+<% for (let ii = 0; ii < course.length; ii++) {%>
+<!--     <div class="leftmar">
+        <form action="/addcourse"  method="post" id="selectedCourse_Form">
+            <input type="hidden" id="selectedCourse" name="selectedCourse" value="<%= course[ii].id %>"/>
+             <input type="hidden" id="selectedUser" name="selectedUser"  value="<%= course[ii].username %>" />
+            <input type="submit" value="Select">
+        </form>  
+    </div> -->
+ 
+    <%= course[ii].name;%>
+    
+    <%}%>
+        </div>
+       
+    </main>
+    
+<!--     <footer>
+        <p>&copy; 2024 Your LMS</p>
+    </footer> -->
+
+    <!-- Include your client-side JavaScript file -->
+    <script src="script.js"></script>
+</body>
+</html>
+
