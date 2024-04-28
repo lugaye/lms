@@ -1,3 +1,4 @@
+//Displaying all courses//
 document.addEventListener('DOMContentLoaded', () => {
     const courseList = document.getElementById("courseList"); // Section for course cards
     const courseDetails = document.getElementById("courseDetails"); // Section for course details
@@ -64,6 +65,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 });
+
+
+
 
  ///--------------------------------------------------------------------------------------------//
  document.addEventListener('DOMContentLoaded', () => {
@@ -260,7 +264,7 @@ function selectCourse(courseId, courseName) {
             alert(result.success); // Display success message
         } else {
             console.error(result.error); // Log error message
-            alert('Error enrolling in course. Please try again.'); // Display a generic error message
+            alert('You are already enrolled in this course.'); // Display a generic error message
         }
     })
     .catch((error) => {

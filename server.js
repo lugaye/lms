@@ -202,10 +202,36 @@ app.delete('/drop-course', (req, res) => {
     });
 });
 
+// Get enrolled courses//
+// Endpoint to fetch all courses
+app.get('/enrolled_courses', (req, res) => {
+    connection.query('SELECT * FROM my_courses', (err, results) => {
+        if (err) {
+            console.error('Error fetching enrolled courses:', err);
+            return res.status(500).json({ error: 'Internal server error' });
+        }
 
+        res.json(results); // Return all courses as JSON
+    });
+});
 
 //-----------------------------------------------------//
+// Endpoint to get courses for a specific user
+// Endpoint to get selected courses for the logged-in user
+app.get('/my-courses', (req, res) => {
+    const userId = req.session.user.id; // Retrieve user ID from the session
 
+    const query = 'SELECT course_id, course_name FROM my_courses WHERE user_id = ?';
+
+    connection.query(query, [userId], (err, results) => {
+        if (err) {
+            console.error('Error fetching user courses:', err);
+            return res.status(500).json({ error: 'Error fetching courses' });
+        }
+
+        res.json(results); // Return selected courses for the user
+    });
+});
 // Start server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
