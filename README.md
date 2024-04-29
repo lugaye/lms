@@ -7,7 +7,7 @@
 mkdir learning-management-app
 cd learning-management-app
 ```
-### Initialize a new Node.js project.
+### Initialize a new Node.js project
 ```bash
 npm init -y
 ```
@@ -24,8 +24,8 @@ npm install express mysql ejs bcryptjs express-session express-validator
 
 #### Create users table
 ```bash
--- Create users table
-CREATE TABLE users (
+-- Create users table(
+CREATE TABLE users 
     id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(255) UNIQUE,
     password VARCHAR(255),
@@ -58,6 +58,8 @@ CREATE TABLE leaderboard (
     score INT
 );
 
+
+
 -- Insert sample data into leaderboard table
 INSERT INTO leaderboard (name, score) VALUES
 ('John Doe', 100),
@@ -85,3 +87,6 @@ node server.js
 
 ## Step 4: Testing
 Open your web browser and navigate to http://localhost:3000.
+
+
+
