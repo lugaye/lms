@@ -1,0 +1,290 @@
+
+/*************************************************************************************************************/
+
+/* General reset */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* Define color variables */
+:root {
+    --primary-color: rgb(20, 150, 200); /* Blue */
+    --secondary-color: rgb(0, 0, 128); /* Dark blue */
+    --hover-color: rgb(20, 150, 200); /* Gold color for hover */
+    --background-color: rgb(0, 0, 128); /* Light background */
+    --text-color: #333; /* Dark text color */
+}
+
+/*********************************************************************/
+/* body */
+body {
+    background-color:rgb(0, 0, 128) ;
+}
+
+/* Header styling */
+header {
+    background-color: var(--primary-color); /* Blue background */
+    color: white;
+    padding: 10px;
+    display: flex; /* Use flex to align content */
+    align-items: center; /* Vertically center the content */
+    justify-content: flex-start; /* Align items to the left */
+    position: fixed; /* Fixed position at the top */
+    width: 100%;
+    height: 70px;
+}
+
+/* Logo styling */
+.logo {
+    height: 70px; /* Set a fixed height for the logo */
+    width: auto;
+    margin-right: 10px; /* Space between logo and other elements */
+}
+
+/* Layout for sidebar and content */
+.dashboard-layout {
+    display: flex; /* Use flexbox for layout */
+    height: 100vh; /* Full viewport height */
+}
+
+
+/* Sidebar styling */
+.sidebar {
+    width: 180px; 
+    background-color: var(--secondary-color); 
+    height: 100vh;
+    padding: 20px; 
+  
+}
+
+.sidebar ul {
+    list-style-type: none; 
+    padding-top:100px; 
+}
+
+.sidebar ul li {
+    margin-bottom: 15px; 
+}
+
+.sidebar ul li a {
+    text-decoration: none; /* No underline */
+    color: white; /* White text */
+    display: flex; /* Align icons and text */
+    align-items: center; /* Center icons vertically */
+    font-size: 18px; /* Increased font size */
+    padding: 10px; /* Padding for clickable area */
+    border-radius: 5px; /* For hover effect */
+}
+
+.sidebar ul li a svg {
+    margin-right: 10px; /* Space between icon and text */
+}
+
+.sidebar ul li a:hover,
+.sidebar ul li a.selected {
+    background-color: var(--hover-color); /* Background color on hover */
+    text-decoration: none; /* No underline on hover */
+    border-radius: 20px; /* Rounded corners */
+    transition: all 0.3s; /* Smooth transition */
+    width: 140px;
+}
+/*****************************************************************************/
+/* body container */
+/* Container styling for the body */
+/* Responsive container with border radius */
+body .container {
+   
+    min-height: 400px;
+    width: 100%; /* Responsive width */
+    margin-right: 50px; /* Center the container */
+    background-color: white; /* Background color */
+    border-radius: 10px; /* Border radius for rounded corners */
+    padding: 20px; /* Inner padding */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Light shadow */
+    margin-top: 120px; /* Space between the container and the header */
+    margin-bottom: 20px;
+    overflow-y: auto; /* Allow scrolling if content overflows */
+    
+}
+
+/* Content within the container */
+/* .container .content {
+    overflow-y: auto; Allow vertical scrolling if needed
+} */
+/* Footer styling */
+footer {
+    background-color: var(--primary-color); /* Gray background */
+    color: white; /* White text */
+    text-align: center; /* Centered text */
+    padding: 10px;
+    
+    bottom: 0; /* Align at the bottom */
+    width: 100%; /* Full width */
+    box-shadow: 0px -2px 5px rgba(0, 0, 0, 0.1); /* Light shadow */
+}
+
+/*search bar*/
+/* Search bar styling */
+.search-bar {
+    display: flex; /* Flex layout for the form */
+    align-items: center; /* Align items vertically */
+    justify-content: flex-start; /* Align items to the left */
+    margin-left: auto; /* Push the search bar to the right side of the header */
+    margin-right: 20px; /* Margin on the right side */
+    background-color: white; /* Background color for the search bar */
+    border-radius: 20px; /* Rounded corners */
+    padding: 5px 10px; /* Padding inside the search bar */
+    box-shadow: 0 2px 4px rgb(0, 0, 128, 0.1); /* Light shadow */
+}
+
+.search-input {
+    border: none; /* No border */
+    background: transparent; /* Transparent background */
+    padding: 5px; /* Padding for the input field */
+    flex: 1; /* Take up remaining space */
+}
+
+.search-button {
+    background: transparent; 
+    border: none; 
+    cursor: pointer; 
+    padding: 5px; 
+    font-size: 16px;
+}
+
+.search-button:hover {
+    color: var(--primary-color); 
+}
+
+/************************************************/
+/* Profile */
+/* Profile dropdown styling */
+.profile-dropdown {
+    position: relative; /* Position relative to the parent */
+    display: inline-block; /* Allow inline elements to align properly */
+}
+
+.profile-icon {
+    background: transparent; /* Transparent background */
+    border: none; /* No border */
+    font-size: 20px; /* Icon size */
+    cursor: pointer; /* Pointer cursor */
+    width: 50px;
+    height: auto;
+    color: white;
+}
+
+.dropdown-menu {
+    display: none; /* Initially hidden */
+    position: absolute; /* Absolute positioning for dropdown */
+    top: 100%; /* Position below the profile icon */
+    right: 0; /* Align to the right */
+    background-color: white; /* Background color for the dropdown */
+    border-radius: 5px; /* Rounded corners */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Light shadow */
+    padding: 10px; /* Padding for the dropdown */
+    z-index: 10; /* Ensure it stays above other elements */
+}
+
+.dropdown-menu a {
+    text-decoration: none; /* No underline */
+    color: var(--text-color); /* Text color */
+    display: block; /* Block level to fill the width */
+    padding: 10px; /* Padding for spacing */
+}
+
+.dropdown-menu a:hover {
+    background-color: var(--primary-color); /* Background color on hover */
+    color: white; /* White text on hover */
+    border-radius: 10px;
+}
+
+
+/***************************************************/
+
+.course-card-container {
+    display: flex;
+    flex-wrap: wrap; /* Allows course cards to wrap if needed */
+    gap: 10px; /* Spacing between course cards */
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Light shadow for card effect */
+}
+
+.course-card {
+    flex: 1 1 30%; /* Adjust size and allow for wrapping */
+    padding: 15px;
+    background: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.course-details-card {
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Light shadow for card effect */
+}
+
+#course-details-section {
+    margin-top: 20px;
+}
+
+/*-----------------------------------------------------------------*/
+/*styling select and drop buttons*/
+/* Base button styling */
+.button-container {
+    display: flex; 
+    justify-content:space-between;
+    align-items: center; 
+    width: 100%; 
+  }
+
+.button {
+    padding: 8px 15px; 
+    border: none;
+    border-radius: 5px; 
+    font-size: 16px; 
+    cursor: pointer; 
+    margin-top: 1rem;
+    transition: background-color 0.3s; 
+  }
+  
+  /* Specific styling for SELECT button */
+  .select-button {
+    background-color: var(--primary-color); 
+    color: white; 
+  }
+  
+  .select-button:hover {
+    background-color: var(--secondary-color);
+  }
+  
+  /* Specific styling for DROP button */
+  .drop-button {
+    background-color: var(--primary-color); 
+    color: white; 
+  }
+  
+  .drop-button:hover {
+    background-color: var(--secondary-color); 
+  }
+  
+/*-----------------------------------------------------------------*/
+/* Styling for the course image */
+.course-title{
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.course-image {
+    max-width: 15%; 
+    height: auto; 
+    display: block; 
+    margin: 0 auto;
+    margin-bottom: 1rem; 
+  }

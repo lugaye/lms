@@ -1,25 +1,29 @@
 // server.js
+
 const express = require('express');
 const session = require('express-session');
 const bcrypt = require('bcryptjs');
 const bodyParser = require('body-parser');
 const mysql = require('mysql');
 const { check, validationResult } = require('express-validator');
+
 const app = express();
 
 // Configure session middleware
-app.use(session({
-    secret: 'secret-key',
-    resave: false,
-    saveUninitialized: true
-}));
+app.use(
+    session({
+        secret: 'secret-key',
+        resave: false,
+        saveUninitialized: true,
+    })
+);
 
 // Create MySQL connection
 const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: '',
-    database: 'learning_management'
+    password: '5xqnsZfx@sql',
+    database: 'learning_management',
 });
 
 // Connect to MySQL
@@ -33,134 +37,201 @@ connection.connect((err) => {
 
 // Serve static files from the default directory
 app.use(express.static(__dirname));
-
-// Set up middleware to parse incoming JSON data
 app.use(express.json());
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(bodyParser.urlencoded({ extended: true }));
 
-// Define routes
-app.get('/', (req, res) => {
-    res.sendFile(__dirname + '/index.html');
-});
-
-
-  
-// Define a User representation for clarity
+// Define User representation
 const User = {
-    tableName: 'users', 
-    createUser: function(newUser, callback) {
+    tableName: 'users',
+    createUser: function (newUser, callback) {
         connection.query('INSERT INTO ' + this.tableName + ' SET ?', newUser, callback);
-    },  
-    getUserByEmail: function(email, callback) {
-        connection.query('SELECT * FROM ' + this.tableName + ' WHERE email = ?', email, callback);
     },
-    getUserByUsername: function(username, callback) {
-        connection.query('SELECT * FROM ' + this.tableName + ' WHERE username = ?', username, callback);
-    }
+    getUserByUsername: function (username, callback) {
+        connection.query('SELECT * FROM ' + this.tableName + ' WHERE username = ?', [username], callback);
+    },
+    getUserByEmail: function (email, callback) {
+        connection.query('SELECT * FROM ' + this.tableName + ' WHERE email = ?', [email], callback);
+    },
 };
 
 // Registration route
-app.post('/register', [
-    // Validate email and username fields
-    check('email').isEmail(),
-    check('username').isAlphanumeric().withMessage('Username must be alphanumeric'),
+app.post('/register', async (req, res) => {
+    const { username, password, full_name, email } = req.body;
 
-    // Custom validation to check if email and username are unique
-    check('email').custom(async (value) => {
-        const user = await User.getUserByEmail(value);
-        if (user) {
-            throw new Error('Email already exists');
-        }
-    }),
-    check('username').custom(async (value) => {
-        const user = await User.getUserByUsername(value);
-        if (user) {
-            throw new Error('Username already exists');
-        }
-    }),
-], async (req, res) => {
-    // Check for validation errors
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
+    // Validate input
+    if (!username || !password || !email || !full_name) {
+        return res.status(400).json({ error: 'All fields are required.' });
     }
 
-    // Hash the password
-    const saltRounds = 10;
-    const hashedPassword = await bcrypt.hash(req.body.password, saltRounds);
+    // Check if the username or email already exists
+    User.getUserByUsername(username, (err, users) => {
+        if (err) return res.status(500).json({ error: 'Database error.' });
+        if (users.length > 0) return res.status(400).json({ error: 'Username already exists.' });
 
-    // Create a new user object
-    const newUser = {
-        email: req.body.email,
-        username: req.body.username,
-        password: hashedPassword,
-        full_name: req.body.full_name
-    };
+        User.getUserByEmail(email, async (err, emails) => {
+            if (err) return res.status(500).json({ error: 'Database error.' });
+            if (emails.length > 0) return res.status(400).json({ error: 'Email already exists.' });
 
-    // Insert user into MySQL
-    User.createUser(newUser, (error, results, fields) => {
-        if (error) {
-          console.error('Error inserting user: ' + error.message);
-          return res.status(500).json({ error: error.message });
-        }
-        console.log('Inserted a new user with id ' + results.insertId);
-        res.status(201).json(newUser);
-      });
+            // Hash the password and create the new user
+            const hashedPassword = await bcrypt.hash(password, 10);
+
+            const newUser = {
+                username,
+                password: hashedPassword,
+                full_name,
+                email,
+            };
+
+            User.createUser(newUser, (err) => {
+                if (err) return res.status(500).json({ error: 'Error creating user.' });
+                res.status(201).json({ success: 'Registration successful.' });
+            });
+        });
+    });
 });
 
 // Login route
 app.post('/login', (req, res) => {
     const { username, password } = req.body;
-    // Retrieve user from database
-    connection.query('SELECT * FROM users WHERE username = ?', [username], (err, results) => {
-        if (err) throw err;
-        if (results.length === 0) {
-            res.status(401).send('Invalid username or password');
-        } else {
-            const user = results[0];
-            // Compare passwords
-            bcrypt.compare(password, user.password, (err, isMatch) => {
-                if (err) throw err;
-                if (isMatch) {
-                    // Store user in session
-                    req.session.user = user;
-                    res.send('Login successful');
-                } else {
-                    res.status(401).send('Invalid username or password');
-                }
-            });
+
+    User.getUserByUsername(username, (err, users) => {
+        if (err) return res.status(500).json({ error: 'Database error.' });
+        if (users.length === 0) return res.status(401).json({ error: 'Invalid username or password.' });
+
+        const user = users[0];
+
+        bcrypt.compare(password, user.password, (err, isMatch) => {
+            if (err) return res.status(500).json({ error: 'Error during password check.' });
+            if (isMatch) {
+                // Set session and redirect
+                req.session.user = user;
+                res.status(200).json({ success: 'Login successful.' });
+            } else {
+                res.status(401).json({ error: 'Invalid username or password.' });
+            }
+        });
+    });
+});
+
+// Route to get user information (e.g., for the dashboard)
+app.get('/get-user-info', (req, res) => {
+    if (!req.session.user) {
+        return res.status(403).json({ error: 'User not logged in.' });
+    }
+
+    res.json({
+        username: req.session.user.username,
+        full_name: req.session.user.full_name,
+        email: req.session.user.email,
+    });
+});
+// route for getting all courses
+// Define a route to get all courses
+// Endpoint to fetch all courses
+app.get('/courses', (req, res) => {
+    connection.query('SELECT * FROM courses', (err, results) => {
+        if (err) {
+            console.error('Error fetching courses:', err);
+            return res.status(500).json({ error: 'Internal server error' });
         }
+
+        res.json(results); // Return all courses as JSON
+    });
+});
+//details
+app.get('/courses/:id', (req, res) => {
+    const courseId = req.params.id; // Get course ID from URL parameter
+
+    connection.query('SELECT * FROM courses WHERE id = ?', [courseId], (err, results) => {
+        if (err) {
+            console.error('Error fetching course details:', err);
+            return res.status(500).json({ error: 'Internal server error' });
+        }
+
+        if (results.length === 0) {
+            return res.status(404).json({ error: 'Course not found' }); // Handle course not found
+        }
+
+        res.json(results[0]); // Return course details
+    });
+});
+//--------------------------------------------------------//
+//-- Get user info--//
+app.get('/get-user-info', (req, res) => {
+    if (!req.session.user) {
+        return res.status(403).json({ error: 'User not logged in.' });
+    }
+
+    // Return the user's information from the session
+    res.json({
+        username: req.session.user.username,
+        full_name: req.session.user.full_name,
+    });
+});
+//-----------------------------------------------------//
+app.post('/enroll-course', (req, res) => {
+    const userId = req.session.user.id; // Get the user ID from the session
+    const { course_id, course_name } = req.body; // Get course details from the request body
+
+    const query = 'INSERT INTO my_courses (user_id, course_id, course_name) VALUES (?, ?, ?)';
+
+    connection.query(query, [userId, course_id, course_name], (err) => {
+        if (err) {
+            console.error('Error enrolling in course:', err);
+            return res.status(500).json({ error: 'Error enrolling in course' });
+        }
+
+        res.json({ success: 'Successfully enrolled in the course' });
     });
 });
 
-// Logout route
-app.post('/logout', (req, res) => {
-    req.session.destroy();
-    res.send('Logout successful');
-});
+app.delete('/drop-course', (req, res) => {
+    const userId = req.session.user.id; // Get the user ID from the session
+    const { course_id } = req.body; // Get course ID from the request body
 
-//Dashboard route
-app.get('/dashboard', (req, res) => {
-    // Assuming you have middleware to handle user authentication and store user information in req.user
-    const userFullName = req.user.full_name;
-    res.render('dashboard', { fullName: userFullName });
-});
+    const query = 'DELETE FROM my_courses WHERE user_id = ? AND course_id = ?';
 
-// Route to retrieve course content
-app.get('/course/:id', (req, res) => {
-    const courseId = req.params.id;
-    const sql = 'SELECT * FROM courses WHERE id = ?';
-    db.query(sql, [courseId], (err, result) => {
-      if (err) {
-        throw err;
-      }
-      // Send course content as JSON response
-      res.json(result);
+    connection.query(query, [userId, course_id], (err) => {
+        if (err) {
+            console.error('Error dropping course:', err);
+            return res.status(500).json({ error: 'Error dropping course' });
+        }
+
+        res.json({ success: 'Successfully dropped the course' });
     });
-  });
+});
 
+// Get enrolled courses//
+// Endpoint to fetch all courses
+app.get('/enrolled_courses', (req, res) => {
+    connection.query('SELECT * FROM my_courses', (err, results) => {
+        if (err) {
+            console.error('Error fetching enrolled courses:', err);
+            return res.status(500).json({ error: 'Internal server error' });
+        }
+
+        res.json(results); // Return all courses as JSON
+    });
+});
+
+//-----------------------------------------------------//
+// Endpoint to get courses for a specific user
+// Endpoint to get selected courses for the logged-in user
+app.get('/my-courses', (req, res) => {
+    const userId = req.session.user.id; // Retrieve user ID from the session
+
+    const query = 'SELECT course_id, course_name FROM my_courses WHERE user_id = ?';
+
+    connection.query(query, [userId], (err, results) => {
+        if (err) {
+            console.error('Error fetching user courses:', err);
+            return res.status(500).json({ error: 'Error fetching courses' });
+        }
+
+        res.json(results); // Return selected courses for the user
+    });
+});
 // Start server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

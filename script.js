@@ -1,207 +1,306 @@
-// scripts.js
 document.addEventListener('DOMContentLoaded', () => {
-    const registerForm = document.getElementById('register-form');
-    const loginForm = document.getElementById('login-form');
-    const logoutForm = document.getElementById('logout-form');
+    const courseList = document.getElementById("courseList"); // Section for course cards
+    const courseDetails = document.getElementById("courseDetails"); // Section for course details
 
-    registerForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const formData = new FormData(registerForm);
-        const username = formData.get('username');
-        const password = formData.get('password');
-        const email = formData.get('email');
-        const full_name = formData.get('full_name');
-        try {
-            const response = await fetch('/register', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ username, password, email, full_name })
+    // Function to fetch all courses
+    function fetchCourses() {
+        fetch('/courses')
+            .then(response => response.json())
+            .then(courses => {
+                displayCourses(courses); // Display all courses
+            })
+            .catch(error => {
+                console.error('Error fetching courses:', error);
+                courseList.innerHTML = "<p>Could not load courses. Try again later.</p>"; // Error handling
             });
-            if (response.ok) {
-                alert('Registration successful');
-            } else {
-                alert('Registration failed');
-            }
-        } catch (error) {
-            console.error('Error:', error);
-        }
-    });
-
-    loginForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const formData = new FormData(loginForm);
-        const username = formData.get('username');
-        const password = formData.get('password');
-        try {
-            const response = await fetch('/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ username, password })
-            });
-            if (response.ok) {
-                alert('Login successful');
-            } else {
-                alert('Invalid username or password');
-            }
-        } catch (error) {
-            console.error('Error:', error);
-        }
-    });
-
-    logoutForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        try {
-            const response = await fetch('/logout', {
-                method: 'POST'
-            });
-            if (response.ok) {
-                alert('Logout successful');
-            } else {
-                alert('Logout failed');
-            }
-        } catch (error) {
-            console.error('Error:', error);
-        }
-    });
-
-    // Check if the current page is the course content page
-    if (window.location.pathname === '/course-content') {
-        // Call the fetchCourseContent function
-        fetchCourseContent();
     }
 
-     // Check if the current page is the course content page
-    if (window.location.pathname === '/leader-board') {
-        // Fetch course content from server
-        fetchLeaderboardData();
+    // Function to display the list of courses
+    function displayCourses(courses) {
+        courseList.innerHTML = ""; // Clear existing content
+
+        courses.forEach(course => {
+            const courseCard = document.createElement("div"); // Create a card for each course
+            courseCard.classList.add("course-card");
+
+            courseCard.innerHTML = `
+                
+                <h4>${course.name}</h4>
+                
+            `;
+
+            // Event listener to fetch course details on click
+            courseCard.addEventListener("click", () => {
+                fetch(`/courses/${course.id}`) // Fetch course details by ID
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`Error fetching course details: ${response.status}`);
+                        }
+                        return response.json(); // Convert to JSON
+                    })
+                    .then(courseDetail => {
+                        displayCourseDetails(courseDetail); // Display course details
+                    })
+                    .catch(error => {
+                        console.error('Error fetching course details:', error);
+                        courseDetails.innerHTML = "<p>Could not load course details. Try again later.</p>"; // Error handling
+                    });
+            });
+
+            courseList.appendChild(courseCard); // Add the course card to the list
+        });
     }
 
-    // Check if the current page is the course content page
-    if (window.location.pathname === '/dashboard') {
-        //fetch Logged in user's full name
-        fetchFullName();
+    // Function to display course details
+    function displayCourseDetails(course) { 
+        console.log('Image URL:', course.links);      
+
+        courseDetails.innerHTML = `
+            <h2 class="course-title">${course.name}</h2>
+            <img src="${course.links}" alt="${course.name} image" class="course-image">
+            <p>${course.description}</p>
+            <div class="button-container">
+                <button class="button select-button" onclick="selectCourse(${course.id}, '${course.name}')">SELECT</button>
+                <button class="button drop-button" onclick="dropCourse(${course.id})">DROP</button>
+            </div>
+        `;
+    }
+
+    fetchCourses(); // Fetch all courses when the page loads
+
+
+});
+
+ ///--------------------------------------------------------------------------------------------//
+ document.addEventListener('DOMContentLoaded', () => {
+    const sidebar = document.querySelector('.sidebar'); // Sidebar element
+    const toggleButton = document.querySelector('#toggle-sidebar'); // The button to toggle the sidebar
+
+    if (toggleButton) {
+        toggleButton.addEventListener('click', () => {
+            sidebar.classList.toggle('expanded');
+            sidebar.classList.toggle('collapsed');
+        });
     }
 });
 
-function fetchCourseContent() {
-    // Get course ID from URL parameter (assuming course ID is passed in the URL)
-    const urlParams = new URLSearchParams(window.location.search);
-    const courseId = urlParams.get('id');
 
-    // Make AJAX request to fetch course content from server
-    fetch(`/course/${courseId}`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
+
+
+
+
+//-----------------------------------------------------------------------------------------------//
+document.addEventListener('DOMContentLoaded', () => {
+    const loginForm = document.getElementById('loginForm');
+    const signupForm = document.getElementById('signupForm');
+    const showSignupButton = document.getElementById("showSignupButton");
+    const backToLoginButton = document.getElementById("backToLoginButton");
+
+    // Check if loginForm exists before adding event listener
+    if (loginForm) {
+        // Login event handler
+        loginForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const loginUsername = document.getElementById("loginUsername").value;
+            const loginPassword = document.getElementById("loginPassword").value;
+
+            try {
+                const response = await fetch('/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        username: loginUsername,
+                        password: loginPassword,
+                    }),
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    // Redirect to dashboard on successful login
+                    window.location.href = 'dashboard.html';
+                } else {
+                    // Display error message
+                    document.getElementById('loginMessage').innerText = result.error;
+                }
+            } catch (error) {
+                console.error('Error during login:', error);
+                document.getElementById('loginMessage').innerText = 'An error occurred during login. Please try again later.';
             }
-            return response.json();
-        })
-        .then(data => {
-            // Display course content on the page
-            displayCourseContent(data);
-        })
-        .catch(error => {
-            console.error('Error fetching course content:', error);
         });
-}
+    }
 
-function displayCourseContent(courseContent) {
-    // Get the course name element
-    const courseNameElement = document.getElementById('course-name');
-    // Set the course name
-    courseNameElement.textContent = courseContent.name;
+    // Check if signupForm exists before adding event listener
+    if (signupForm) {
+        // Signup event handler
+        signupForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
 
-    // Get the course content element
-    const courseContentElement = document.getElementById('course-content');
-    // Clear previous content
-    courseContentElement.innerHTML = '';
+            const signupUsername = document.getElementById("signupUsername").value;
+            const signupFullname = document.getElementById("signupFullname").value;
+            const signupEmail = document.getElementById("signupEmail").value;
+            const signupPassword = document.getElementById("signupPassword").value;
 
-    // Loop through the modules and display them
-    courseContent.modules.forEach(module => {
-        const moduleSection = document.createElement('section');
-        moduleSection.innerHTML = `
-            <h2>${module.title}</h2>
-            <p>${module.description}</p>
-            <!-- Add more elements as needed (e.g., videos, quizzes) -->
-        `;
-        courseContentElement.appendChild(moduleSection);
+            try {
+                // POST request to /register with JSON data
+                const response = await fetch('/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        username: signupUsername,
+                        full_name: signupFullname,
+                        email: signupEmail,
+                        password: signupPassword,
+                    }),
+                });
+
+                if (response.ok) { // If the response is successful
+                    document.getElementById("signupMessage").innerText = "Signup successful. Redirecting to dashboard...";
+                    setTimeout(() => {
+                        window.location.href = 'dashboard.html'; // Redirect to the dashboard after 2 seconds
+                    }, 2000);
+                } else {
+                    const errorResult = await response.json();
+                    document.getElementById("signupMessage").innerText = errorResult.error;
+                }
+            } catch (error) {
+                console.error('Error during signup:', error); // Log the specific error
+                document.getElementById("signupMessage").innerText = "An error occurred. Please try again later.";
+            }
+        });
+    }
+
+    // Add event listeners for switching between login and signup sections
+    if (showSignupButton) {
+        showSignupButton.addEventListener("click", () => {
+            const loginSection = document.getElementById("loginSection");
+            const signupSection = document.getElementById("signupSection");
+
+            if (loginSection) {
+                loginSection.style.display = "none";
+            }
+
+            if (signupSection) {
+                signupSection.style.display = "block";
+            }
+        });
+    } 
+
+    if (backToLoginButton) {
+        backToLoginButton.addEventListener("click", () => {
+            const signupSection = document.getElementById("signupSection");
+            const loginSection = document.getElementById("loginSection");
+
+            if (signupSection) {
+                signupSection.style.display = "none";
+            }
+
+            if (loginSection) {
+                loginSection.style.display = "block";
+            }
+        });
+    }
+});
+
+//-----------------------------------------------------------//
+//-- Get user info -- //
+document.addEventListener('DOMContentLoaded', () => {
+    // Fetch the user's information and update the dashboard
+    function fetchUserInfo() {
+        fetch('/get-user-info') // Fetch user information from the server
+            .then(response => response.json())
+            .then(user => {
+                // Update the welcome message with the user's full name
+                const userFullNameSpan = document.getElementById("user-fullname");
+                if (userFullNameSpan) {
+                    userFullNameSpan.innerText = user.full_name || user.username; // Display the full name or username
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching user info:', error);
+            });
+    }
+
+    fetchUserInfo(); // Fetch user information when the page loads
+});
+
+//------------------------------------------------------------//
+// profile //
+document.addEventListener('DOMContentLoaded', () => {
+    const profileDropdownToggle = document.getElementById("profile-dropdown-toggle");
+    const profileDropdownMenu = document.getElementById("profile-dropdown-menu");
+
+    if (profileDropdownToggle) {
+        profileDropdownToggle.addEventListener('click', () => {
+            const isHidden = profileDropdownMenu.style.display === "none" || !profileDropdownMenu.style.display;
+            profileDropdownMenu.style.display = isHidden ? "block" : "none"; // Toggle visibility
+        });
+    }
+
+    // Hide the dropdown menu when clicking outside
+    document.addEventListener('click', (event) => {
+        if (!profileDropdownToggle.contains(event.target) && !profileDropdownMenu.contains(event.target)) {
+            profileDropdownMenu.style.display = "none"; // Hide the dropdown
+        }
+    });
+});
+
+function selectCourse(courseId, courseName) {
+    fetch('/enroll-course', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            course_id: courseId,
+            course_name: courseName,
+        }),
+    })
+    .then(response => response.json()) // Get the JSON data
+    .then(result => { // This is where we handle the parsed result
+        if (result.success) { // Check for success in the result, not response
+            alert(result.success); // Display success message
+        } else {
+            console.error(result.error); // Log error message
+            alert('Error enrolling in course. Please try again.'); // Display a generic error message
+        }
+    })
+    .catch((error) => {
+        console.error('Error enrolling in course:', error);
+        alert('An error occurred. Please try again later.');
     });
 }
 
-function fetchLeaderboardData() {
-    // Make AJAX request to fetch leaderboard data from server
-    fetch('/leaderboard')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            // Display leaderboard data on the page
-            displayLeaderboardData(data);
-        })
-        .catch(error => {
-            console.error('Error fetching leaderboard data:', error);
-        });
-}
-
-function displayLeaderboardData(leaderboardData) {
-    // Get the leaderboard element
-    const leaderboardElement = document.getElementById('leaderboard');
-    // Clear previous content
-    leaderboardElement.innerHTML = '';
-
-    // Create a table to display leaderboard data
-    const table = document.createElement('table');
-    table.innerHTML = `
-        <tr>
-            <th>Rank</th>
-            <th>Name</th>
-            <th>Score</th>
-        </tr>
-    `;
-
-    // Loop through the leaderboard data and add rows to the table
-    leaderboardData.forEach((entry, index) => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>${index + 1}</td>
-            <td>${entry.name}</td>
-            <td>${entry.score}</td>
-        `;
-        table.appendChild(row);
+// delete selected //
+function dropCourse(courseId) {
+    // Send a DELETE request to the server to remove the specified course
+    fetch('/drop-course', {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            course_id: courseId, // The course to drop
+        }),
+    })
+    .then((response) => response.json()) // Parse the JSON response
+    .then((result) => {
+        // Check for successful response
+        if (result.success) {
+            alert(result.success); // Display success message
+        } else {
+            // If there was an error in the result
+            console.error(result.error);
+            alert('Error dropping course. Please try again.'); // Display a user-friendly message
+        }
+    })
+    .catch((error) => {
+        // Catch unexpected errors and log them
+        console.error('Error dropping course:', error);
+        alert('An unexpected error occurred. Please try again later.'); // Provide general feedback
     });
-
-    // Append the table to the leaderboard element
-    leaderboardElement.appendChild(table);
-}
-
-function fetchFullName() {
-    // Make AJAX request to fetch the user's full name from the server
-    fetch('/get-fullname')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            // Display the user's full name on the dashboard
-            displayFullName(data.fullName);
-        })
-        .catch(error => {
-            console.error('Error fetching user full name:', error);
-        });
-}
-
-function displayFullName(fullName) {
-    // Get the element where the full name will be displayed
-    const fullNameElement = document.getElementById('user-fullname');
-    // Set the inner HTML of the element to the user's full name
-    fullNameElement.textContent = fullName;
 }
