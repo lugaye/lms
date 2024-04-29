@@ -4,16 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Include your CSS file -->
+    <link rel="stylesheet" href="style.css"> <!-- Include your CSS file -->
 </head>
 <body>
     <header>
         <h1>Welcome to Your Dashboard</h1>
         <nav>
             <ul>
-                <li><a href="/leaderboard">Leaderboard</a></li>
+                <li><a href="/">Home</a></li>
                 <li><a href="/course-content">Course Content</a></li>
-                <!-- Add more navigation links as needed -->
+                <li><a href="/leaderboard">Leaderboard</a></li>
+                <li><a href="/dashboard">Dashboard</a></li>
             </ul>
         </nav>
     </header>
@@ -21,6 +22,16 @@
         <section class="welcome-message">
             <h2>Hello, <span id="user-fullname"></span>!</h2>
             <p>Welcome to your personalized dashboard.</p>
+        </section>
+        <section>
+            <h2>Select Your Preferred Courses</h2>
+            <form id="course-selection-form">
+                <label><input type="checkbox" name="courses" value="1"> Introduction to HTML</label><br>
+                <label><input type="checkbox" name="courses" value="2"> CSS Fundamentals</label><br>
+                <label><input type="checkbox" name="courses" value="3"> JavaScript Basics</label><br>
+                <!-- Add more checkboxes as needed -->
+                <button type="submit">Submit</button>
+            </form>
         </section>
     </main>
     <footer>
