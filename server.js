@@ -1,4 +1,3 @@
-// server.js
 const express = require('express');
 const session = require('express-session');
 const bcrypt = require('bcryptjs');
@@ -148,46 +147,4 @@ app.post('/dashboard', (req, res) => {
         }
 
         // Insert the selected courses into the user_courses table
-        const insertQuery = 'INSERT INTO user_courses (user_id, course_id) VALUES ?';
-        const values = selectedCourses.map(courseId => [userId, courseId]);
-        connection.query(insertQuery, [values], (error, result) => {
-            if (error) {
-                console.error('Error inserting user courses: ' + error.message);
-                return res.status(500).json({ error: error.message });
-            }
-
-            // Redirect or render the dashboard page with the updated course selection
-            res.redirect('/dashboard');
-        });
-    });
-});
-
-// Define a Course representation
-const Course = {
-    tableName: 'courses',
-    getAllCourses: function (callback) {
-        connection.query('SELECT * FROM ' + this.tableName, callback);
-    }
-};
-
-// Dashboard route
-app.get('/dashboard', async (req, res) => {
-    // Assuming you have middleware to handle user authentication and store user information in req.user
-    const userFullName = req.user.full_name;
-
-    // Get all available courses
-    Course.getAllCourses((error, courses) => {
-        if (error) {
-            console.error('Error getting courses: ' + error.message);
-            return res.status(500).json({ error: error.message });
-        }
-
-        res.render('dashboard', { fullName: userFullName, courses: courses });
-    });
-});
-
-// Start server
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-});
+        const insertQuery =
