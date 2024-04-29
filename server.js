@@ -18,8 +18,8 @@ app.use(session({
 const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: '',
-    database: 'learning_management'
+    password: 'root123',
+    database: 'sys'
 });
 
 // Connect to MySQL
@@ -109,6 +109,30 @@ app.post('/register', [
         res.status(201).json(newUser);
       });
 });
+// Endpoint to handle course selection
+app.post('/select-course', (req, res) => {
+    const { userId, courseId } = req.body;
+    // Validate input data
+    // Insert into user_courses table
+    // Send response
+});
+
+// Endpoint to retrieve selected courses for a specific user
+app.get('/user-courses/:userId', (req, res) => {
+    const userId = req.params.userId;
+    // Retrieve selected courses for the user from the database
+    // Send response with the selected courses
+});
+
+// Fetch selected courses for the logged-in user
+fetch(`/user-courses/${userId}`)
+    .then(response => response.json())
+    .then(data => {
+        // Display selected courses on the page
+    })
+    .catch(error => console.error('Error fetching selected courses:', error));
+
+
 
 // Login route
 app.post('/login', (req, res) => {
@@ -162,7 +186,7 @@ app.get('/course/:id', (req, res) => {
   });
 
 // Start server
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3015;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
