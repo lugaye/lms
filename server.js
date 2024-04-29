@@ -40,13 +40,6 @@ app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Define routes
-app.get('/', (req, res) => {
-    res.sendFile(__dirname + '/index.html');
-});
-
-
-  
 // Define a User representation for clarity
 const User = {
     tableName: 'users', 
@@ -141,25 +134,57 @@ app.post('/logout', (req, res) => {
     res.send('Logout successful');
 });
 
-//Dashboard route
-app.get('/dashboard', (req, res) => {
-    // Assuming you have middleware to handle user authentication and store user information in req.user
-    const userFullName = req.user.full_name;
-    res.render('dashboard', { fullName: userFullName });
+// Handle course selection form submission
+app.post('/dashboard', (req, res) => {
+    const selectedCourses = req.body.courses; // Array of selected course IDs
+
+    // Assuming you have a table named user_courses with columns user_id and course_id
+    // Update the user's course selections in the database
+    const userId = req.session.user.id; // Assuming you have user ID stored in the session
+    connection.query('DELETE FROM user_courses WHERE user_id = ?', userId, (error, result) => {
+        if (error) {
+            console.error('Error deleting user courses: ' + error.message);
+            return res.status(500).json({ error: error.message });
+        }
+
+        // Insert the selected courses into the user_courses table
+        const insertQuery = 'INSERT INTO user_courses (user_id, course_id) VALUES ?';
+        const values = selectedCourses.map(courseId => [userId, courseId]);
+        connection.query(insertQuery, [values], (error, result) => {
+            if (error) {
+                console.error('Error inserting user courses: ' + error.message);
+                return res.status(500).json({ error: error.message });
+            }
+
+            // Redirect or render the dashboard page with the updated course selection
+            res.redirect('/dashboard');
+        });
+    });
 });
 
-// Route to retrieve course content
-app.get('/course/:id', (req, res) => {
-    const courseId = req.params.id;
-    const sql = 'SELECT * FROM courses WHERE id = ?';
-    db.query(sql, [courseId], (err, result) => {
-      if (err) {
-        throw err;
-      }
-      // Send course content as JSON response
-      res.json(result);
+// Define a Course representation
+const Course = {
+    tableName: 'courses',
+    getAllCourses: function (callback) {
+        connection.query('SELECT * FROM ' + this.tableName, callback);
+    }
+};
+
+// Dashboard route
+app.get('/dashboard', async (req, res) => {
+    // Assuming you have middleware to handle user authentication and store user information in req.user
+    const userFullName = req.user.full_name;
+
+    // Get all available courses
+    Course.getAllCourses((error, courses) => {
+        if (error) {
+            console.error('Error getting courses: ' + error.message);
+            return res.status(500).json({ error: error.message });
+        }
+
+        res.render('dashboard', { fullName: userFullName, courses: courses });
     });
-  });
+});
 
 // Start server
 const PORT = process.env.PORT || 3000;
