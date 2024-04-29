@@ -18,7 +18,7 @@ app.use(session({
 const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: '',
+    password: 'Password1',
     database: 'learning_management'
 });
 
@@ -69,38 +69,38 @@ app.post('/register', [
 
     // Custom validation to check if email and username are unique
     check('email').custom(async (value) => {
-        const user = await User.getUserByEmail(value);
-        if (user) {
-            throw new Error('Email already exists');
-        }
-    }),
-    check('username').custom(async (value) => {
-        const user = await User.getUserByUsername(value);
-        if (user) {
-            throw new Error('Username already exists');
-        }
-    }),
-], async (req, res) => {
-    // Check for validation errors
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
-    }
+                const user = await User.getUserByEmail(value);
+                if (user) {
+                    throw new Error('Email already exists');
+                }
+            }),
+            check('username').custom(async (value) => {
+                const user = await User.getUserByUsername(value);
+                if (user) {
+                    throw new Error('Username already exists');
+                }
+            }),
+        ], async (req, res) => {
+            // Check for validation errors
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(400).json({ errors: errors.array() });
+            }
 
-    // Hash the password
-    const saltRounds = 10;
-    const hashedPassword = await bcrypt.hash(req.body.password, saltRounds);
+            // Hash the password
+            const saltRounds = 10;
+            const hashedPassword = await bcrypt.hash(req.body.password, saltRounds);
 
-    // Create a new user object
-    const newUser = {
-        email: req.body.email,
-        username: req.body.username,
-        password: hashedPassword,
-        full_name: req.body.full_name
-    };
+            // Create a new user object
+            const newUser = {
+                email: req.body.email,
+                username: req.body.username,
+                password: hashedPassword,
+                full_name: req.body.full_name
+            };
 
-    // Insert user into MySQL
-    User.createUser(newUser, (error, results, fields) => {
+            // Insert user into MySQL
+            User.createUser(newUser, (error, results) => {
         if (error) {
           console.error('Error inserting user: ' + error.message);
           return res.status(500).json({ error: error.message });
@@ -146,6 +146,22 @@ app.get('/dashboard', (req, res) => {
     // Assuming you have middleware to handle user authentication and store user information in req.user
     const userFullName = req.user.full_name;
     res.render('dashboard', { fullName: userFullName });
+});
+
+// Leaderboard route
+app.get('/leaderboard', (req, res) => {
+    if (!req.user) {
+        return res.status(401).send('log in to view the leaderboard');
+    }
+
+    const sql = 'SELECT * FROM leaderboard ORDER BY score DESC';
+    db.query(sql, (err, result) => {
+        if (err) {
+            throw err;
+        }
+        // Send leaderboard data as JSON response
+        res.json(result);
+    });
 });
 
 // Route to retrieve course content

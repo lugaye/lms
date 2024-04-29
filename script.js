@@ -43,7 +43,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 body: JSON.stringify({ username, password })
             });
             if (response.ok) {
-                alert('Login successful');
+                // alert('Login successful');
+                window.location.href='/dashboard.html';
             } else {
                 alert('Invalid username or password');
             }
