@@ -16,7 +16,7 @@ app.use(session({
 
 // Create MySQL connection
 const connection = mysql.createConnection({
-    host: 'localhost',
+    host: 'Duke',
     user: 'root',
     password: '',
     database: 'learning_management'
@@ -61,7 +61,7 @@ const User = {
     }
 };
 
-// Registration route
+// Registration route  //app.post(),async(){}
 app.post('/register', [
     // Validate email and username fields
     check('email').isEmail(),
@@ -162,7 +162,7 @@ app.get('/course/:id', (req, res) => {
   });
 
 // Start server
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3306;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
