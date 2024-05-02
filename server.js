@@ -45,8 +45,6 @@ app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
 });
 
-
-  
 // Define a User representation for clarity
 const User = {
     tableName: 'users', 
@@ -61,7 +59,7 @@ const User = {
     }
 };
 
-// Registration route
+// Define routes
 app.post('/register', [
     // Validate email and username fields
     check('email').isEmail(),
@@ -141,25 +139,34 @@ app.post('/logout', (req, res) => {
     res.send('Logout successful');
 });
 
-//Dashboard route
-app.get('/dashboard', (req, res) => {
-    // Assuming you have middleware to handle user authentication and store user information in req.user
-    const userFullName = req.user.full_name;
-    res.render('dashboard', { fullName: userFullName });
+// Course selection route
+app.post('/select-course', (req, res) => {
+    const { userId, courseId } = req.body;
+    // Insert into user_courses table
+    connection.query('INSERT INTO user_courses (user_id, course_id) VALUES (?, ?)', [userId, courseId], (err, result) => {
+        if (err) {
+            console.error('Error selecting course:', err);
+            res.status(500).json({ error: 'Error selecting course' });
+        } else {
+            res.status(200).json({ message: 'Course selected successfully' });
+        }
+    });
 });
 
-// Route to retrieve course content
-app.get('/course/:id', (req, res) => {
-    const courseId = req.params.id;
-    const sql = 'SELECT * FROM courses WHERE id = ?';
-    db.query(sql, [courseId], (err, result) => {
-      if (err) {
-        throw err;
-      }
-      // Send course content as JSON response
-      res.json(result);
+// Retrieve selected courses for a user
+app.get('/user-courses/:userId', (req, res) => {
+    const userId = req.params.userId;
+    // Query user_courses table to get selected courses for the user
+    connection.query('SELECT course_id FROM user_courses WHERE user_id = ?', [userId], (err, result) => {
+        if (err) {
+            console.error('Error retrieving user courses:', err);
+            res.status(500).json({ error: 'Error retrieving user courses' });
+        } else {
+            const courseIds = result.map(row => row.course_id);
+            res.status(200).json({ courses: courseIds });
+        }
     });
-  });
+});
 
 // Start server
 const PORT = process.env.PORT || 3000;
