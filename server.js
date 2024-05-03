@@ -61,7 +61,7 @@ const User = {
     }
 };
 
-// Registration route
+// Registration route  //app.post(),async(){}
 app.post('/register', [
     // Validate email and username fields
     check('email').isEmail(),
@@ -100,14 +100,14 @@ app.post('/register', [
     };
 
     // Insert user into MySQL
-    User.createUser(newUser, (error, results, fields) => {
-        if (error) {
-          console.error('Error inserting user: ' + error.message);
-          return res.status(500).json({ error: error.message });
-        }
-        console.log('Inserted a new user with id ' + results.insertId);
-        res.status(201).json(newUser);
-      });
+User.createUser(newUser, (error, results, fields) => {
+    if (error) {
+        console.error('Error inserting user: ' + error.message);
+        return res.status(500).json({ error: error.message });
+    }
+    console.log('Inserted a new user with id ' + results.insertId);
+    res.status(201).json(newUser);});
+
 });
 
 // Login route
@@ -162,7 +162,7 @@ app.get('/course/:id', (req, res) => {
   });
 
 // Start server
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });

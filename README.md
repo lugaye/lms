@@ -84,7 +84,7 @@ node server.js
 ### Create a `script.js` file to handle frontend interactions.
 
 ## Step 4: Testing
-Open your web browser and navigate to http://localhost:3000.
+Open your web browser and navigate to http://localhost:8080.
 
 # Hackathon Instructions
 Finish up the project by: 
