@@ -205,3 +205,30 @@ function displayFullName(fullName) {
     // Set the inner HTML of the element to the user's full name
     fullNameElement.textContent = fullName;
 }
+// Add an event listener to the form submission
+document.addEventListener('DOMContentLoaded', () => {
+    const courseSelectionForm = document.getElementById('course-selection-form');
+
+    courseSelectionForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = new FormData(courseSelectionForm);
+        const selectedCourses = formData.getAll('courses');
+
+        try {
+            const response = await fetch('/save-courses', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ courses: selectedCourses })
+            });
+            if (response.ok) {
+                alert('Courses saved successfully');
+            } else {
+                alert('Failed to save courses');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    });
+});

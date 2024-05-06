@@ -1,4 +1,3 @@
-// server.js
 const express = require('express');
 const session = require('express-session');
 const bcrypt = require('bcryptjs');
@@ -45,14 +44,12 @@ app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
 });
 
-
-  
 // Define a User representation for clarity
 const User = {
-    tableName: 'users', 
+    tableName: 'users',
     createUser: function(newUser, callback) {
         connection.query('INSERT INTO ' + this.tableName + ' SET ?', newUser, callback);
-    },  
+    },
     getUserByEmail: function(email, callback) {
         connection.query('SELECT * FROM ' + this.tableName + ' WHERE email = ?', email, callback);
     },
@@ -102,12 +99,12 @@ app.post('/register', [
     // Insert user into MySQL
     User.createUser(newUser, (error, results, fields) => {
         if (error) {
-          console.error('Error inserting user: ' + error.message);
-          return res.status(500).json({ error: error.message });
+            console.error('Error inserting user: ' + error.message);
+            return res.status(500).json({ error: error.message });
         }
         console.log('Inserted a new user with id ' + results.insertId);
         res.status(201).json(newUser);
-      });
+    });
 });
 
 // Login route
@@ -141,28 +138,12 @@ app.post('/logout', (req, res) => {
     res.send('Logout successful');
 });
 
-//Dashboard route
+// Dashboard route
 app.get('/dashboard', (req, res) => {
     // Assuming you have middleware to handle user authentication and store user information in req.user
-    const userFullName = req.user.full_name;
+    const userFullName = req.session.user.full_name;
     res.render('dashboard', { fullName: userFullName });
 });
 
 // Route to retrieve course content
-app.get('/course/:id', (req, res) => {
-    const courseId = req.params.id;
-    const sql = 'SELECT * FROM courses WHERE id = ?';
-    db.query(sql, [courseId], (err, result) => {
-      if (err) {
-        throw err;
-      }
-      // Send course content as JSON response
-      res.json(result);
-    });
-  });
-
-// Start server
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-});
+app
