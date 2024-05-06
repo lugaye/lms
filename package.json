@@ -1,0 +1,21 @@
+{
+  "name": "lms",
+  "version": "1.0.0",
+  "description": "```bash\r mkdir learning-management-app\r cd learning-management-app\r ```\r ### Initialize a new Node.js project.\r ```bash\r npm init -y\r ```\r ### Install necessary dependencies.\r ```bash\r npm install express mysql ejs bcryptjs express-session express-validator\r ```",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "ejs": "^3.1.10",
+    "express": "^4.19.2",
+    "express-session": "^1.18.0",
+    "express-validator": "^7.0.1",
+    "mysql": "^2.18.1"
+  }
+}
