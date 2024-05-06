@@ -18,8 +18,8 @@ app.use(session({
 const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: '',
-    database: 'learning_management'
+    password: '40300912',
+    database: 'learning_management_system'
 });
 
 // Connect to MySQL
@@ -160,6 +160,22 @@ app.get('/course/:id', (req, res) => {
       res.json(result);
     });
   });
+
+  //route to handle form submission
+  app.get('/specialize',(req, res) =>{
+    const {fullName, email, courses} = req.body;
+
+    
+    // Insert data into specialized courses table
+    const sql = 'INSERT INTO specialization ( full_name, email, courseName) VALUES (?, ?, ?, ?)';
+    db.query(sql, [fullName, email, JSON.stringify(courses)], (err, result) => {
+        if (err) {
+            res.status(500).json({ error: 'Internal Server Error' });
+            throw err;
+        }
+        res.status(200).json({ message: 'Data inserted successfully' });
+    });
+  })
 
 // Start server
 const PORT = process.env.PORT || 3000;
