@@ -205,3 +205,27 @@ function displayFullName(fullName) {
     // Set the inner HTML of the element to the user's full name
     fullNameElement.textContent = fullName;
 }
+// Event listener for course selection
+document.querySelectorAll('.course-checkbox').forEach((checkbox) => {
+    checkbox.addEventListener('change', (event) => {
+      const courseId = event.target.dataset.courseId;
+      const isSelected = event.target.checked;
+      // Send AJAX request to server to update database
+      // Example: fetch('update_selection.php', { method: 'POST', body: JSON.stringify({ courseId, isSelected }) });
+    });
+  });
+// Fetch selected courses upon page load
+window.addEventListener('load', () => {
+    // Send AJAX request to server to fetch selected courses for the logged-in user
+    // Example: fetch('get_selected_courses.php').then(response => response.json()).then(data => displaySelectedCourses(data));
+  });
+  
+  // Function to display selected courses
+  function displaySelectedCourses(selectedCourses) {
+    const selectedCoursesDiv = document.getElementById('selected-courses');
+    selectedCoursesDiv.innerHTML = '';
+    selectedCourses.forEach((course) => {
+      selectedCoursesDiv.innerHTML += `<div>${course.name}</div>`;
+    });
+  }
+    
