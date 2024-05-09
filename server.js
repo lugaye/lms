@@ -14,6 +14,13 @@ app.use(session({
     saveUninitialized: true
 }));
 
+// Enable CORS for all origins and allow Content-Type header
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    next();
+  });
+  
 // Create MySQL connection
 const connection = mysql.createConnection({
     host: 'localhost',
@@ -44,6 +51,20 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
 });
+app.get('/course-content', (req, res) => {
+    res.sendFile(__dirname + '/course-content.html');
+});
+
+app.get('/leader-board', (req, res) => {
+    res.sendFile(__dirname + '/leader-board.html');
+});
+
+app.get('/dashboard', (req, res) => {
+    // console.log(req.session.user)
+
+    res.sendFile(__dirname + '/dashboard.html');
+});
+
 
 
   
@@ -127,6 +148,8 @@ app.post('/login', (req, res) => {
                     // Store user in session
                     req.session.user = user;
                     res.send('Login successful');
+                    // route to dashboard
+                    //  res.redirect('/dashboard')
                 } else {
                     res.status(401).send('Invalid username or password');
                 }
@@ -142,17 +165,18 @@ app.post('/logout', (req, res) => {
 });
 
 //Dashboard route
-app.get('/dashboard', (req, res) => {
-    // Assuming you have middleware to handle user authentication and store user information in req.user
-    const userFullName = req.user.full_name;
-    res.render('dashboard', { fullName: userFullName });
-});
+// app.get('/dashboard', (req, res) => {
+//     // Assuming you have middleware to handle user authentication and store user information in req.user
+//     const userFullName = req.user.full_name;
+//     res.render('dashboard', { fullName: userFullName });
+// });
 
 // Route to retrieve course content
 app.get('/course/:id', (req, res) => {
     const courseId = req.params.id;
-    const sql = 'SELECT * FROM courses WHERE id = ?';
-    db.query(sql, [courseId], (err, result) => {
+
+    const sql = 'SELECT * FROM courses ';
+    connection.query(sql, [courseId], (err, result) => {
       if (err) {
         throw err;
       }
@@ -161,6 +185,23 @@ app.get('/course/:id', (req, res) => {
     });
   });
 
+  app.get('/leaderboard', (req, res) => {
+
+    const sql = 'SELECT * FROM leaderboard ';
+    connection.query(sql, (err, result) => {
+      if (err) {
+        throw err;
+      }
+      // Send course content as JSON response
+      res.json(result);
+    });
+  });
+  app.get('/get-fullname', (req, res) => {
+  console.log(req.session.user)
+      // Send course content as JSON response
+      res.json(req.session.user);
+      
+  });
 // Start server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

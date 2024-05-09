@@ -1,9 +1,11 @@
 // scripts.js
 document.addEventListener('DOMContentLoaded', () => {
+    if (window.location.pathname === '/') {
+
     const registerForm = document.getElementById('register-form');
     const loginForm = document.getElementById('login-form');
     const logoutForm = document.getElementById('logout-form');
-
+    // const url = 'http://127.0.0.1:3000'
     registerForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const formData = new FormData(registerForm);
@@ -19,6 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 },
                 body: JSON.stringify({ username, password, email, full_name })
             });
+            console.log(username, password, email, full_name )
             if (response.ok) {
                 alert('Registration successful');
             } else {
@@ -44,6 +47,8 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             if (response.ok) {
                 alert('Login successful');
+                // redirect to dashboard
+                document.location.replace('/dashboard');
             } else {
                 alert('Invalid username or password');
             }
@@ -67,6 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Error:', error);
         }
     });
+}
 
     // Check if the current page is the course content page
     if (window.location.pathname === '/course-content') {
@@ -74,8 +80,10 @@ document.addEventListener('DOMContentLoaded', () => {
         fetchCourseContent();
     }
 
+    console.log(window.location.pathname)
      // Check if the current page is the course content page
     if (window.location.pathname === '/leader-board') {
+        console.log('leader-board')
         // Fetch course content from server
         fetchLeaderboardData();
     }
@@ -83,6 +91,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Check if the current page is the course content page
     if (window.location.pathname === '/dashboard') {
         //fetch Logged in user's full name
+        console.log('dash')
         fetchFullName();
     }
 });
@@ -121,11 +130,11 @@ function displayCourseContent(courseContent) {
     courseContentElement.innerHTML = '';
 
     // Loop through the modules and display them
-    courseContent.modules.forEach(module => {
+    courseContent.forEach(module => {
         const moduleSection = document.createElement('section');
         moduleSection.innerHTML = `
-            <h2>${module.title}</h2>
-            <p>${module.description}</p>
+            <h2>${module.name} <input type='checkbox' /></h2>
+            <p>${module.id}</p>
             <!-- Add more elements as needed (e.g., videos, quizzes) -->
         `;
         courseContentElement.appendChild(moduleSection);
@@ -192,7 +201,7 @@ function fetchFullName() {
         })
         .then(data => {
             // Display the user's full name on the dashboard
-            displayFullName(data.fullName);
+            displayFullName(data.full_name);
         })
         .catch(error => {
             console.error('Error fetching user full name:', error);
@@ -200,6 +209,7 @@ function fetchFullName() {
 }
 
 function displayFullName(fullName) {
+    // console.log(fullName)
     // Get the element where the full name will be displayed
     const fullNameElement = document.getElementById('user-fullname');
     // Set the inner HTML of the element to the user's full name

@@ -1,4 +1,6 @@
 /* styles.css */
+
+/* Body styles */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -6,25 +8,72 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    background-color: #f3f3eb;
+    /* Cream body background */
 }
 
+/* Form styles */
 form {
     margin-top: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
+    background-color: rgba(128, 128, 0, 0.3);
+    /* Olive form color with transparency */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 10px 20px 10px rgba(0, 0, 0, 0.3);
+    /* Box shadow */
 }
 
-input, button {
+input,
+button {
     margin-top: 10px;
-    padding: 5px;
+    padding: 10px;
+    width: 100%;
+    border: none;
+    border-radius: 5px;
 }
 
+input[type="text"],
+input[type="password"],
+input[type="email"] {
+    background-color: #fff;
+    /* White background for input fields */
+}
+
+button {
+    background-color: olive;
+    /* Olive background for buttons */
+    color: cream;
+    /* Cream text color for buttons */
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #7b9a45;
+    /* Darker olive on hover */
+}
+
+/* Header styles */
 header {
-    background-color: #333;
-    color: #fff;
+    background-color: rgb(190, 190, 69);
+    /* Olive header background */
+    color: cream;
+    /* Cream header text color */
     padding: 20px;
     text-align: center;
+    width: 100%;
+}
+
+/* Navigation styles */
+
+nav {
+    background-color: rgba(128, 128, 0, 0.3);
+    /* Dark gray navigation bar background */
+    padding: 10px 0;
+    /* Add some vertical padding */
 }
 
 nav ul {
@@ -38,15 +87,35 @@ nav ul li {
     margin-right: 20px;
 }
 
-main {
-    padding: 20px;
+nav ul li a {
+    color: cream;
+    /* Cream navigation link color */
+    text-decoration: none;
 }
 
-footer {
-    background-color: #333;
-    color: #fff;
+
+
+/* Main styles */
+main {
     padding: 20px;
+    width: 100%;
+}
+
+/* Footer styles */
+footer {
+    background-color: rgb(179, 179, 56);
+    /* Olive footer background */
+    color: cream;
+    /* Cream footer text color */
+    padding: 7px;
     text-align: center;
+    width: 100%;
+    bottom: 0;
+    position: fixed;
+    left: 0;
+   
+
+
 }
 
 /* Course content page styles */
@@ -71,4 +140,14 @@ iframe {
     width: 100%;
     height: 400px;
     margin-top: 20px;
+}
+
+/* h1 styles */
+h1 {
+    color: olive;
+    /* Olive color for h1 */
+    font-size: 36px;
+    /* Larger font size */
+    margin-bottom: 20px;
+    /* Add some space below the h1 */
 }
