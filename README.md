@@ -1,5 +1,10 @@
 # Learning Managment System
 
+## Preview !!
+![preview1-min](https://github.com/daniel-caleb/lms/assets/95380895/9ebc6818-d6b4-4e58-bcc1-f41c34c7d2b0)
+![preview2-min](https://github.com/daniel-caleb/lms/assets/95380895/23165fe3-8f2c-4225-8161-2f58040e117d)
+
+
 ## Step 1: Project Setup
 
 ### Create a new directory for your project and navigate into it.
