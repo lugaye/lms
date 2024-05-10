@@ -5,26 +5,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Learning Management App</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"> <!-- Add Font Awesome for icons -->
 </head>
 <body>
-    <h1>Learning Management App</h1>
-    <form id="register-form">
-        <h2>Register</h2>
-        <input type="text" name="username" placeholder="Username" required>
-        <input type="password" name="password" placeholder="Password" required>
-        <input type="email" name="email" placeholder="Email" required>
-        <input type="text" name="full_name" placeholder="Full Name" required>
-        <button type="submit">Register</button>
-    </form>
-    <form id="login-form">
-        <h2>Login</h2>
-        <input type="text" name="username" placeholder="Username" required>
-        <input type="password" name="password" placeholder="Password" required>
-        <button type="submit">Login</button>
-    </form>
-    <form id="logout-form">
-        <button type="submit">Logout</button>
-    </form>
+    <header>
+        <h1>Learning Management App</h1>
+    </header>
+    <main>
+        <div class="container">
+            <form id="register-form" class="form">
+                <h2>Register</h2>
+                <input type="text" name="username" placeholder="Username" required>
+                <input type="password" name="password" placeholder="Password" required>
+                <input type="email" name="email" placeholder="Email" required>
+                <input type="text" name="full_name" placeholder="Full Name" required>
+                <button type="submit">Register <i class="fas fa-user-plus"></i></button>
+            </form>
+            <form id="login-form" class="form">
+                <h2>Login</h2>
+                <input type="text" name="username" placeholder="Username" required>
+                <input type="password" name="password" placeholder="Password" required>
+                <button type="submit">Login <i class="fas fa-sign-in-alt"></i></button>
+            </form>            
+            <form id="logout-form" class="form">
+                <button type="submit">Logout <i class="fas fa-sign-out-alt"></i></button>
+            </form>
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2024 Learning Management App. All rights reserved.</p>
+    </footer>
     <script src="script.js"></script>
 </body>
 </html>
