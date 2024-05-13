@@ -4,27 +4,42 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Learning Management App</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="forms.css">
+
 </head>
 <body>
-    <h1>Learning Management App</h1>
-    <form id="register-form">
-        <h2>Register</h2>
-        <input type="text" name="username" placeholder="Username" required>
-        <input type="password" name="password" placeholder="Password" required>
-        <input type="email" name="email" placeholder="Email" required>
-        <input type="text" name="full_name" placeholder="Full Name" required>
-        <button type="submit">Register</button>
-    </form>
-    <form id="login-form">
-        <h2>Login</h2>
-        <input type="text" name="username" placeholder="Username" required>
-        <input type="password" name="password" placeholder="Password" required>
-        <button type="submit">Login</button>
-    </form>
-    <form id="logout-form">
-        <button type="submit">Logout</button>
-    </form>
-    <script src="script.js"></script>
+
+<h1>Learning Management App</h1>
+
+<form id="register-form" action="register.php" method="post">
+    <h2>Register</h2>
+    <input type="text" name="username" placeholder="Username" required>
+    <input type="password" name="password" placeholder="Password" required>
+    <input type="email" name="email" placeholder="Email" required>
+    <input type="text" name="full_name" placeholder="Full Name" required>
+    <button type="submit">Register</button>
+</form>
+
+<form id="login-form" action="login" method="post">
+    <h2>Login</h2>
+    <input type="text" name="username" placeholder="Username" required>
+    <input type="password" name="password" placeholder="Password" required>
+    <button type="submit">Login</button>
+</form>
+
+<!-- Add Course Selection Form -->
+<form id="course-selection-form" action="/select-courses" method="post">
+    <h2>Select Courses</h2>
+    <label for="course1">Course 1</label>
+    <input type="checkbox" id="course1" name="courseId" value="1">
+    <label for="course2">Course 2</label>
+    <input type="checkbox" id="course2" name="courseId" value="2">
+    <!-- Add more courses as needed -->
+    <button type="submit">Submit</button>
+</form>
+
+<script src="script.js"></script>
+
 </body>
 </html>

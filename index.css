@@ -1,0 +1,74 @@
+/* Global styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #121212; /* Dark background color */
+    color: #ffffff; /* Light text color */
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    color: #ffffff; /* Light text color */
+    text-align: center;
+    margin-top: 50px;
+}
+
+/* Form styles */
+form {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #1e1e1e; /* Darker background color */
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+h2 {
+    color: #ffffff; /* Light text color */
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+button[type="submit"] {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    background-color: #333333; /* Darker input background color */
+    border: none;
+    border-radius: 5px;
+    color: #ffffff; /* Light text color */
+    cursor: pointer;
+}
+
+input[type="text"]::placeholder,
+input[type="email"]::placeholder,
+input[type="password"]::placeholder {
+    color: #aaaaaa; /* Lighter placeholder color */
+}
+
+button[type="submit"] {
+    background-color: #4CAF50; /* Green submit button */
+}
+
+button[type="submit"]:hover {
+    background-color: #45a049; /* Darker green hover color */
+}
+
+/* Course Selection Form styles */
+#course-selection-form {
+    margin-top: 20px;
+}
+
+#course-selection-form label {
+    display: block;
+    margin-bottom: 10px;
+    color: #ffffff;
+}
+
+#course-selection-form input[type="checkbox"] {
+    margin-right: 10px;
+}
+
