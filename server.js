@@ -3,8 +3,8 @@ const express = require('express');
 const session = require('express-session');
 const bcrypt = require('bcryptjs');
 const bodyParser = require('body-parser');
-const mysql = require('mysql');
 const { check, validationResult } = require('express-validator');
+const { connection } = require('./connection');
 const app = express();
 
 // Configure session middleware
@@ -13,14 +13,6 @@ app.use(session({
     resave: false,
     saveUninitialized: true
 }));
-
-// Create MySQL connection
-const connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'learning_management'
-});
 
 // Connect to MySQL
 connection.connect((err) => {
