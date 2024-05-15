@@ -26,5 +26,71 @@
         <button type="submit">Logout</button>
     </form>
     <script src="script.js"></script>
+
+   <h1>Select Your Courses</h1>
+    <form id="course-form">
+        <div id="courses"></div>
+        <button type="submit">Save Selection</button>
+    </form>
+    <h2>Selected Courses</h2>
+    <div id="selected-courses"></div>
+
+    <script>
+        const userId = 1;  // Example user ID, replace with actual logged-in user ID
+
+        document.addEventListener('DOMContentLoaded', () => {
+            fetch('/courses')
+                .then(response => response.json())
+                .then(courses => {
+                    const coursesDiv = document.getElementById('courses');
+                    courses.forEach(course => {
+                        const checkbox = document.createElement('input');
+                        checkbox.type = 'checkbox';
+                        checkbox.id = `course-${course.id}`;
+                        checkbox.name = 'courses';
+                        checkbox.value = course.id;
+                        
+                        const label = document.createElement('label');
+                        label.htmlFor = `course-${course.id}`;
+                        label.textContent = course.name;
+
+                        coursesDiv.appendChild(checkbox);
+                        coursesDiv.appendChild(label);
+                        coursesDiv.appendChild(document.createElement('br'));
+                    });
+                });
+
+            document.getElementById('course-form').addEventListener('submit', event => {
+                event.preventDefault();
+                const selectedCourses = Array.from(document.querySelectorAll('input[name="courses"]:checked')).map(checkbox => checkbox.value);
+                fetch('/select-courses', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ userId, courseIds: selectedCourses })
+                }).then(() => {
+                    loadSelectedCourses();
+                });
+            });
+
+            loadSelectedCourses();
+        });
+
+        function loadSelectedCourses() {
+            fetch(`/selected-courses/${userId}`)
+                .then(response => response.json())
+                .then(courses => {
+                    const selectedCoursesDiv = document.getElementById('selected-courses');
+                    selectedCoursesDiv.innerHTML = '';
+                    courses.forEach(course => {
+                        const div = document.createElement('div');
+                        div.textContent = course.name;
+                        selectedCoursesDiv.appendChild(div);
+                    });
+                });
+        }
+    </script>
+    
 </body>
 </html>
