@@ -166,3 +166,63 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
+
+
+const express = require('express');
+const bodyParser = require('body-parser');
+const sqlite3 = require('sqlite3').verbose();
+
+const app = express();
+const db = new sqlite3.Database(':memory:');
+
+// Middleware
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use(express.static('public'));
+
+// Create tables
+db.serialize(() => {
+    db.run("CREATE TABLE users (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT)");
+    db.run("CREATE TABLE courses (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT)");
+    db.run("CREATE TABLE user_courses (user_id INTEGER, course_id INTEGER)");
+    
+    // Insert sample data
+    db.run("INSERT INTO users (username) VALUES ('user1')");
+    db.run("INSERT INTO courses (name) VALUES ('Course 1'), ('Course 2'), ('Course 3')");
+});
+
+// Routes
+app.get('/courses', (req, res) => {
+    db.all("SELECT * FROM courses", (err, rows) => {
+        if (err) throw err;
+        res.json(rows);
+    });
+});
+
+app.post('/select-courses', (req, res) => {
+    const { userId, courseIds } = req.body;
+    db.serialize(() => {
+        db.run("DELETE FROM user_courses WHERE user_id = ?", userId);
+        courseIds.forEach(courseId => {
+            db.run("INSERT INTO user_courses (user_id, course_id) VALUES (?, ?)", userId, courseId);
+        });
+    });
+    res.sendStatus(200);
+});
+
+app.get('/selected-courses/:userId', (req, res) => {
+    const userId = req.params.userId;
+    db.all(`
+        SELECT courses.name 
+        FROM courses 
+        JOIN user_courses ON courses.id = user_courses.course_id 
+        WHERE user_courses.user_id = ?
+    `, userId, (err, rows) => {
+        if (err) throw err;
+        res.json(rows);
+    });
+});
+
+app.listen(3000, () => {
+    console.log('Server is running on http://localhost:3000');
+});
