@@ -1,0 +1,106 @@
+/* styles.css */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    /*display: flex;
+    flex-direction: column;
+    align-items: center;
+    */
+}
+
+form {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+input, button {
+    margin-top: 10px;
+    padding: 5px;
+}
+
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+}
+
+main {
+    padding: 20px;
+}
+
+footer {
+    background-color: #333;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+}
+
+/* Course content page styles */
+section {
+    margin-bottom: 30px;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 20px;
+}
+
+h2 {
+    color: #333;
+    font-size: 24px;
+    text-align: center;
+}
+
+h1 {
+    text-align: center;
+}
+
+p {
+    color: #666;
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+iframe {
+    width: 100%;
+    height: 400px;
+    margin-top: 20px;
+}
+
+.navbar {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content:space-between;
+    align-items:center;
+    margin: 0;
+    background-color: rgba(21, 21, 20, 0.795);
+}
+
+.logo a {
+    text-decoration: none;
+    font-size: 45px;
+    font-style: italic;
+    font-weight: bold;
+    color: #092c84c8;
+    background-color: #fff;
+    border-radius: 20px;
+    margin: 0 10px;
+}
+
+.nav-items ul li {
+    list-style-type: none;
+    display: inline-block;
+    padding: 10px 20px;
+}
+
+.nav-items a {
+    text-decoration: none;
+    color: white;
+}
+
+.nav-items ul li a:hover {
+    color: rgb(140, 133, 124);
+    transition: 2ms;
+}

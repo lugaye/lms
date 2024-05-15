@@ -3,8 +3,8 @@ const express = require('express');
 const session = require('express-session');
 const bcrypt = require('bcryptjs');
 const bodyParser = require('body-parser');
-const mysql = require('mysql');
 const { check, validationResult } = require('express-validator');
+const { connection } = require('./connection');
 const app = express();
 
 // Configure session middleware
@@ -13,14 +13,6 @@ app.use(session({
     resave: false,
     saveUninitialized: true
 }));
-
-// Create MySQL connection
-const connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'learning_management'
-});
 
 // Connect to MySQL
 connection.connect((err) => {
@@ -152,15 +144,39 @@ app.get('/dashboard', (req, res) => {
 app.get('/course/:id', (req, res) => {
     const courseId = req.params.id;
     const sql = 'SELECT * FROM courses WHERE id = ?';
-    db.query(sql, [courseId], (err, result) => {
-      if (err) {
-        throw err;
-      }
+    //database connection with db or connection const?
+    connection.query(sql, [courseId], (err, result) => {
+      if (err) throw err;
       // Send course content as JSON response
       res.json(result);
     });
   });
 
+  //Select the course endpoint
+  app.post('/select-course', (req, res) => {
+    if (!req.session.user) {
+        return res.status(401).send('Unauthorized');
+    }
+    const userId = req.session.user.id;
+    const { courseId } = req.body;
+    connection.query('INSERT INTO UserCourses (user_id, course_id) VALUES (?, ?)', [userId, courseId], (err) => {
+        if (err) throw err;
+        res.send({ success: true });
+    });
+  });
+
+//Getting selected courses for the successfully logged-in user
+app.get('/my-courses', (req, res) => {
+    if (!req.session.user) {
+        return res.status(401).send('Unauthorized');
+    }
+    const userId = req.session.user.id;
+    connection.query('SELECT Courses.id, Courses.name FROM Courses INNER JOIN UserCourses ON Courses.id = UserCourses.course_id WHERE UserCourses.user_id = ?',
+                [userId], (err, results) => {
+                    if (err) throw err;
+                    res.send(results);
+        });
+});
 // Start server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
