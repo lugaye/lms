@@ -1,3 +1,5 @@
+const { response } = require("express");
+
 // scripts.js
 document.addEventListener('DOMContentLoaded', () => {
     const registerForm = document.getElementById('register-form');
@@ -43,6 +45,16 @@ document.addEventListener('DOMContentLoaded', () => {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({ username, password })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    document.getElementById('login-section').style.display = 'none';
+                    document.getElementById('course-section').style.display = 'block';
+                    loadCourses();
+                } else {
+                    document.getElementById('login-result').innerText = 'Invalid login';
+                }
             });
             if (response.ok) {
                 alert('Login successful');
