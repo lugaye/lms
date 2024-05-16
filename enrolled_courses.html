@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enrolled Courses</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Enrolled Courses</h1>
+    <ul id="enrolled-courses"></ul>
+
+    <script>
+        fetch('/user/courses')
+            .then(response => response.json())
+            .then(courses => {
+                const enrolledCourses = document.getElementById('enrolled-courses');
+                courses.forEach(course => {
+                    const li = document.createElement('li');
+                    li.textContent = course.name;
+                    enrolledCourses.appendChild(li);
+                });
+            })
+            .catch(error => console.error('Error fetching user courses:', error));
+    </script>
+</body>
+</html>
