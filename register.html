@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learning Management System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet"> <!--Poppins font-->
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body{
+            background-color: var(--body-background-color);
+        }
+        .sign_up_container{
+            position: absolute;
+            top: 10%;
+            width: 80%;
+            max-width: 650px;
+            padding: 20px;
+        }
+        input[type="text"],
+        input[type="password"],
+        input[type="email"]{
+            width: 80%;
+            max-width: 600px;
+            padding: 10px 20px;
+            margin-block: 10px;
+            font-size: 18px;
+        }
+        input[type="submit"]{
+            background-color: rgb(255, 50, 20);
+            max-width: 20%;
+            min-width: 100px;
+        }
+    </style>
+</head>
+<body>
+    <div class="sign_up_container">
+        <h1>Sign up</h1>
+
+        <form id="register-form">
+            <input type="text" name="username" id="username" placeholder="Username" required autocomplete="username">
+            <input type="password" name="password" id="password" placeholder="Password" required autocomplete = 'current-password'>
+            <input type="email" name="email" id="email" placeholder="Email" required>
+            <input type="text" name="full_name" id="full_name" placeholder="Full name" required>
+            <p>Already have an account? 
+                <a href="/login.html">Login</a>
+            </p>
+            <input type="submit" value="Register">
+        </form>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
