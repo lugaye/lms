@@ -34,7 +34,7 @@ connection.connect((err) => {
 // Serve static files from the default directory
 app.use(express.static(__dirname));
 
-// Set up middleware to parse incoming JSON data
+// Set up middleware to parse incoming JSON request
 app.use(express.json());
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
@@ -126,7 +126,7 @@ app.post('/login', (req, res) => {
                 if (err) throw err;
                 if (isMatch) {
                     // Store user in session
-                    req.session.user = user;
+                    req.session.userId = user.id;
                     res.redirect('/my_courses.html'); // Redirecting to the page on successful login
                 } else {
                     res.status(401).send('Invalid username or password');
@@ -139,7 +139,7 @@ app.post('/login', (req, res) => {
 
 // ROUTE TO HANDLE COURSE SELECTION, CHECKS IF USER IS LOGGED IN 
 app.get('/course/:id', (req, res) => {
-    if(!req.session.user) { // If the user is not logged in
+    if(!req.session.userId) { // If the user is not logged in
         return res.redirect('/login.html'); // Redirect to log in page
     }
     res.redirect(`/enroll/${req.params.id}`); // Redirect to enrollment page
@@ -162,7 +162,7 @@ app.get('/enroll/:courseId', (req, res) => {
             res.send('You are already enrolled to this course.');
         } else {
             // Enroll the user in the course
-            connection.query('INSERT INTO enrollment (id, course_id) VALUES (?, ?)', [userId, courseId], (err, results) => {
+            connection.query('INSERT INTO enrollments (id, course_id) VALUES (?, ?)', [userId, courseId], (err, results) => {
                 if(err) throw err;
                 res.send('Enrollment successful.');
             });

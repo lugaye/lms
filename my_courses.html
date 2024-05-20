@@ -42,14 +42,33 @@
             left: 20px;
             background-color: white;
             border-radius: 5px;
+            padding: 20px 20px;
         }
         #courses_container{
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 30px;
             width: 100%;
             height: 100%;
-            background-color: red;
+            padding: 20px 20px;
+            justify-content: center;
+        }
+        .course_card{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-radius: 10px;
+            min-height: 200px;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 
+                        0 6px 20px rgba(0, 0, 0, 0.1);
+            transition: box-shadow 0.4s ease-in;
+        }
+        .course_card:hover{
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2),
+                        0 12px 40px rgba(0, 0, 0, 0.2);
+            transform: scale(1.1);
         }
         .my_courses_sidebar_container{
             position: absolute;
@@ -94,19 +113,16 @@
     <header>
         <p>LMS_app Logo</p>
         <nav>
-            <a href="/">Home</a>
             <a href="/courses.html">Courses</a>
-            <!-- <a href="/login.html">My Courses</a> -->
         </nav>
     </header>
 
     <main>
         <section class="my_courses_container">
-            <!-- Where my_courses will be populated -->
             <h1>MY COURSES</h1>
             <div id="courses_container">
-                
-            </div>
+            <!-- Where my_courses will be populated -->
+        </div>
         </section>
         <section class="my_courses_sidebar_container">
             <!-- sidebar navigation -->

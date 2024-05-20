@@ -4,12 +4,14 @@
     --secondary-color: rgb(255, 251, 251);
     --hovered-button: rgb(184, 24, 0);
     --active-button: rgb(250, 118, 89);
-    --body-background-color: rgb(255, 235, 235);
+    --body-background-color: rgb(255, 211, 205);
 }
 
 *{
     font-family: 'Poppins', sans-serif;
     box-sizing: border-box;
+    padding: 0;
+    margin: 0;
 }
 
 /* Any flex container styles */
@@ -58,6 +60,7 @@ header {
     background-color: #ececec;
     color: #fff;
     padding-block: 15px;
+    padding-inline: 10px;
     text-align: center;
 }
 header p {

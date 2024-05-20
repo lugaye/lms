@@ -1,47 +1,13 @@
-// const { header } = require("express-validator");
-
 // EXECUTE JAVASCRIPT AFTER THE DOCUMENT  IS FULLY LOADED
 document.addEventListener('DOMContentLoaded', () => {
-
-    // // Landing Page
-    // // The welcome container and its content
-    // // const welcomeContainer = document.querySelector('.welcomeContainer');
-    // const typewritten = document.getElementById('typewritten');
-    // // const welcomeCont = document.getElementById('welcomeCont');
-
-    // // Store the text to be typewritten
-    // const text = typewritten.textContent;
-
-    // // Clear the content in the first place because it is going to be typewriten
-    // typewritten.textContent = '';
-
-    // // Set the initial index
-    // let index = 0;
-    // let interval;
-
-    // // Delay the start of the typewritting for 3 seconds
-    // setTimeout(() => {
-    //     // Create an interval that adds one character at a time
-    //     interval = setInterval(() => {
-    //         typewritten.textContent += text[index]; // Add one character from the text("life changing quotes")
-    //         // Move to the next character(index)
-    //         index++;
-
-    //         // Clear the interval from continuing to add characters to the typewrittenParagraph
-    //         if (index >= text.length) {
-    //             clearInterval(interval);
-    //         }
-    //     }, 200); // Type each character after each 0.2 second
-    // }, 3000); // Wait for 3 seconds before starting the typewritten code
-
-
     
     // WORK ON THE FORMS
     const registerForm = document.getElementById('register-form');
     const loginForm = document.getElementById('login-form');
     // const logoutForm = document.getElementById('logout-form');
 
-// Form to register a new user
+
+// FORM TO REGISTER A NEW USER
     registerForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const formData = new FormData(registerForm);
@@ -68,7 +34,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-        // Login form for a regestered user
+
+        // LOGIN FORM FOR A REGESTERED USER
         loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const formData = new FormData(loginForm);
@@ -104,7 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             courses.forEach(course => {
                 const card = document.createElement('div');
-                card.className = 'course-card';
+                card.className = 'course_card';
                 card.innerHTML = `
                     <img src="${course.icon}" alt="${course.name}" class="course-icon">
                     <h3>${course.name}</h3>
@@ -146,7 +113,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // FUNCTION TO HANDLE COURSE ENROLLMENT
     async function enroll(courseId)  {
         try {
-            const response = await fetch(`/enroll/${courseId}`);
+            const response = await fetch(`/enroll/${courseId}`, {
+                method: 'GET',
+                credentials: 'same-origin' // Ensure that session are sent together with the request to identify user based on their session id
+            });
             
             if (response.status === 401) { // Check for unauthorized status
                 window.location.href = '/login.html';
@@ -154,7 +124,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             const message = await response.text();
-
             alert(message); // Show enrollmet status
             if(message === 'Enrollment successful.') {
                 window.location.href = '/my_courses.html'; // Redirect to my_courses page
