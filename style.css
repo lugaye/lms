@@ -1,15 +1,42 @@
 /* styles.css */
+:root{
+    --primary-color: rgb(255, 50, 20);
+    --secondary-color: rgb(255, 251, 251);
+    --hovered-button: rgb(184, 24, 0);
+    --active-button: rgb(250, 118, 89);
+    --body-background-color: rgb(255, 211, 205);
+}
+
+*{
+    font-family: 'Poppins', sans-serif;
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+/* Any flex container styles */
+.flex_row_container{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+}
+
 body {
-    font-family: Arial, sans-serif;
+    background-color: var(--body-background-color);
+    width: 100%;
+    height: 100vh;
     margin: 0;
     padding: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
+    overflow-x: hidden;
+    position: relative;
 }
 
 form {
-    margin-top: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -21,10 +48,32 @@ input, button {
 }
 
 header {
-    background-color: #333;
+    position: fixed;
+    top: 0;
+    z-index: 10;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-content: center;
+    width: 100vw;
+    background-color: #ececec;
     color: #fff;
-    padding: 20px;
+    padding-block: 15px;
+    padding-inline: 10px;
     text-align: center;
+}
+header p {
+    padding-inline: 10px;
+}
+
+nav {
+    padding: 20px;
+}
+
+nav a {
+    margin-inline: 10px;
+    text-decoration: none;
 }
 
 nav ul {
@@ -32,20 +81,71 @@ nav ul {
     margin: 0;
     padding: 0;
 }
+ul{
+    list-style-type: none;
+}
+a{
+    text-decoration: none;
+}
+a:hover{
+    text-decoration: underline;
+}
 
 nav ul li {
     display: inline;
     margin-right: 20px;
 }
 
-main {
-    padding: 20px;
+/* The welcome container */
+.welcomeContainer{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    width: 100vw;
+    height: 100vh;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url("welcomeBg.png");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+    background-size: cover;
+    scrollbar-width: none;
+    ::-webkit-scrollbar{
+        display: none; /* WebKit browsers (including Chrome and Safari) */
+    } }
+/* The welcome content */
+#welcome{
+    position: absolute;
+    top: 34%;
+    color: white;
+    font-size: 50px;
+    animation: fadeout 15s ease-in , welcomeFadeIn 4s ease-in;
+}
+@keyframes welcomeFadeIn{
+    0%{
+        opacity: 0;
+    }
+    50%{
+        opacity: 0.5;
+    }
+    100%{
+        opacity: 1;
+    }
+}
+#typewritten{
+    position: absolute;
+    top: 47%;
+    font-size: 50px;
+    color: var(--primary-color);
+    animation: fadeout 15s ease-in infinite;
 }
 
 footer {
-    background-color: #333;
+    position: relative;
+    width: 100%;
+    background-color: #1a1919;
     color: #fff;
-    padding: 20px;
+    padding: 10px;
     text-align: center;
 }
 
@@ -54,6 +154,9 @@ section {
     margin-bottom: 30px;
     border-bottom: 1px solid #ccc;
     padding-bottom: 20px;
+}
+h1{
+    text-align: center;
 }
 
 h2 {
@@ -71,4 +174,28 @@ iframe {
     width: 100%;
     height: 400px;
     margin-top: 20px;
+}
+
+/* Styles for  input type submit and button*/
+input{
+    outline: none;
+    border: none;
+    border-radius: 40px;
+}
+button, input[type="submit"]{
+    width: 40%;
+    max-width: 500px;
+    padding-block: 13px;
+    background-color: var(--primary-color);
+    cursor: pointer;
+    outline: none;
+    border: none;
+    border-radius: 40px;
+}
+button:hover, input[type="submit"]:hover{
+    background-color: var(--hovered-button);
+    transition-duration: 0.2s;
+}
+button:active, input[type="submit"]:active{
+    background-color: var(--active-button);
 }

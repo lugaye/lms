@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learning Management System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet"> <!--Poppins font-->
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body{
+            height: 100vh;
+            position: relative;
+            overflow-y: scroll; /* Enable vertical scrolling */
+            scrollbar-width: none; /* Hide scrollbar for Firefox */
+        }
+        /* Hide scrollbar for Webkit-based browsers (Chrome, Safari) */
+        body::-webkit-scrollbar{
+            display: none;
+            width: none;
+        }
+        header{
+            width: 100vw;
+        }
+        main{
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 20px;
+            position: absolute;
+            top: 20%;
+            width: 100%;
+            height: 80%;
+            padding-inline: 20px;
+        }
+
+        /* The my courses container */
+        .my_courses_container{
+            position: absolute;
+            width: 76%;
+            height: 100%;
+            left: 20px;
+            background-color: white;
+            border-radius: 5px;
+            padding: 20px 20px;
+        }
+        #courses_container{
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 30px;
+            width: 100%;
+            height: 100%;
+            padding: 20px 20px;
+            justify-content: center;
+        }
+        .course_card{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-radius: 10px;
+            min-height: 200px;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 
+                        0 6px 20px rgba(0, 0, 0, 0.1);
+            transition: box-shadow 0.4s ease-in;
+        }
+        .course_card:hover{
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2),
+                        0 12px 40px rgba(0, 0, 0, 0.2);
+            transform: scale(1.1);
+        }
+        .my_courses_sidebar_container{
+            position: absolute;
+            height: 100%;
+            width: 18%;
+            right: 20px;
+            background-color: white;
+            border-radius: 5px;
+        }
+        footer{
+            position: absolute;
+            bottom: -100px;
+            width: 100%;
+        }
+
+        @media(max-width: 1300px){
+            .my_courses_container{
+                width: 100%;
+                margin-inline-end: 20px;
+            }
+            .my_courses_sidebar_container{
+                display: none;
+            }
+        }
+
+        /* Hiding the scrollbar for Webkit-based browsers(Chrome, Safari) */
+        .my_courses_container::-webkit-scrollbar,
+        .my_courses_sidebar_container::-webkit-scrollbar{
+            width: 0px;
+            display: none;
+        }
+
+        .my_courses_container, 
+        .my_courses_sidebar_container{
+            overflow-y: scroll;
+            scrollbar-width: none;
+        }
+
+    </style>
+</head>
+<body>
+    <header>
+        <p>LMS_app Logo</p>
+        <nav>
+            <a href="/courses.html">Courses</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="my_courses_container">
+            <h1>MY COURSES</h1>
+            <div id="courses_container">
+            <!-- Where my_courses will be populated -->
+        </div>
+        </section>
+        <section class="my_courses_sidebar_container">
+            <!-- sidebar navigation -->
+            
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer_container">
+            <p>&copy; 2024 Your Learning Management System</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
