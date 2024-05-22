@@ -87,6 +87,33 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+document.getElementById('course-selection-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const selectedCourses = formData.getAll('course');
+
+    try {
+        const response = await fetch('/save-selected-courses', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ courses: selectedCourses })
+        });
+
+        if (response.ok) {
+            alert('Courses saved successfully');
+            // Redirect or perform any other action as needed
+        } else {
+            alert('Failed to save courses');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('An error occurred while saving courses');
+    }
+});
+
+
 function fetchCourseContent() {
     // Get course ID from URL parameter (assuming course ID is passed in the URL)
     const urlParams = new URLSearchParams(window.location.search);
@@ -130,7 +157,55 @@ function displayCourseContent(courseContent) {
         `;
         courseContentElement.appendChild(moduleSection);
     });
-}
+}document.getElementById('course-selection-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const selectedCourses = formData.getAll('course');
+
+    try {
+        const response = await fetch('/save-selected-courses', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ courses: selectedCourses })
+        });
+
+        if (response.ok) {
+            alert('Courses saved successfully');
+            // Redirect or perform any other action as needed
+        } else {
+            alert('Failed to save courses');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('An error occurred while saving courses');
+    }
+
+document.getElementById('course-selection-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const selectedCourses = formData.getAll('course');
+
+    try {
+        const response = await fetch('/save-selected-courses', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ courses: selectedCourses })
+        });
+
+        if (response.ok) {
+            alert('Courses saved successfully');
+            // Redirect or perform any other action as needed
+        } else {
+            alert('Failed to save courses');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('An error occurred while saving courses');
+    }
 
 function fetchLeaderboardData() {
     // Make AJAX request to fetch leaderboard data from server
@@ -205,3 +280,52 @@ function displayFullName(fullName) {
     // Set the inner HTML of the element to the user's full name
     fullNameElement.textContent = fullName;
 }
+document.getElementById('course-selection-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const selectedCourses = formData.getAll('course');
+
+    try {
+        const response = await fetch('/save-selected-courses', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ courses: selectedCourses })
+        });
+
+        if (response.ok) {
+            alert('Courses saved successfully');
+            // Redirect or perform any other action as needed
+        } else {
+            alert('Failed to save courses');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('An error occurred while saving courses');
+    }
+document.getElementById('course-selection-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const selectedCourses = formData.getAll('course');
+
+    try {
+        const response = await fetch('/save-selected-courses', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ courses: selectedCourses })
+        });
+
+        if (response.ok) {
+            alert('Courses saved successfully');
+            // Redirect or perform any other action as needed
+        } else {
+            alert('Failed to save courses');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('An error occurred while saving courses');
+    }
+
