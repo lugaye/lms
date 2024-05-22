@@ -18,8 +18,8 @@ app.use(session({
 const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: '',
-    database: 'learning_management'
+    password: 'Jaysaha@2024',
+    database: 'learning_system'
 });
 
 // Connect to MySQL
