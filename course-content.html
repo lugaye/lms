@@ -4,24 +4,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Course Content</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Include your CSS file -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.3/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body>
-    <header>
-        <h1 id="course-name">Course Name</h1>
-        <nav>
-            <ul>
-                <li><a href="/">Home</a></li>
-                <li><a href="/course-content">Course Content</a></li>
-                <!-- Add more navigation links as needed -->
-            </ul>
-        </nav>
+<body class="bg-gray-100 text-gray-900">
+    <header class="bg-white border-b-2 border-gray-200 p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="/" class="text-blue-600 hover:text-blue-800">Home</a>
+            <nav>
+                <ul class="flex space-x-4">
+                                       
+                    <!-- Add more navigation links as needed -->
+                </ul>
+            </nav>
+        </div>
     </header>
-    <main id="course-content">
+    <main id="course-content" class="container mx-auto py-8">
+            <h1 id="course-name" class="text-2xl font-bold py-8">Course Name</h1>
+            <li><a href="/course-content" class="text-blue-600 hover:text-blue-800">Course Content</a></li>
+
         <!-- Course content will be dynamically populated here -->
+        <!-- You can add dynamic content here using Tailwind CSS -->
     </main>
-    <footer>
-        <p>&copy; 2024 Your LMS</p>
+    <footer class="bg-white border-t-2 border-gray-200 py-4 mt-8">
+        <div class="container mx-auto text-center">
+            <p>&copy; 2024 Your LMS</p>
+        </div>
     </footer>
 
     <!-- Include your client-side JavaScript file -->
