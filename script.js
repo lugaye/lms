@@ -1,4 +1,3 @@
-// scripts.js
 document.addEventListener('DOMContentLoaded', () => {
     const registerForm = document.getElementById('register-form');
     const loginForm = document.getElementById('login-form');
@@ -21,8 +20,10 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             if (response.ok) {
                 alert('Registration successful');
+                registerForm.reset();
             } else {
-                alert('Registration failed');
+                const errorData = await response.json();
+                alert('Registration failed: ' + JSON.stringify(errorData.errors || errorData.error));
             }
         } catch (error) {
             console.error('Error:', error);
@@ -44,6 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             if (response.ok) {
                 alert('Login successful');
+                window.location.href = '/dashboard';
             } else {
                 alert('Invalid username or password');
             }
@@ -74,15 +76,15 @@ document.addEventListener('DOMContentLoaded', () => {
         fetchCourseContent();
     }
 
-     // Check if the current page is the course content page
+    // Check if the current page is the leaderboard page
     if (window.location.pathname === '/leader-board') {
-        // Fetch course content from server
+        // Fetch leaderboard data from server
         fetchLeaderboardData();
     }
 
-    // Check if the current page is the course content page
+       // Check if the current page is the dashboard page
     if (window.location.pathname === '/dashboard') {
-        //fetch Logged in user's full name
+        // Fetch logged in user's full name
         fetchFullName();
     }
 });
