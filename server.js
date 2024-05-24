@@ -1,4 +1,3 @@
-// server.js
 const express = require('express');
 const session = require('express-session');
 const bcrypt = require('bcryptjs');
@@ -18,7 +17,7 @@ app.use(session({
 const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: '',
+    password: '@nastaciA1995',
     database: 'learning_management'
 });
 
@@ -45,8 +44,6 @@ app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
 });
 
-
-  
 // Define a User representation for clarity
 const User = {
     tableName: 'users', 
@@ -69,13 +66,23 @@ app.post('/register', [
 
     // Custom validation to check if email and username are unique
     check('email').custom(async (value) => {
-        const user = await User.getUserByEmail(value);
+        const user = await new Promise((resolve, reject) => {
+            User.getUserByEmail(value, (err, results) => {
+                if (err) reject(err);
+                resolve(results[0]);
+            });
+        });
         if (user) {
             throw new Error('Email already exists');
         }
     }),
     check('username').custom(async (value) => {
-        const user = await User.getUserByUsername(value);
+        const user = await new Promise((resolve, reject) => {
+            User.getUserByUsername(value, (err, results) => {
+                if (err) reject(err);
+                resolve(results[0]);
+            });
+        });
         if (user) {
             throw new Error('Username already exists');
         }
@@ -102,36 +109,51 @@ app.post('/register', [
     // Insert user into MySQL
     User.createUser(newUser, (error, results, fields) => {
         if (error) {
-          console.error('Error inserting user: ' + error.message);
-          return res.status(500).json({ error: error.message });
+            console.error('Error inserting user: ' + error.message);
+            return res.status(500).json({ error: error.message });
         }
         console.log('Inserted a new user with id ' + results.insertId);
         res.status(201).json(newUser);
-      });
+    });
 });
 
 // Login route
 app.post('/login', (req, res) => {
     const { username, password } = req.body;
+    console.log(`Login attempt for username: ${username}`);
+
     // Retrieve user from database
     connection.query('SELECT * FROM users WHERE username = ?', [username], (err, results) => {
-        if (err) throw err;
-        if (results.length === 0) {
-            res.status(401).send('Invalid username or password');
-        } else {
-            const user = results[0];
-            // Compare passwords
-            bcrypt.compare(password, user.password, (err, isMatch) => {
-                if (err) throw err;
-                if (isMatch) {
-                    // Store user in session
-                    req.session.user = user;
-                    res.send('Login successful');
-                } else {
-                    res.status(401).send('Invalid username or password');
-                }
-            });
+        if (err) {
+            console.error('Database query error: ', err);
+            return res.status(500).send('Internal server error');
         }
+
+        if (results.length === 0) {
+            console.log('No user found with the provided username');
+            return res.status(401).send('Invalid username or password');
+        }
+
+        const user = results[0];
+        console.log(`User found: ${JSON.stringify(user)}`);
+
+        // Compare passwords
+        bcrypt.compare(password, user.password, (err, isMatch) => {
+            if (err) {
+                console.error('Bcrypt comparison error: ', err);
+                return res.status(500).send('Internal server error');
+            }
+
+            if (isMatch) {
+                console.log('Password match');
+                // Store user in session
+                req.session.user = user;
+                return res.status(200).json({ message: 'Login successful' });
+            } else {
+                console.log('Password mismatch');
+                return res.status(401).send('Invalid username or password');
+            }
+        });
     });
 });
 
@@ -141,25 +163,29 @@ app.post('/logout', (req, res) => {
     res.send('Logout successful');
 });
 
-//Dashboard route
+// Dashboard route
 app.get('/dashboard', (req, res) => {
-    // Assuming you have middleware to handle user authentication and store user information in req.user
-    const userFullName = req.user.full_name;
-    res.render('dashboard', { fullName: userFullName });
+    if (req.session.user) {
+        console.log(`Rendering dashboard for user: ${req.session.user.username}`);
+        res.sendFile(__dirname + '/dashboard.html');
+    } else {
+        console.log('No user in session, redirecting to login');
+        res.redirect('/');
+    }
 });
 
 // Route to retrieve course content
 app.get('/course/:id', (req, res) => {
     const courseId = req.params.id;
     const sql = 'SELECT * FROM courses WHERE id = ?';
-    db.query(sql, [courseId], (err, result) => {
-      if (err) {
-        throw err;
-      }
-      // Send course content as JSON response
-      res.json(result);
+    connection.query(sql, [courseId], (err, result) => {
+        if (err) {
+            throw err;
+        }
+        // Send course content as JSON response
+        res.json(result);
     });
-  });
+});
 
 // Start server
 const PORT = process.env.PORT || 3000;
