@@ -205,3 +205,62 @@ function displayFullName(fullName) {
     // Set the inner HTML of the element to the user's full name
     fullNameElement.textContent = fullName;
 }
+
+function getUserId() {
+    return localStorage.getItem('user_id');
+}
+
+document.querySelectorAll('.course-select').forEach((courseSelect) => {
+    courseSelect.addEventListener('change', async (e) => {
+        const courseId = e.target.value;
+        const userId = getUserId(); 
+        try {
+            const response = await fetch('/select-course', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ userId, courseId })
+            });
+            if (response.ok) {
+                alert('Course selection successful');
+            } else {
+                alert('Course selection failed');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    });
+});
+
+
+function fetchSelectedCourses() {
+    const userId = getUserId();
+    fetch(`/selected-courses/${userId}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            displaySelectedCourses(data);
+        })
+        .catch(error => {
+            console.error('Error fetching selected courses:', error);
+        });
+}
+
+function displaySelectedCourses(selectedCourses) {
+    const selectedCoursesElement = document.getElementById('selected-courses');
+    selectedCoursesElement.innerHTML = '';
+    selectedCourses.forEach(course => {
+        const courseElement = document.createElement('div');
+        courseElement.textContent = course.name;
+        selectedCoursesElement.appendChild(courseElement);
+    });
+}
+
+if (window.location.pathname === '/selected-courses') {
+    fetchSelectedCourses();
+}
