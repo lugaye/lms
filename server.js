@@ -1,4 +1,4 @@
-// server.js
+// Import necessary modules
 const express = require('express');
 const session = require('express-session');
 const bcrypt = require('bcryptjs');
@@ -45,18 +45,16 @@ app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
 });
 
-
-  
 // Define a User representation for clarity
 const User = {
-    tableName: 'users', 
-    createUser: function(newUser, callback) {
+    tableName: 'users',
+    createUser: function (newUser, callback) {
         connection.query('INSERT INTO ' + this.tableName + ' SET ?', newUser, callback);
-    },  
-    getUserByEmail: function(email, callback) {
+    },
+    getUserByEmail: function (email, callback) {
         connection.query('SELECT * FROM ' + this.tableName + ' WHERE email = ?', email, callback);
     },
-    getUserByUsername: function(username, callback) {
+    getUserByUsername: function (username, callback) {
         connection.query('SELECT * FROM ' + this.tableName + ' WHERE username = ?', username, callback);
     }
 };
@@ -102,12 +100,12 @@ app.post('/register', [
     // Insert user into MySQL
     User.createUser(newUser, (error, results, fields) => {
         if (error) {
-          console.error('Error inserting user: ' + error.message);
-          return res.status(500).json({ error: error.message });
+            console.error('Error inserting user: ' + error.message);
+            return res.status(500).json({ error: error.message });
         }
         console.log('Inserted a new user with id ' + results.insertId);
         res.status(201).json(newUser);
-      });
+    });
 });
 
 // Login route
@@ -148,18 +146,30 @@ app.get('/dashboard', (req, res) => {
     res.render('dashboard', { fullName: userFullName });
 });
 
+// Route to select courses for the logged-in user
+app.post('/select-courses', (req, res) => {
+    const { userId, courseIds } = req.body;
+    
+});
+
+// Route to retrieve selected courses for the logged-in user
+app.get('/selected-courses', (req, res) => {
+    const userId = req.session.user.id;
+    
+});
+
 // Route to retrieve course content
 app.get('/course/:id', (req, res) => {
     const courseId = req.params.id;
     const sql = 'SELECT * FROM courses WHERE id = ?';
     db.query(sql, [courseId], (err, result) => {
-      if (err) {
-        throw err;
-      }
-      // Send course content as JSON response
-      res.json(result);
+        if (err) {
+            throw err;
+        }
+        // Send course content as JSON response
+        res.json(result);
     });
-  });
+});
 
 // Start server
 const PORT = process.env.PORT || 3000;
