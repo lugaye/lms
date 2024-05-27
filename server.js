@@ -1,10 +1,10 @@
-// server.js
 const express = require('express');
 const session = require('express-session');
 const bcrypt = require('bcryptjs');
 const bodyParser = require('body-parser');
-const mysql = require('mysql');
+const mysql = require('mysql2');
 const { check, validationResult } = require('express-validator');
+
 const app = express();
 
 // Configure session middleware
@@ -18,7 +18,7 @@ app.use(session({
 const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: '',
+    password: 'lex',
     database: 'learning_management'
 });
 
@@ -45,14 +45,12 @@ app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
 });
 
-
-  
 // Define a User representation for clarity
 const User = {
-    tableName: 'users', 
+    tableName: 'users',
     createUser: function(newUser, callback) {
         connection.query('INSERT INTO ' + this.tableName + ' SET ?', newUser, callback);
-    },  
+    },
     getUserByEmail: function(email, callback) {
         connection.query('SELECT * FROM ' + this.tableName + ' WHERE email = ?', email, callback);
     },
@@ -61,37 +59,51 @@ const User = {
     }
 };
 
+// Define a Course representation for clarity
+const Course = {
+    tableName: 'courses',
+    getAllCourses: function(callback) {
+        connection.query('SELECT * FROM ' + this.tableName, callback);
+    }
+};
+
 // Registration route
 app.post('/register', [
-    // Validate email and username fields
     check('email').isEmail(),
     check('username').isAlphanumeric().withMessage('Username must be alphanumeric'),
-
-    // Custom validation to check if email and username are unique
-    check('email').custom(async (value) => {
-        const user = await User.getUserByEmail(value);
-        if (user) {
-            throw new Error('Email already exists');
-        }
+    check('email').custom((value, { req }) => {
+        return new Promise((resolve, reject) => {
+            User.getUserByEmail(value, (err, user) => {
+                if (err) throw err;
+                if (user.length > 0) {
+                    reject(new Error('Email already exists'));
+                } else {
+                    resolve(true);
+                }
+            });
+        });
     }),
-    check('username').custom(async (value) => {
-        const user = await User.getUserByUsername(value);
-        if (user) {
-            throw new Error('Username already exists');
-        }
+    check('username').custom((value, { req }) => {
+        return new Promise((resolve, reject) => {
+            User.getUserByUsername(value, (err, user) => {
+                if (err) throw err;
+                if (user.length > 0) {
+                    reject(new Error('Username already exists'));
+                } else {
+                    resolve(true);
+                }
+            });
+        });
     }),
 ], async (req, res) => {
-    // Check for validation errors
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
     }
 
-    // Hash the password
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(req.body.password, saltRounds);
 
-    // Create a new user object
     const newUser = {
         email: req.body.email,
         username: req.body.username,
@@ -99,39 +111,34 @@ app.post('/register', [
         full_name: req.body.full_name
     };
 
-    // Insert user into MySQL
     User.createUser(newUser, (error, results, fields) => {
         if (error) {
-          console.error('Error inserting user: ' + error.message);
-          return res.status(500).json({ error: error.message });
+            console.error('Error inserting user: ' + error.message);
+            return res.status(500).json({ error: error.message });
         }
         console.log('Inserted a new user with id ' + results.insertId);
         res.status(201).json(newUser);
-      });
+    });
 });
 
 // Login route
 app.post('/login', (req, res) => {
     const { username, password } = req.body;
-    // Retrieve user from database
-    connection.query('SELECT * FROM users WHERE username = ?', [username], (err, results) => {
+    User.getUserByUsername(username, (err, results) => {
         if (err) throw err;
         if (results.length === 0) {
-            res.status(401).send('Invalid username or password');
-        } else {
-            const user = results[0];
-            // Compare passwords
-            bcrypt.compare(password, user.password, (err, isMatch) => {
-                if (err) throw err;
-                if (isMatch) {
-                    // Store user in session
-                    req.session.user = user;
-                    res.send('Login successful');
-                } else {
-                    res.status(401).send('Invalid username or password');
-                }
-            });
+            return res.status(401).send('Invalid username or password');
         }
+        const user = results[0];
+        bcrypt.compare(password, user.password, (err, isMatch) => {
+            if (err) throw err;
+            if (isMatch) {
+                req.session.user = user;
+                res.send('Login successful');
+            } else {
+                res.status(401).send('Invalid username or password');
+            }
+        });
     });
 });
 
@@ -141,25 +148,80 @@ app.post('/logout', (req, res) => {
     res.send('Logout successful');
 });
 
-//Dashboard route
-app.get('/dashboard', (req, res) => {
-    // Assuming you have middleware to handle user authentication and store user information in req.user
-    const userFullName = req.user.full_name;
-    res.render('dashboard', { fullName: userFullName });
+// Route to fetch user full name for dashboard
+app.get('/get-fullname', (req, res) => {
+    if (req.session.user) {
+        res.json({ fullName: req.session.user.full_name });
+    } else {
+        res.status(401).send('Unauthorized');
+    }
+});
+
+// Route to save selected courses for a user
+app.post('/select-courses', (req, res) => {
+    const userId = req.session.user.id;
+    const courses = req.body.courses;
+
+    const sql = 'INSERT INTO user_courses (user_id, course_id) VALUES ?';
+    const values = courses.map(courseId => [userId, courseId]);
+    connection.query(sql, [values], (err, result) => {
+        if (err) {
+            console.error('Error inserting selected courses:', err);
+            return res.status(500).send('Error saving course selection');
+        }
+        res.send('Course selection saved successfully');
+    });
+});
+
+// Route to fetch selected courses for a user
+app.get('/get-selected-courses', (req, res) => {
+    const userId = req.session.user.id;
+    const sql = `
+        SELECT c.name
+        FROM user_courses uc
+        JOIN courses c ON uc.course_id = c.id
+        WHERE uc.user_id = ?
+    `;
+    connection.query(sql, [userId], (err, results) => {
+        if (err) {
+            console.error('Error fetching selected courses:', err);
+            return res.status(500).send('Error fetching selected courses');
+        }
+        const courses = results.map(row => row.name);
+        res.json({ courses });
+    });
 });
 
 // Route to retrieve course content
 app.get('/course/:id', (req, res) => {
     const courseId = req.params.id;
     const sql = 'SELECT * FROM courses WHERE id = ?';
-    db.query(sql, [courseId], (err, result) => {
-      if (err) {
-        throw err;
-      }
-      // Send course content as JSON response
-      res.json(result);
+    connection.query(sql, [courseId], (err, result) => {
+        if (err) {
+            throw err;
+        }
+        res.json(result);
     });
-  });
+});
+
+// Route to fetch leaderboard data
+app.get('/leaderboard', (req, res) => {
+    const sql = `
+        SELECT u.username AS name, SUM(score) AS score
+        FROM user_courses uc
+        JOIN users u ON uc.user_id = u.id
+        GROUP BY u.id
+        ORDER BY score DESC
+        LIMIT 10
+    `;
+    connection.query(sql, (err, results) => {
+        if (err) {
+            console.error('Error fetching leaderboard data:', err);
+            return res.status(500).send('Error fetching leaderboard data');
+        }
+        res.json(results);
+    });
+});
 
 // Start server
 const PORT = process.env.PORT || 3000;
