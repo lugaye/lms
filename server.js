@@ -18,8 +18,11 @@ app.use(session({
 const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: '',
-    database: 'learning_management'
+    password: 'SQLPassword12#',
+    database: 'learning_management',
+    authPlugins: {
+        mysql_clear_password: () => () => Buffer.from(password + '\0')
+    }
 });
 
 // Connect to MySQL
@@ -46,17 +49,17 @@ app.get('/', (req, res) => {
 });
 
 
-  
+
 // Define a User representation for clarity
 const User = {
-    tableName: 'users', 
-    createUser: function(newUser, callback) {
+    tableName: 'users',
+    createUser: function (newUser, callback) {
         connection.query('INSERT INTO ' + this.tableName + ' SET ?', newUser, callback);
-    },  
-    getUserByEmail: function(email, callback) {
+    },
+    getUserByEmail: function (email, callback) {
         connection.query('SELECT * FROM ' + this.tableName + ' WHERE email = ?', email, callback);
     },
-    getUserByUsername: function(username, callback) {
+    getUserByUsername: function (username, callback) {
         connection.query('SELECT * FROM ' + this.tableName + ' WHERE username = ?', username, callback);
     }
 };
@@ -102,12 +105,12 @@ app.post('/register', [
     // Insert user into MySQL
     User.createUser(newUser, (error, results, fields) => {
         if (error) {
-          console.error('Error inserting user: ' + error.message);
-          return res.status(500).json({ error: error.message });
+            console.error('Error inserting user: ' + error.message);
+            return res.status(500).json({ error: error.message });
         }
         console.log('Inserted a new user with id ' + results.insertId);
         res.status(201).json(newUser);
-      });
+    });
 });
 
 // Login route
@@ -153,13 +156,13 @@ app.get('/course/:id', (req, res) => {
     const courseId = req.params.id;
     const sql = 'SELECT * FROM courses WHERE id = ?';
     db.query(sql, [courseId], (err, result) => {
-      if (err) {
-        throw err;
-      }
-      // Send course content as JSON response
-      res.json(result);
+        if (err) {
+            throw err;
+        }
+        // Send course content as JSON response
+        res.json(result);
     });
-  });
+});
 
 // Start server
 const PORT = process.env.PORT || 3000;
