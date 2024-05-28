@@ -1,0 +1,21 @@
+{
+  "name": "lms-main",
+  "version": "1.0.0",
+  "description": "## Step 1: Project Setup",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "ejs": "^3.1.10",
+    "express": "^4.19.2",
+    "express-session": "^1.18.0",
+    "express-validator": "^7.1.0",
+    "mysql": "^2.18.1"
+  }
+}
