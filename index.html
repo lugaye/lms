@@ -3,28 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Learning Management App</title>
+    <title>Online Learning Platform</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Learning Management App</h1>
-    <form id="register-form">
-        <h2>Register</h2>
-        <input type="text" name="username" placeholder="Username" required>
-        <input type="password" name="password" placeholder="Password" required>
-        <input type="email" name="email" placeholder="Email" required>
-        <input type="text" name="full_name" placeholder="Full Name" required>
-        <button type="submit">Register</button>
-    </form>
-    <form id="login-form">
-        <h2>Login</h2>
-        <input type="text" name="username" placeholder="Username" required>
-        <input type="password" name="password" placeholder="Password" required>
-        <button type="submit">Login</button>
-    </form>
-    <form id="logout-form">
-        <button type="submit">Logout</button>
-    </form>
+    <header>
+        <h1>Welcome to the Online Learning Platform</h1>
+        <nav>
+            <ul>
+                <li><a href="course-content.html">Course Content</a></li>
+                <li><a href="leader-board.html">Leader Board</a></li>
+            </ul>
+        </nav>
+        <div id="userSection">
+            <span id="userName"></span>
+            <button id="loginButton">Login</button>
+            <button id="logoutButton" style="display:none;">Logout</button>
+        </div>
+    </header>
+    <main>
+        <section>
+            <h2>About Our Platform</h2>
+            <p>This platform offers a variety of courses to help you improve your skills and knowledge.</p>
+        </section>
+    </main>
     <script src="script.js"></script>
 </body>
 </html>

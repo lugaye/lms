@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>User Profile</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="course-content.html">Course Content</a></li>
+                <li><a href="leader-board.html">Leader Board</a></li>
+            </ul>
+        </nav>
+        <div id="userSection">
+            <span id="userName"></span>
+            <button id="loginButton">Login</button>
+            <button id="logoutButton" style="display:none;">Logout</button>
+        </div>
+    </header>
+    <main>
+        <section>
+            <h2>Your Preferred Courses</h2>
+            <ul id="preferredCoursesList">
+                <!-- Preferred courses will be dynamically added here -->
+            </ul>
+        </section>
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>
