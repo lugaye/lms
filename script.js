@@ -1,207 +1,145 @@
-// scripts.js
-document.addEventListener('DOMContentLoaded', () => {
-    const registerForm = document.getElementById('register-form');
-    const loginForm = document.getElementById('login-form');
-    const logoutForm = document.getElementById('logout-form');
+document.addEventListener("DOMContentLoaded", function() {
+    let user = {
+        isLoggedIn: false,
+        name: "",
+        preferredCourses: []
+    };
 
-    registerForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const formData = new FormData(registerForm);
-        const username = formData.get('username');
-        const password = formData.get('password');
-        const email = formData.get('email');
-        const full_name = formData.get('full_name');
-        try {
-            const response = await fetch('/register', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ username, password, email, full_name })
-            });
-            if (response.ok) {
-                alert('Registration successful');
-            } else {
-                alert('Registration failed');
+    const userNameElement = document.getElementById("userName");
+    const loginButton = document.getElementById("loginButton");
+    const logoutButton = document.getElementById("logoutButton");
+    const saveCoursesButton = document.getElementById("saveCoursesButton");
+    const courseList = document.getElementById("courseList");
+    const preferredCoursesList = document.getElementById("preferredCoursesList");
+
+    async function loginUser(name) {
+        const response = await fetch('http://localhost:3000/api/users/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name })
+        });
+        const data = await response.json();
+        return data;
+    }
+
+    async function logoutUser() {
+        await fetch('http://localhost:3000/api/users/logout', {
+            method: 'POST'
+        });
+    }
+
+    async function savePreferredCourses(name, courses) {
+        await fetch('http://localhost:3000/api/users/save-courses', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, preferredCourses: courses })
+        });
+    }
+
+    async function getUserCourses(name) {
+        const response = await fetch('http://localhost:3000/api/users/get-courses', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name })
+        });
+        const data = await response.json();
+        return data.preferredCourses;
+    }
+
+    function updateUI() {
+        if (user.isLoggedIn) {
+            userNameElement.textContent = `Hello, ${user.name}`;
+            loginButton.style.display = "none";
+            logoutButton.style.display = "inline";
+            if (courseList) {
+                saveCoursesButton.style.display = "inline";
+                const checkboxes = courseList.querySelectorAll("input[type='checkbox']");
+                checkboxes.forEach(checkbox => {
+                    checkbox.checked = user.preferredCourses.includes(checkbox.value);
+                });
             }
-        } catch (error) {
-            console.error('Error:', error);
+            if (preferredCoursesList) {
+                preferredCoursesList.innerHTML = "";
+                user.preferredCourses.forEach(course => {
+                    const listItem = document.createElement("li");
+                    listItem.textContent = course;
+                    preferredCoursesList.appendChild(listItem);
+                });
+            }
+        } else {
+            userNameElement.textContent = "";
+            loginButton.style.display = "inline";
+            logoutButton.style.display = "none";
+            if (courseList) {
+                saveCoursesButton.style.display = "none";
+            }
+        }
+    }
+
+    loginButton.addEventListener("click", async function() {
+        const name = prompt("Enter your name:");
+        if (name) {
+            const data = await loginUser(name);
+            user.isLoggedIn = true;
+            user.name = data.name;
+            user.preferredCourses = data.preferredCourses;
+            updateUI();
         }
     });
 
-    loginForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const formData = new FormData(loginForm);
-        const username = formData.get('username');
-        const password = formData.get('password');
-        try {
-            const response = await fetch('/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ username, password })
-            });
-            if (response.ok) {
-                alert('Login successful');
-            } else {
-                alert('Invalid username or password');
-            }
-        } catch (error) {
-            console.error('Error:', error);
-        }
+    logoutButton.addEventListener("click", async function() {
+        await logoutUser();
+        user.isLoggedIn = false;
+        user.name = "";
+        user.preferredCourses = [];
+        updateUI();
     });
 
-    logoutForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        try {
-            const response = await fetch('/logout', {
-                method: 'POST'
-            });
-            if (response.ok) {
-                alert('Logout successful');
+    if (saveCoursesButton) {
+        saveCoursesButton.addEventListener("click", async function() {
+            if (user.isLoggedIn) {
+                const selectedCourses = [];
+                const checkboxes = courseList.querySelectorAll("input[type='checkbox']");
+                checkboxes.forEach(checkbox => {
+                    if (checkbox.checked) {
+                        selectedCourses.push(checkbox.value);
+                    }
+                });
+                user.preferredCourses = selectedCourses;
+                await savePreferredCourses(user.name, selectedCourses);
+                alert("Preferred courses saved successfully!");
             } else {
-                alert('Logout failed');
+                alert("Please log in to save your preferred courses.");
             }
-        } catch (error) {
-            console.error('Error:', error);
+        });
+    }
+
+    if (preferredCoursesList) {
+        document.addEventListener("DOMContentLoaded", async function() {
+            if (user.isLoggedIn) {
+                user.preferredCourses = await getUserCourses(user.name);
+                updateUI();
+            }
+        });
+    }
+
+    const leaderboardData = [
+        { name: "Alice", points: 120 },
+        { name: "Bob", points: 110 },
+        { name: "Charlie", points: 100 }
+    ];
+
+    function populateLeaderboard() {
+        const leaderboard = document.getElementById("leaderBoard");
+        if (leaderboard) {
+            leaderboardData.forEach(entry => {
+                const listItem = document.createElement("li");
+                listItem.textContent = `${entry.name} - ${entry.points} points`;
+                leaderboard.appendChild(listItem);
+            });
         }
-    });
-
-    // Check if the current page is the course content page
-    if (window.location.pathname === '/course-content') {
-        // Call the fetchCourseContent function
-        fetchCourseContent();
     }
 
-     // Check if the current page is the course content page
-    if (window.location.pathname === '/leader-board') {
-        // Fetch course content from server
-        fetchLeaderboardData();
-    }
-
-    // Check if the current page is the course content page
-    if (window.location.pathname === '/dashboard') {
-        //fetch Logged in user's full name
-        fetchFullName();
-    }
+    populateLeaderboard();
+    updateUI();
 });
-
-function fetchCourseContent() {
-    // Get course ID from URL parameter (assuming course ID is passed in the URL)
-    const urlParams = new URLSearchParams(window.location.search);
-    const courseId = urlParams.get('id');
-
-    // Make AJAX request to fetch course content from server
-    fetch(`/course/${courseId}`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            // Display course content on the page
-            displayCourseContent(data);
-        })
-        .catch(error => {
-            console.error('Error fetching course content:', error);
-        });
-}
-
-function displayCourseContent(courseContent) {
-    // Get the course name element
-    const courseNameElement = document.getElementById('course-name');
-    // Set the course name
-    courseNameElement.textContent = courseContent.name;
-
-    // Get the course content element
-    const courseContentElement = document.getElementById('course-content');
-    // Clear previous content
-    courseContentElement.innerHTML = '';
-
-    // Loop through the modules and display them
-    courseContent.modules.forEach(module => {
-        const moduleSection = document.createElement('section');
-        moduleSection.innerHTML = `
-            <h2>${module.title}</h2>
-            <p>${module.description}</p>
-            <!-- Add more elements as needed (e.g., videos, quizzes) -->
-        `;
-        courseContentElement.appendChild(moduleSection);
-    });
-}
-
-function fetchLeaderboardData() {
-    // Make AJAX request to fetch leaderboard data from server
-    fetch('/leaderboard')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            // Display leaderboard data on the page
-            displayLeaderboardData(data);
-        })
-        .catch(error => {
-            console.error('Error fetching leaderboard data:', error);
-        });
-}
-
-function displayLeaderboardData(leaderboardData) {
-    // Get the leaderboard element
-    const leaderboardElement = document.getElementById('leaderboard');
-    // Clear previous content
-    leaderboardElement.innerHTML = '';
-
-    // Create a table to display leaderboard data
-    const table = document.createElement('table');
-    table.innerHTML = `
-        <tr>
-            <th>Rank</th>
-            <th>Name</th>
-            <th>Score</th>
-        </tr>
-    `;
-
-    // Loop through the leaderboard data and add rows to the table
-    leaderboardData.forEach((entry, index) => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>${index + 1}</td>
-            <td>${entry.name}</td>
-            <td>${entry.score}</td>
-        `;
-        table.appendChild(row);
-    });
-
-    // Append the table to the leaderboard element
-    leaderboardElement.appendChild(table);
-}
-
-function fetchFullName() {
-    // Make AJAX request to fetch the user's full name from the server
-    fetch('/get-fullname')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            // Display the user's full name on the dashboard
-            displayFullName(data.fullName);
-        })
-        .catch(error => {
-            console.error('Error fetching user full name:', error);
-        });
-}
-
-function displayFullName(fullName) {
-    // Get the element where the full name will be displayed
-    const fullNameElement = document.getElementById('user-fullname');
-    // Set the inner HTML of the element to the user's full name
-    fullNameElement.textContent = fullName;
-}
