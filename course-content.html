@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Course Content</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Include your CSS file -->
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <header>
@@ -13,18 +13,28 @@
             <ul>
                 <li><a href="/">Home</a></li>
                 <li><a href="/course-content">Course Content</a></li>
-                <!-- Add more navigation links as needed -->
+                <li><a href="selected_courses.html">Selected Courses</a></li>
             </ul>
         </nav>
     </header>
     <main id="course-content">
-        <!-- Course content will be dynamically populated here -->
+        <h2>Select Your Courses</h2>
+        <form id="course-form">
+            <label>
+                <input type="checkbox" name="course" value="Course 1"> Course 1
+            </label><br>
+            <label>
+                <input type="checkbox" name="course" value="Course 2"> Course 2
+            </label><br>
+            <label>
+                <input type="checkbox" name="course" value="Course 3"> Course 3
+            </label><br>
+            <button type="submit">Save</button>
+        </form>
     </main>
     <footer>
         <p>&copy; 2024 Your LMS</p>
     </footer>
-
-    <!-- Include your client-side JavaScript file -->
     <script src="script.js"></script>
 </body>
 </html>
