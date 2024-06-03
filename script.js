@@ -1,8 +1,59 @@
 // scripts.js
+
 document.addEventListener('DOMContentLoaded', () => {
+    const courseSelectionForm = document.getElementById('course-selection-form');
+    if (courseSelectionForm) {
+        courseSelectionForm.addEventListener('submit', async (e) => {
+         e.preventDefault();
+            const formData = new FormData(courseSelectionForm);
+            const courses = [];
+            formData.forEach((value, key) => {
+                if (key === 'courses') courses.push(value);
+
+            }
+        );
+        try{
+            const response = await fetch ('/select-courses', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+
+                },
+                body: JSON.stringify({courses})
+                        }
+            );
+            if (response.ok){
+                alert('Course selection saved successfully');
+            }else{
+                alert('Failed to save course selection');
+
+            }
+
+            }catch(error){
+                console.error('Error:', error);           
+             }
+        });
+    }
+
+ const coursesList = document.getElementById('courses-list');
+ if (coursesList){
+    fetch('/get-selected-courses')
+    .then(response => response.json())
+    .then(data => {
+        data.courses.forEach(course => {
+            const li = document.createElement('li');
+            li.textContent = course;
+            coursesList.appendChild(li);
+        });
+    });
+ }
+});
+
+ document.addEventListener('DOMContentLoaded', () => {
     const registerForm = document.getElementById('register-form');
     const loginForm = document.getElementById('login-form');
     const logoutForm = document.getElementById('logout-form');
+    
 
     registerForm.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -26,6 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         } catch (error) {
             console.error('Error:', error);
+            alert('An error occured.');
         }
     });
 
