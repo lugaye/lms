@@ -18,17 +18,17 @@ app.use(session({
 const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: '',
-    database: 'learning_management'
+    password: '101500@Lydiah',
+    database: 'learning_management_system'
 });
 
 // Connect to MySQL
 connection.connect((err) => {
     if (err) {
-        console.error('Error connecting to MySQL: ' + err.stack);
+        console.error('Error connecting to DB: ' + err.stack);
         return;
     }
-    console.log('Connected to MySQL as id ' + connection.threadId);
+    console.log('Connected to DB as id ' + connection.threadId);
 });
 
 // Serve static files from the default directory
@@ -58,6 +58,13 @@ const User = {
     },
     getUserByUsername: function(username, callback) {
         connection.query('SELECT * FROM ' + this.tableName + ' WHERE username = ?', username, callback);
+    }
+};
+const Course = {
+    tableName: 'courses',
+    getAllCourses: function(callback){
+        connection.query('SELECT * FROM' + this.tableName, callback);
+
     }
 };
 
@@ -148,6 +155,42 @@ app.get('/dashboard', (req, res) => {
     res.render('dashboard', { fullName: userFullName });
 });
 
+//Route to save selected courses for a user
+app.post('/selected-courses', (req,res) => {
+    const userId = req.session.user.id;
+    const courses = req.body.courses;
+    const sql = 'INSERT INTO user_courses(user_id, course_id) VALUES?';
+    const values = courses.map(courseId => userId, courseId);
+    connection.query(sql, [values], (err, result) => {
+        if (err) {
+            console.error('Error inserting selected courses:', err);
+            return res.status(500).send('Error saving course selection');
+        }
+        res.send('Course selection saved successfully');
+    });
+});
+
+// Route to fetch selected courses for a user
+app.get('/get-selected-courses', (req, res) => {
+    const userId = req.session.user.id;
+    const sql = `
+        SELECT c.name
+        FROM user_courses uc
+        JOIN courses c ON uc.course_id = c.id
+        WHERE uc.user_id = ?
+    `;
+    connection.query(sql, [userId], (err, results) => {
+        if (err) {
+            console.error('Error fetching selected courses:', err);
+            return res.status(500).send('Error fetching selected courses');
+        }
+        const courses = results.map(row => row.name);
+        res.json({ courses });
+    });
+});
+
+
+
 // Route to retrieve course content
 app.get('/course/:id', (req, res) => {
     const courseId = req.params.id;
@@ -160,9 +203,27 @@ app.get('/course/:id', (req, res) => {
       res.json(result);
     });
   });
+  // Route to fetch leaderboard data
+app.get('/leaderboard', (req, res) => {
+    const sql = `
+        SELECT u.username AS name, SUM(score) AS score
+        FROM user_courses uc
+        JOIN users u ON uc.user_id = u.id
+        GROUP BY u.id
+        ORDER BY score DESC
+        LIMIT 10
+    `;
+    connection.query(sql, (err, results) => {
+        if (err) {
+            console.error('Error fetching leaderboard data:', err);
+            return res.status(500).send('Error fetching leaderboard data');
+        }
+        res.json(results);
+    });
+});
 
 // Start server
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
