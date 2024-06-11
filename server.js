@@ -46,17 +46,17 @@ app.get('/', (req, res) => {
 });
 
 
-  
+
 // Define a User representation for clarity
 const User = {
-    tableName: 'users', 
-    createUser: function(newUser, callback) {
+    tableName: 'users',
+    createUser: function (newUser, callback) {
         connection.query('INSERT INTO ' + this.tableName + ' SET ?', newUser, callback);
-    },  
-    getUserByEmail: function(email, callback) {
+    },
+    getUserByEmail: function (email, callback) {
         connection.query('SELECT * FROM ' + this.tableName + ' WHERE email = ?', email, callback);
     },
-    getUserByUsername: function(username, callback) {
+    getUserByUsername: function (username, callback) {
         connection.query('SELECT * FROM ' + this.tableName + ' WHERE username = ?', username, callback);
     }
 };
@@ -102,12 +102,12 @@ app.post('/register', [
     // Insert user into MySQL
     User.createUser(newUser, (error, results, fields) => {
         if (error) {
-          console.error('Error inserting user: ' + error.message);
-          return res.status(500).json({ error: error.message });
+            console.error('Error inserting user: ' + error.message);
+            return res.status(500).json({ error: error.message });
         }
         console.log('Inserted a new user with id ' + results.insertId);
         res.status(201).json(newUser);
-      });
+    });
 });
 
 // Login route
@@ -153,13 +153,35 @@ app.get('/course/:id', (req, res) => {
     const courseId = req.params.id;
     const sql = 'SELECT * FROM courses WHERE id = ?';
     db.query(sql, [courseId], (err, result) => {
-      if (err) {
-        throw err;
-      }
-      // Send course content as JSON response
-      res.json(result);
+        if (err) {
+            throw err;
+        }
+        // Send course content as JSON response
+        res.json(result);
     });
-  });
+});
+
+app.post('/save-courses', (req, res) => {
+    const userId = req.session.user.id;
+    const selectedCourses = req.body.courses;
+
+    // Save selected courses to the database (implementation depends on your database schema)
+    // Example: Insert selected courses into a table named 'user_courses'
+
+    res.sendStatus(200); // Send success response
+});
+
+app.get('/user-courses', (req, res) => {
+    const userId = req.session.user.id;
+
+    // Retrieve selected courses for the logged-in user from the database (implementation depends on your database schema)
+    // Example: Query the 'user_courses' table for courses associated with the user ID
+
+    const userCourses = ['Course 1', 'Course 3']; // Dummy data (replace with actual data)
+
+    res.json({ courses: userCourses }); // Send selected courses as JSON response
+});
+
 
 // Start server
 const PORT = process.env.PORT || 3000;
