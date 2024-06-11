@@ -1,10 +1,10 @@
-// server.js
 const express = require('express');
 const session = require('express-session');
 const bcrypt = require('bcryptjs');
 const bodyParser = require('body-parser');
 const mysql = require('mysql');
 const { check, validationResult } = require('express-validator');
+
 const app = express();
 
 // Configure session middleware
@@ -45,8 +45,6 @@ app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
 });
 
-
-  
 // Define a User representation for clarity
 const User = {
     tableName: 'users', 
@@ -102,12 +100,12 @@ app.post('/register', [
     // Insert user into MySQL
     User.createUser(newUser, (error, results, fields) => {
         if (error) {
-          console.error('Error inserting user: ' + error.message);
-          return res.status(500).json({ error: error.message });
+            console.error('Error inserting user: ' + error.message);
+            return res.status(500).json({ error: error.message });
         }
         console.log('Inserted a new user with id ' + results.insertId);
         res.status(201).json(newUser);
-      });
+    });
 });
 
 // Login route
@@ -141,7 +139,7 @@ app.post('/logout', (req, res) => {
     res.send('Logout successful');
 });
 
-//Dashboard route
+// Dashboard route
 app.get('/dashboard', (req, res) => {
     // Assuming you have middleware to handle user authentication and store user information in req.user
     const userFullName = req.user.full_name;
@@ -153,13 +151,46 @@ app.get('/course/:id', (req, res) => {
     const courseId = req.params.id;
     const sql = 'SELECT * FROM courses WHERE id = ?';
     db.query(sql, [courseId], (err, result) => {
-      if (err) {
-        throw err;
-      }
-      // Send course content as JSON response
-      res.json(result);
+        if (err) {
+            throw err;
+        }
+        // Send course content as JSON response
+        res.json(result);
     });
-  });
+});
+
+// Route to select a course
+app.post('/select-course', (req, res) => {
+    const userId = req.session.user.id;
+    const courseId = req.body.courseId;
+    const sql = 'INSERT INTO user_course_selection (user_id, course_id) VALUES (?, ?)';
+
+    connection.query(sql, [userId, courseId], (err, result) => {
+        if (err) {
+            console.error('Error selecting course: ' + err.message);
+            return res.status(500).json({ error: err.message });
+        }
+        res.status(200).json({ message: 'Course selected successfully' });
+    });
+});
+
+// Route to get selected courses for the logged-in user
+app.get('/selected-courses', (req, res) => {
+    const userId = req.session.user.id;
+    const sql = `
+        SELECT courses.id, courses.name 
+        FROM user_course_selection 
+        JOIN courses ON user_course_selection.course_id = courses.id 
+        WHERE user_course_selection.user_id = ?`;
+
+    connection.query(sql, [userId], (err, results) => {
+        if (err) {
+            console.error('Error fetching selected courses: ' + err.message);
+            return res.status(500).json({ error: err.message });
+        }
+        res.json(results);
+    });
+});
 
 // Start server
 const PORT = process.env.PORT || 3000;

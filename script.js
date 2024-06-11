@@ -85,7 +85,11 @@ document.addEventListener('DOMContentLoaded', () => {
         //fetch Logged in user's full name
         fetchFullName();
     }
+    if (window.location.pathname === '/select-courses') {
+        fetchCourses();
+    }
 });
+
 
 function fetchCourseContent() {
     // Get course ID from URL parameter (assuming course ID is passed in the URL)
