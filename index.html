@@ -3,28 +3,109 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Learning Management App</title>
-    <link rel="stylesheet" href="style.css">
+    <title>lms</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+        }
+        .container h2 {
+            margin: 0 0 20px 0;
+            text-align: center;
+        }
+        .container form {
+        display: none; /* Hide all forms by default */
+        flex-direction: column;
+    }
+    .container form.active {
+        display: flex; /* Display only the active form */
+    }
+        .container input {
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .container button {
+            padding: 10px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .container button:hover {
+            background: #0056b3;
+        }
+        .toggle-link {
+            text-align: center;
+            margin-top: 10px;
+            cursor: pointer;
+            color: #007bff;
+        }
+        .toggle-link:hover {
+            text-decoration: underline;
+        }
+        /* .hidden {
+            display: none;
+        } */
+    </style>
 </head>
 <body>
-    <h1>Learning Management App</h1>
-    <form id="register-form">
-        <h2>Register</h2>
-        <input type="text" name="username" placeholder="Username" required>
+    <div class="container">
+        <h2 id="form-title">Sign Up</h2>
+        <form id="login-form">
+            <input type="text" name="username" placeholder="Username" required>
+        <input type="password" name="password" placeholder="Password" required>
+        <button type="submit">Login</button>
+            <div class="toggle-link" id="show-signup">Don't have an account? Sign Up</div>
+        </form>
+
+        <form id="register-form" class="hidden">
+            <input type="text" name="username" placeholder="Username" required>
         <input type="password" name="password" placeholder="Password" required>
         <input type="email" name="email" placeholder="Email" required>
         <input type="text" name="full_name" placeholder="Full Name" required>
         <button type="submit">Register</button>
-    </form>
-    <form id="login-form">
-        <h2>Login</h2>
-        <input type="text" name="username" placeholder="Username" required>
-        <input type="password" name="password" placeholder="Password" required>
-        <button type="submit">Login</button>
-    </form>
-    <form id="logout-form">
-        <button type="submit">Logout</button>
-    </form>
+
+            <div class="toggle-link" id="show-login">Already have an account? Login</div>
+        </form>
+    </div>
+
+    <script>
+        
+      
+      
+        document.getElementById('show-signup').addEventListener('click', () => {
+        document.getElementById('login-form').classList.remove('active');
+        document.getElementById('register-form').classList.add('active');
+        document.getElementById('form-title').textContent = 'Sign Up';
+    });
+
+    document.getElementById('show-login').addEventListener('click', () => {
+        document.getElementById('register-form').classList.remove('active');
+        document.getElementById('login-form').classList.add('active');
+        document.getElementById('form-title').textContent = 'Login';
+    });
+
+    // Hide one form initially
+    document.getElementById('register-form').classList.add('active');
+    </script>
     <script src="script.js"></script>
+    
 </body>
 </html>

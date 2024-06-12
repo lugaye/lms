@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Courses</title>
+    <link rel="stylesheet" href="/style.css"> <!-- Include your CSS file -->
+</head>
+<body>
+    <header>
+        <h1>Select Your Preferred Courses</h1>
+        <nav>
+            <ul>
+                <li><a href="/dashboard">Dashboard</a></li>
+                <li><a href="/my-courses">My Courses</a></li>
+                <li><a href="/logout">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <form action="/select-courses" method="POST">
+            <ul>
+                <% courses.forEach(course => { %>
+                    <li>
+                        <label>
+                            <input type="checkbox" name="courses" value="<%= course.id %>">
+                            <%= course.name %>
+                        </label>
+                    </li>
+                <% }); %>
+            </ul>
+            <button type="submit">Save Selection</button>
+        </form>
+    </main>
+    <footer>
+        <p>&copy; 2024 Your LMS</p>
+    </footer>
+</body>
+</html>

@@ -1,4 +1,107 @@
-// scripts.js
+// // scripts.js
+// document.addEventListener('DOMContentLoaded', () => {
+//     const registerForm = document.getElementById('register-form');
+//     const loginForm = document.getElementById('login-form');
+//     const logoutForm = document.getElementById('logout-form');
+
+//     registerForm.addEventListener('submit', async (e) => {
+//         e.preventDefault();
+//         const formData = new FormData(registerForm);
+//         const username = formData.get('username');
+//         const password = formData.get('password');
+//         const email = formData.get('email');
+//         const full_name = formData.get('full_name');
+//         try {
+//             const response = await fetch('http://localhost:3000/register', {
+//                 method: 'POST',
+//                 headers: {
+//                     'Content-Type': 'application/json'
+//                 },
+//                 body: JSON.stringify({ username, password, email, full_name })
+//             });
+//             if (response.ok) {
+//                 alert('Registration successful');
+//             } else {
+//                 alert('Registration failed');
+//             }
+//         } catch (error) {
+//             console.error('Error:', error);
+//         }
+//     });
+
+//     loginForm.addEventListener('submit', async (e) => {
+//         e.preventDefault();
+//         const formData = new FormData(loginForm);
+//         const username = formData.get('username');
+//         const password = formData.get('password');
+//         try {
+//             const response = await fetch('http://localhost:3000/login', {
+//                 method: 'POST',
+//                 headers: {
+//                     'Content-Type': 'application/json'
+//                 },
+//                 body: JSON.stringify({ username, password })
+//             });
+//             // if (response.ok) {
+//             //     alert('Login successful');
+//             // } else {
+//             //     alert('Invalid username or password');
+//             // }
+//             if (response.ok) {
+//                 alert('Login successful');
+//                 window.location.href = '/dashboard';
+//             } else {
+//                 alert('Invalid username or password');
+//             }
+//         } catch (error) {
+//             console.error('Error:', error);
+//         }
+//     });
+
+//     logoutForm.addEventListener('submit', async (e) => {
+//         e.preventDefault();
+//         try {
+//             const response = await fetch('http://localhost:3000/logout', {
+//                 method: 'POST'
+//             });
+//             if (response.ok) {
+//                 alert('Logout successful');
+//             } else {
+//                 alert('Logout failed');
+//             }
+//         } catch (error) {
+//             console.error('Error:', error);
+//         }
+//     });
+
+//     // Check if the current page is the course content page
+//     if (window.location.pathname === '/course-content') {
+//         // Call the fetchCourseContent function
+//         fetchCourseContent();
+//     }
+
+//      // Check if the current page is the course content page
+//     if (window.location.pathname === '/leader-board') {
+//         // Fetch course content from server
+//         fetchLeaderboardData();
+//     }
+
+//     // Check if the current page is the course content page
+//     if (window.location.pathname === '/dashboard') {
+//         //fetch Logged in user's full name
+//         fetchFullName();
+//     }
+
+
+
+
+    
+// });
+
+
+
+
+
 document.addEventListener('DOMContentLoaded', () => {
     const registerForm = document.getElementById('register-form');
     const loginForm = document.getElementById('login-form');
@@ -12,7 +115,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const email = formData.get('email');
         const full_name = formData.get('full_name');
         try {
-            const response = await fetch('/register', {
+            const response = await fetch('http://localhost:3000/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -35,7 +138,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const username = formData.get('username');
         const password = formData.get('password');
         try {
-            const response = await fetch('/login', {
+            const response = await fetch('http://localhost:3000/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -44,6 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             if (response.ok) {
                 alert('Login successful');
+                window.location.href = '/dashboard';
             } else {
                 alert('Invalid username or password');
             }
@@ -52,48 +156,37 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    logoutForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        try {
-            const response = await fetch('/logout', {
-                method: 'POST'
-            });
-            if (response.ok) {
-                alert('Logout successful');
-            } else {
-                alert('Logout failed');
+    if (logoutForm) {
+        logoutForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            try {
+                const response = await fetch('http://localhost:3000/logout', {
+                    method: 'POST'
+                });
+                if (response.ok) {
+                    alert('Logout successful');
+                    window.location.href = '/';
+                } else {
+                    alert('Logout failed');
+                }
+            } catch (error) {
+                console.error('Error:', error);
             }
-        } catch (error) {
-            console.error('Error:', error);
-        }
-    });
-
-    // Check if the current page is the course content page
-    if (window.location.pathname === '/course-content') {
-        // Call the fetchCourseContent function
-        fetchCourseContent();
+        });
     }
 
-     // Check if the current page is the course content page
-    if (window.location.pathname === '/leader-board') {
-        // Fetch course content from server
-        fetchLeaderboardData();
-    }
-
-    // Check if the current page is the course content page
     if (window.location.pathname === '/dashboard') {
-        //fetch Logged in user's full name
         fetchFullName();
     }
 });
-
+document.addEventListener('DOMContentLoaded', () => {
 function fetchCourseContent() {
     // Get course ID from URL parameter (assuming course ID is passed in the URL)
     const urlParams = new URLSearchParams(window.location.search);
     const courseId = urlParams.get('id');
 
     // Make AJAX request to fetch course content from server
-    fetch(`/course/${courseId}`)
+    fetch(`http://localhost:3000/course/${courseId}`)
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
@@ -134,7 +227,7 @@ function displayCourseContent(courseContent) {
 
 function fetchLeaderboardData() {
     // Make AJAX request to fetch leaderboard data from server
-    fetch('/leaderboard')
+    fetch('http://localhost:3000/leaderboard')
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
@@ -149,6 +242,8 @@ function fetchLeaderboardData() {
             console.error('Error fetching leaderboard data:', error);
         });
 }
+
+});
 
 function displayLeaderboardData(leaderboardData) {
     // Get the leaderboard element
@@ -181,27 +276,50 @@ function displayLeaderboardData(leaderboardData) {
     leaderboardElement.appendChild(table);
 }
 
-function fetchFullName() {
-    // Make AJAX request to fetch the user's full name from the server
-    fetch('/get-fullname')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            // Display the user's full name on the dashboard
-            displayFullName(data.fullName);
-        })
-        .catch(error => {
-            console.error('Error fetching user full name:', error);
-        });
+// function fetchFullName() {
+//     // Make AJAX request to fetch the user's full name from the server
+//     fetch('/get-fullname')
+//         .then(response => {
+//             if (!response.ok) {
+//                 throw new Error('Network response was not ok');
+//             }
+//             return response.json();
+//         })
+//         .then(data => {
+//             // Display the user's full name on the dashboard
+//             displayFullName(data.fullName);
+//         })
+//         .catch(error => {
+//             console.error('Error fetching user full name:', error);
+//         });
+// }
+
+async function fetchFullName() {
+    try {
+        const response = await fetch('/get-fullname');
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        displayFullName(data.userFullName);
+    } catch (error) {
+        console.error('Error fetching user full name:', error);
+    }
 }
 
+// function displayFullName(fullName) {
+//     // Get the element where the full name will be displayed
+//     const fullNameElement = document.getElementById('user-fullname');
+//     // Set the inner HTML of the element to the user's full name
+//     fullNameElement.textContent = fullName;
+// }
+
+
+
 function displayFullName(fullName) {
-    // Get the element where the full name will be displayed
     const fullNameElement = document.getElementById('user-fullname');
-    // Set the inner HTML of the element to the user's full name
-    fullNameElement.textContent = fullName;
+    if (fullNameElement) {
+        fullNameElement.textContent = fullName;
+        console.log(fullName)
+    }
 }
