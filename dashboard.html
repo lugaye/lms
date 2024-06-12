@@ -3,31 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Include your CSS file -->
+    <title>Dashboard - Learning management system</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header>
-        <h1>Welcome to Your Dashboard</h1>
-        <nav>
-            <ul>
-                <li><a href="/leaderboard">Leaderboard</a></li>
-                <li><a href="/course-content">Course Content</a></li>
-                <!-- Add more navigation links as needed -->
-            </ul>
-        </nav>
-    </header>
-    <main>
-        <section class="welcome-message">
-            <h2>Hello, <span id="user-fullname"></span>!</h2>
-            <p>Welcome to your personalized dashboard.</p>
-        </section>
-    </main>
-    <footer>
-        <p>&copy; 2024 Your LMS</p>
-    </footer>
 
-    <!-- Include your client-side JavaScript file -->
-    <script src="script.js"></script>
+    <!-- Navigation bar -->
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="coursecontent.html">Course Content</a>
+        <a href="leaderboard.html">Leader Board</a>
+        <a href="dashboard.html">Dashboard</a>
+    </nav>
+
+    <!-- Dashboard Content -->
+    <div class="dashboard-container">
+        <div class="user-info">
+            <h2>Welcome, [Username]</h2>
+            <p>Email: [user@example.com]</p>
+            <form action="/logout" method="POST">
+                <button type="submit">Logout</button>
+            </form>
+        </div>
+
+        <div class="courses-container">
+            <h2>Current Courses</h2>
+            <div class="course">
+                <h3>Software Design</h3>
+                <p>This course covers the principles and practices of software design, including design patterns, object-oriented design, and software architecture.</p>
+                <button onclick="window.location.href='course-content.html'">View Course</button>
+            </div>
+            <!-- Add more courses as needed -->
+        </div>
+    </div>
+
 </body>
 </html>
