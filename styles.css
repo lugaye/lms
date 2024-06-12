@@ -1,0 +1,84 @@
+/* Reset some basic styles */
+body, h1, h2, p, ul, li, a {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    text-decoration: none;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+/* Style the header */
+header {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 0;
+    text-align: center;
+}
+
+header h1 {
+    margin-bottom: 10px;
+}
+
+header nav ul {
+    display: flex;
+    justify-content: center;
+}
+
+header nav ul li {
+    margin: 0 15px;
+}
+
+header nav ul li a {
+    color: white;
+    font-weight: bold;
+    text-transform: uppercase;
+    transition: color 0.3s;
+}
+
+header nav ul li a:hover {
+    color: #ddd;
+}
+
+/* Style the main content area */
+main {
+    padding: 20px;
+    max-width: 800px;
+    margin: 20px auto;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+.welcome-message {
+    text-align: center;
+}
+
+.welcome-message h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.welcome-message p {
+    font-size: 18px;
+}
+
+/* Style the footer */
+footer {
+    background-color: #4CAF50;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+}
+
+footer p {
+    margin: 0;
+}
