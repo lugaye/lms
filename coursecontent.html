@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Content - My Website</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- Navigation bar -->
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="coursecontent.html">Course Content</a>
+        <a href="leaderboard.html">Leader Board</a>
+        <a href="dashboard.html">Dashboard</a>
+    </nav>
+
+    <!-- Course Content Section -->
+    <div class="course-content-container">
+        <h1>Software Design</h1>
+        <p>This course covers the principles and practices of software design, including design patterns, object-oriented design, and software architecture.</p>
+        
+        <!-- Enrollment Section -->
+        <div class="enrollment-container">
+            <h2>Enroll in this Course</h2>
+            <form action="/enroll" method="POST">
+                <label for="enroll-name">Full Name:</label>
+                <input type="text" id="enroll-name" name="name" required><br>
+
+                <label for="enroll-email">Email:</label>
+                <input type="email" id="enroll-email" name="email" required><br>
+
+                <button type="submit">Enroll</button>
+            </form>
+        </div>
+
+        <!-- Course Materials -->
+        <div class="materials-container">
+            <h2>Course Materials</h2>
+            <div class="material">
+                <h3>Module 1: Introduction to Software Design</h3>
+                <p>In this module, you will learn about the basics of software design, including the importance of design patterns and software architecture.</p>
+                <img src="images/software-design-intro.jpg" alt="Introduction to Software Design">
+            </div>
+
+            <div class="material">
+                <h3>Module 2: Object-Oriented Design</h3>
+                <p>This module covers object-oriented design principles, such as encapsulation, inheritance, and polymorphism.</p>
+                <img src="images/object-oriented-design.jpg" alt="Object-Oriented Design">
+            </div>
+
+            <div class="material">
+                <h3>Module 3: Design Patterns</h3>
+                <p>Learn about various design patterns, including Singleton, Factory, and Observer patterns, and how to implement them.</p>
+                <img src="images/design-patterns.jpg" alt="Design Patterns">
+            </div>
+
+            <!-- Add more modules and materials as needed -->
+        </div>
+    </div>
+
+</body>
+</html>

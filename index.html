@@ -3,28 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Learning Management App</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Learning management system</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Learning Management App</h1>
-    <form id="register-form">
+
+    <!-- Navigation bar -->
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="coursecontent.html">Course Content</a>
+        <a href="leaderboard.html">Leader Board</a>
+        <a href="dashboard.html">Dashboard</a>
+    </nav>
+<!-- Course Section -->
+    <div class="course-container">
+        <h2>Software Design Course</h2>
+        <p>This course covers the principles and practices of software design, including design patterns, object-oriented design, and software architecture.</p>
+    </div>
+
+    <!-- Registration Form -->
+    <div class="form-container">
         <h2>Register</h2>
-        <input type="text" name="username" placeholder="Username" required>
-        <input type="password" name="password" placeholder="Password" required>
-        <input type="email" name="email" placeholder="Email" required>
-        <input type="text" name="full_name" placeholder="Full Name" required>
-        <button type="submit">Register</button>
-    </form>
-    <form id="login-form">
+        <form action="/register" method="POST">
+            <label for="reg-username">Username:</label>
+            <input type="text" id="reg-username" name="username" required><br>
+
+            <label for="reg-email">Email:</label>
+            <input type="email" id="reg-email" name="email" required><br>
+
+            <label for="reg-password">Password:</label>
+            <input type="password" id="reg-password" name="password" required><br>
+
+            <button type="submit">Register</button>
+        </form>
+    </div>
+
+    <!-- Login Form -->
+    <div class="form-container">
         <h2>Login</h2>
-        <input type="text" name="username" placeholder="Username" required>
-        <input type="password" name="password" placeholder="Password" required>
-        <button type="submit">Login</button>
-    </form>
-    <form id="logout-form">
-        <button type="submit">Logout</button>
-    </form>
-    <script src="script.js"></script>
+        <form action="/login" method="POST">
+            <label for="login-username">Username:</label>
+            <input type="text" id="login-username" name="username" required><br>
+
+            <label for="login-password">Password:</label>
+            <input type="password" id="login-password" name="password" required><br>
+
+            <button type="submit">Login</button>
+        </form>
+    </div>
+
+    <!-- Logout Form -->
+    <div class="form-container">
+        <h2>Logout</h2>
+        <form action="/logout" method="POST">
+            <button type="submit">Logout</button>
+        </form>
+    </div>
+
 </body>
 </html>
