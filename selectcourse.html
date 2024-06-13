@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Select Courses</title>
+</head>
+
+<body>
+    <h2>Select Your Courses</h2>
+    <form action="/user/select-courses" method="post">
+        <% courses.forEach(course=> { %>
+            <input type="checkbox" name="courses" value="<%= course.id %>">
+            <%= course.name %><br>
+                <% }); %>
+                    <input type="submit" value="Submit">
+    </form>
+</body>
+
+</html>
