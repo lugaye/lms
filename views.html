@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>View Selected Courses</title>
+</head>
+
+<body>
+    <h2>Your Selected Courses</h2>
+    <ul>
+        <% courses.forEach(course=> { %>
+            <li>
+                <%= course.name %>
+            </li>
+            <% }); %>
+    </ul>
+    <a href="/user/select-courses">Go Back to Course Selection</a>
+</body>
+
+</html>
