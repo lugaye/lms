@@ -19,7 +19,7 @@ const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: '',
-    database: 'learning_management'
+    database: 'LMS_APP'
 });
 
 // Connect to MySQL
