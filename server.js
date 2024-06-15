@@ -1,4 +1,3 @@
-// server.js
 const express = require('express');
 const session = require('express-session');
 const bcrypt = require('bcryptjs');
@@ -45,14 +44,12 @@ app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
 });
 
-
-  
 // Define a User representation for clarity
 const User = {
-    tableName: 'users', 
+    tableName: 'users',
     createUser: function(newUser, callback) {
         connection.query('INSERT INTO ' + this.tableName + ' SET ?', newUser, callback);
-    },  
+    },
     getUserByEmail: function(email, callback) {
         connection.query('SELECT * FROM ' + this.tableName + ' WHERE email = ?', email, callback);
     },
@@ -102,12 +99,12 @@ app.post('/register', [
     // Insert user into MySQL
     User.createUser(newUser, (error, results, fields) => {
         if (error) {
-          console.error('Error inserting user: ' + error.message);
-          return res.status(500).json({ error: error.message });
+            console.error('Error inserting user: ' + error.message);
+            return res.status(500).json({ error: error.message });
         }
         console.log('Inserted a new user with id ' + results.insertId);
         res.status(201).json(newUser);
-      });
+    });
 });
 
 // Login route
@@ -141,10 +138,12 @@ app.post('/logout', (req, res) => {
     res.send('Logout successful');
 });
 
-//Dashboard route
+// Dashboard route
 app.get('/dashboard', (req, res) => {
-    // Assuming you have middleware to handle user authentication and store user information in req.user
-    const userFullName = req.user.full_name;
+    if (!req.session.user) {
+        return res.status(401).send('Unauthorized');
+    }
+    const userFullName = req.session.user.full_name;
     res.render('dashboard', { fullName: userFullName });
 });
 
@@ -152,14 +151,63 @@ app.get('/dashboard', (req, res) => {
 app.get('/course/:id', (req, res) => {
     const courseId = req.params.id;
     const sql = 'SELECT * FROM courses WHERE id = ?';
-    db.query(sql, [courseId], (err, result) => {
-      if (err) {
-        throw err;
-      }
-      // Send course content as JSON response
-      res.json(result);
+    connection.query(sql, [courseId], (err, result) => {
+        if (err) {
+            throw err;
+        }
+        // Send course content as JSON response
+        res.json(result);
     });
-  });
+});
+
+// Route to display all courses
+app.get('/courses', (req, res) => {
+    if (!req.session.user) {
+        return res.status(401).send('Unauthorized');
+    }
+    const sql = 'SELECT * FROM courses';
+    connection.query(sql, (err, results) => {
+        if (err) {
+            throw err;
+        }
+        res.render('courses', { courses: results });
+    });
+});
+
+// Route to handle course selection
+app.post('/select-course', (req, res) => {
+    if (!req.session.user) {
+        return res.status(401).send('Unauthorized');
+    }
+    const userId = req.session.user.id;
+    const courseId = req.body.courseId;
+    const sql = 'INSERT INTO user_courses (user_id, course_id) VALUES (?, ?)';
+    connection.query(sql, [userId, courseId], (err, result) => {
+        if (err) {
+            throw err;
+        }
+        res.redirect('/my-courses');
+    });
+});
+
+// Route to display selected courses for the logged-in user
+app.get('/my-courses', (req, res) => {
+    if (!req.session.user) {
+        return res.status(401).send('Unauthorized');
+    }
+    const userId = req.session.user.id;
+    const sql = `
+        SELECT courses.name FROM courses
+        JOIN user_courses ON courses.id = user_courses.course_id
+        WHERE user_courses.user_id = ?
+    `;
+    connection.query(sql, [userId], (err, results) => {
+        if (err) {
+            throw err;
+        }
+        res.render('my-courses', { courses: results });
+    });
+});
 
 // Start server
 const PORT = process.env.PORT || 3000;

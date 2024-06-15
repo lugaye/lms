@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Courses - Learning Management System</title>
+</head>
+<body>
+    <h1>My Courses</h1>
+    <ul>
+        <% courses.forEach(course => { %>
+            <li><%= course.name %></li>
+        <% }); %>
+    </ul>
+    <br>
+    <a href="/courses">Select More Courses</a>
+</body>
+</html>

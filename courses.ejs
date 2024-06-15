@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Courses - Learning Management System</title>
+</head>
+<body>
+    <h1>Select Your Courses</h1>
+    <form action="/select-course" method="post">
+        <select name="courseId">
+            <% courses.forEach(course => { %>
+                <option value="<%= course.id %>"><%= course.name %></option>
+            <% }); %>
+        </select>
+        <br>
+        <button type="submit">Select Course</button>
+    </form>
+    <br>
+    <a href="/my-courses">View My Courses</a>
+</body>
+</html>
