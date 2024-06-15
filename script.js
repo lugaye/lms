@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const registerForm = document.getElementById('register-form');
     const loginForm = document.getElementById('login-form');
     const logoutForm = document.getElementById('logout-form');
+    const courseSelectionForm = document.getElementById('course-selection-form');
 
     registerForm.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -44,6 +45,8 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             if (response.ok) {
                 alert('Login successful');
+                // Redirect to dashboard after successful login
+                window.location.href = '/dashboard';
             } else {
                 alert('Invalid username or password');
             }
@@ -60,6 +63,8 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             if (response.ok) {
                 alert('Logout successful');
+                // Redirect to index.html after logout
+                window.location.href = '/';
             } else {
                 alert('Logout failed');
             }
@@ -68,21 +73,71 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // Course Selection Form Submission
+    courseSelectionForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = new FormData(courseSelectionForm);
+        const selectedCourses = formData.getAll('course'); // Assuming checkboxes with name 'course'
+
+        try {
+            const response = await fetch('/select-courses', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ courses: selectedCourses })
+            });
+            if (response.ok) {
+                alert('Courses selected successfully');
+                // Refresh selected courses display
+                displaySelectedCourses();
+            } else {
+                alert('Failed to select courses');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    });
+
+    // Function to display selected courses for the logged-in user
+    function displaySelectedCourses() {
+        fetch('/get-selected-courses')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                const selectedCoursesList = document.getElementById('selected-courses-list');
+                selectedCoursesList.innerHTML = ''; // Clear previous list
+
+                data.forEach(course => {
+                    const li = document.createElement('li');
+                    li.textContent = course.name;
+                    selectedCoursesList.appendChild(li);
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching selected courses:', error);
+            });
+    }
+
     // Check if the current page is the course content page
     if (window.location.pathname === '/course-content') {
         // Call the fetchCourseContent function
         fetchCourseContent();
     }
 
-     // Check if the current page is the course content page
-    if (window.location.pathname === '/leader-board') {
-        // Fetch course content from server
+    // Check if the current page is the leaderboard page
+    if (window.location.pathname === '/leaderboard') {
+        // Call the fetchLeaderboardData function
         fetchLeaderboardData();
     }
 
-    // Check if the current page is the course content page
+    // Check if the current page is the dashboard page
     if (window.location.pathname === '/dashboard') {
-        //fetch Logged in user's full name
+        // Call the fetchFullName function
         fetchFullName();
     }
 });
@@ -121,87 +176,4 @@ function displayCourseContent(courseContent) {
     courseContentElement.innerHTML = '';
 
     // Loop through the modules and display them
-    courseContent.modules.forEach(module => {
-        const moduleSection = document.createElement('section');
-        moduleSection.innerHTML = `
-            <h2>${module.title}</h2>
-            <p>${module.description}</p>
-            <!-- Add more elements as needed (e.g., videos, quizzes) -->
-        `;
-        courseContentElement.appendChild(moduleSection);
-    });
-}
-
-function fetchLeaderboardData() {
-    // Make AJAX request to fetch leaderboard data from server
-    fetch('/leaderboard')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            // Display leaderboard data on the page
-            displayLeaderboardData(data);
-        })
-        .catch(error => {
-            console.error('Error fetching leaderboard data:', error);
-        });
-}
-
-function displayLeaderboardData(leaderboardData) {
-    // Get the leaderboard element
-    const leaderboardElement = document.getElementById('leaderboard');
-    // Clear previous content
-    leaderboardElement.innerHTML = '';
-
-    // Create a table to display leaderboard data
-    const table = document.createElement('table');
-    table.innerHTML = `
-        <tr>
-            <th>Rank</th>
-            <th>Name</th>
-            <th>Score</th>
-        </tr>
-    `;
-
-    // Loop through the leaderboard data and add rows to the table
-    leaderboardData.forEach((entry, index) => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>${index + 1}</td>
-            <td>${entry.name}</td>
-            <td>${entry.score}</td>
-        `;
-        table.appendChild(row);
-    });
-
-    // Append the table to the leaderboard element
-    leaderboardElement.appendChild(table);
-}
-
-function fetchFullName() {
-    // Make AJAX request to fetch the user's full name from the server
-    fetch('/get-fullname')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            // Display the user's full name on the dashboard
-            displayFullName(data.fullName);
-        })
-        .catch(error => {
-            console.error('Error fetching user full name:', error);
-        });
-}
-
-function displayFullName(fullName) {
-    // Get the element where the full name will be displayed
-    const fullNameElement = document.getElementById('user-fullname');
-    // Set the inner HTML of the element to the user's full name
-    fullNameElement.textContent = fullName;
-}
+    courseContent.modules.forEach}
