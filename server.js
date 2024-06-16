@@ -7,7 +7,7 @@ const mysql = require('mysql');
 const { check, validationResult } = require('express-validator');
 const app = express();
 
-// Configure session middleware
+			// Configure session middleware
 app.use(session({
     secret: 'secret-key',
     resave: false,
@@ -19,8 +19,7 @@ const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: '',
-    database: 'learning_management'
-});
+    database: 'learning_managem});
 
 // Connect to MySQL
 connection.connect((err) => {
@@ -165,4 +164,4 @@ app.get('/course/:id', (req, res) => {
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
-});
+			});
