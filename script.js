@@ -1,4 +1,3 @@
-// scripts.js
 document.addEventListener('DOMContentLoaded', () => {
     const registerForm = document.getElementById('register-form');
     const loginForm = document.getElementById('login-form');
@@ -44,6 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             if (response.ok) {
                 alert('Login successful');
+                window.location.href = '/dashboard';
             } else {
                 alert('Invalid username or password');
             }
@@ -60,6 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             if (response.ok) {
                 alert('Logout successful');
+                window.location.href = '/';
             } else {
                 alert('Logout failed');
             }
@@ -68,31 +69,26 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Check if the current page is the course content page
     if (window.location.pathname === '/course-content') {
-        // Call the fetchCourseContent function
-        fetchCourseContent();
+        const urlParams = new URLSearchParams(window.location.search);
+        const courseId = urlParams.get('id');
+        if (courseId) {
+            fetchCourseContent(courseId);
+        } else {
+            console.error('Course ID not provided');
+        }
     }
 
-     // Check if the current page is the course content page
-    if (window.location.pathname === '/leader-board') {
-        // Fetch course content from server
+    if (window.location.pathname === '/leaderboard') {
         fetchLeaderboardData();
     }
 
-    // Check if the current page is the course content page
     if (window.location.pathname === '/dashboard') {
-        //fetch Logged in user's full name
         fetchFullName();
     }
 });
 
-function fetchCourseContent() {
-    // Get course ID from URL parameter (assuming course ID is passed in the URL)
-    const urlParams = new URLSearchParams(window.location.search);
-    const courseId = urlParams.get('id');
-
-    // Make AJAX request to fetch course content from server
+function fetchCourseContent(courseId) {
     fetch(`/course/${courseId}`)
         .then(response => {
             if (!response.ok) {
@@ -101,7 +97,6 @@ function fetchCourseContent() {
             return response.json();
         })
         .then(data => {
-            // Display course content on the page
             displayCourseContent(data);
         })
         .catch(error => {
@@ -110,30 +105,23 @@ function fetchCourseContent() {
 }
 
 function displayCourseContent(courseContent) {
-    // Get the course name element
     const courseNameElement = document.getElementById('course-name');
-    // Set the course name
     courseNameElement.textContent = courseContent.name;
 
-    // Get the course content element
     const courseContentElement = document.getElementById('course-content');
-    // Clear previous content
     courseContentElement.innerHTML = '';
 
-    // Loop through the modules and display them
     courseContent.modules.forEach(module => {
         const moduleSection = document.createElement('section');
         moduleSection.innerHTML = `
             <h2>${module.title}</h2>
             <p>${module.description}</p>
-            <!-- Add more elements as needed (e.g., videos, quizzes) -->
         `;
         courseContentElement.appendChild(moduleSection);
     });
 }
 
 function fetchLeaderboardData() {
-    // Make AJAX request to fetch leaderboard data from server
     fetch('/leaderboard')
         .then(response => {
             if (!response.ok) {
@@ -142,7 +130,6 @@ function fetchLeaderboardData() {
             return response.json();
         })
         .then(data => {
-            // Display leaderboard data on the page
             displayLeaderboardData(data);
         })
         .catch(error => {
@@ -151,12 +138,9 @@ function fetchLeaderboardData() {
 }
 
 function displayLeaderboardData(leaderboardData) {
-    // Get the leaderboard element
     const leaderboardElement = document.getElementById('leaderboard');
-    // Clear previous content
     leaderboardElement.innerHTML = '';
 
-    // Create a table to display leaderboard data
     const table = document.createElement('table');
     table.innerHTML = `
         <tr>
@@ -166,7 +150,6 @@ function displayLeaderboardData(leaderboardData) {
         </tr>
     `;
 
-    // Loop through the leaderboard data and add rows to the table
     leaderboardData.forEach((entry, index) => {
         const row = document.createElement('tr');
         row.innerHTML = `
@@ -177,12 +160,10 @@ function displayLeaderboardData(leaderboardData) {
         table.appendChild(row);
     });
 
-    // Append the table to the leaderboard element
     leaderboardElement.appendChild(table);
 }
 
 function fetchFullName() {
-    // Make AJAX request to fetch the user's full name from the server
     fetch('/get-fullname')
         .then(response => {
             if (!response.ok) {
@@ -191,7 +172,6 @@ function fetchFullName() {
             return response.json();
         })
         .then(data => {
-            // Display the user's full name on the dashboard
             displayFullName(data.fullName);
         })
         .catch(error => {
@@ -200,8 +180,6 @@ function fetchFullName() {
 }
 
 function displayFullName(fullName) {
-    // Get the element where the full name will be displayed
     const fullNameElement = document.getElementById('user-fullname');
-    // Set the inner HTML of the element to the user's full name
     fullNameElement.textContent = fullName;
 }
