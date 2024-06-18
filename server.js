@@ -14,7 +14,7 @@ app.use(session({
     saveUninitialized: true
 }));
 
-// Create MySQL connection
+// Create MySQL connection created
 const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
