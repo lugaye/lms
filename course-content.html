@@ -1,30 +1,273 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Course Content</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Include your CSS file -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Course Selection Functionality</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background: #fff;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    h2 {
+      color: #333;
+    }
+    input, textarea, button {
+      width: 100%;
+      padding: 10px;
+      margin: 5px 0;
+      box-sizing: border-box;
+    }
+    button {
+      background-color: #007BFF;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    li {
+      background: #f9f9f9;
+      margin: 5px 0;
+      padding: 10px;
+      border: 1px solid #ddd;
+    }
+    #auth, #tasks, #courses, #userCourses {
+      margin-bottom: 20px;
+    }
+    #tasks, #courses, #userCourses {
+      display: none;
+    }
+  </style>
+  <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-auth.js"></script>
+  <script>
+    // Your web app's Firebase configuration
+    var firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+      projectId: "course-selection-functionality",
+      storageBucket: "YOUR_PROJECT_ID.appspot.com",
+      messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+      appId: "YOUR_APP_ID"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+
+    const db = firebase.firestore();
+    const auth = firebase.auth();
+
+    // Auth functions
+    const signup = () => {
+      const email = document.getElementById('signupEmail').value;
+      const password = document.getElementById('signupPassword').value;
+      auth.createUserWithEmailAndPassword(email, password)
+        .then(userCredential => {
+          console.log('User signed up:', userCredential.user);
+        })
+        .catch(error => {
+          console.error('Error signing up:', error);
+        });
+    };
+
+    const login = () => {
+      const email = document.getElementById('loginEmail').value;
+      const password = document.getElementById('loginPassword').value;
+      auth.signInWithEmailAndPassword(email, password)
+        .then(userCredential => {
+          console.log('User logged in:', userCredential.user);
+        })
+        .catch(error => {
+          console.error('Error logging in:', error);
+        });
+    };
+
+    const logout = () => {
+      auth.signOut()
+        .then(() => {
+          console.log('User logged out');
+        })
+        .catch(error => {
+          console.error('Error logging out:', error);
+        });
+    };
+
+    // Task functions
+    const addNewTask = () => {
+      const title = document.getElementById('Web development').value;
+      const description = document.getElementById('Web development is the work involved in developing a website for the Internet (World Wide Web) or an intranet (a private network)').value;
+      const dueDate = document.getElementById('taskDueDate').value;
+
+      const task = {
+        title,
+        description,
+        dueDate,
+        completed: false
+      };
+
+      db.collection('tasks').add(task)
+        .then(docRef => {
+          console.log('Task added with ID:', docRef.id);
+          loadTasks();
+        })
+        .catch(error => {
+          console.error('Error adding task:', error);
+        });
+    };
+
+    const loadTasks = () => {
+      db.collection('tasks').get()
+        .then(querySnapshot => {
+          const taskList = document.getElementById('taskList');
+          taskList.innerHTML = '';
+          querySnapshot.forEach(doc => {
+            const task = doc.data();
+            const li = document.createElement('li');
+            li.textContent = `${task.title} - ${task.description} (Due: ${task.dueDate})`;
+            taskList.appendChild(li);
+          });
+        })
+        .catch(error => {
+          console.error('Error loading tasks:', error);
+        });
+    };
+
+    // Course functions
+    const loadCourses = () => {
+      db.collection('courses').get()
+        .then(querySnapshot => {
+          const courseList = document.getElementById('courseList');
+          courseList.innerHTML = '';
+          querySnapshot.forEach(doc => {
+            const course = doc.data();
+            const li = document.createElement('li');
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.value = doc.id;
+            li.appendChild(checkbox);
+            li.appendChild(document.createTextNode(`${course.name}: ${course.description}`));
+            courseList.appendChild(li);
+          });
+        })
+        .catch(error => {
+          console.error('Error loading courses:', error);
+        });
+    };
+
+    const saveSelectedCourses = () => {
+      const userId = auth.currentUser.uid;
+      const selectedCourses = Array.from(document.querySelectorAll('#courseList input[type="checkbox"]:checked'))
+        .map(checkbox => checkbox.value);
+
+      db.collection('userCourses').doc(userId).set({ courses: selectedCourses })
+        .then(() => {
+          console.log('Selected courses saved');
+          loadUserCourses();
+        })
+        .catch(error => {
+          console.error('Error saving selected courses:', error);
+        });
+    };
+
+    const loadUserCourses = () => {
+      const userId = auth.currentUser.uid;
+      db.collection('userCourses').doc(userId).get()
+        .then(doc => {
+          const selectedCourseList = document.getElementById('selectedCourseList');
+          selectedCourseList.innerHTML = '';
+          if (doc.exists) {
+            const userCourses = doc.data().courses;
+            userCourses.forEach(courseId => {
+              db.collection('courses').doc(courseId).get()
+                .then(courseDoc => {
+                  const course = courseDoc.data();
+                  const li = document.createElement('li');
+                  li.textContent = `${course.name}: ${course.description}`;
+                  selectedCourseList.appendChild(li);
+                })
+                .catch(error => {
+                  console.error('Error loading course:', error);
+                });
+            });
+          }
+        })
+        .catch(error => {
+          console.error('Error loading user courses:', error);
+        });
+    };
+
+    auth.onAuthStateChanged(user => {
+      if (user) {
+        document.getElementById('auth').style.display = 'none';
+        document.getElementById('tasks').style.display = 'block';
+        document.getElementById('courses').style.display = 'block';
+        document.getElementById('userCourses').style.display = 'block';
+        loadTasks();
+        loadCourses();
+        loadUserCourses();
+      } else {
+        document.getElementById('auth').style.display = 'block';
+        document.getElementById('tasks').style.display = 'none';
+        document.getElementById('courses').style.display = 'none';
+        document.getElementById('userCourses').style.display = 'none';
+      }
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+      loadTasks();
+      loadCourses();
+    });
+  </script>
 </head>
 <body>
-    <header>
-        <h1 id="course-name">Course Name</h1>
-        <nav>
-            <ul>
-                <li><a href="/">Home</a></li>
-                <li><a href="/course-content">Course Content</a></li>
-                <!-- Add more navigation links as needed -->
-            </ul>
-        </nav>
-    </header>
-    <main id="course-content">
-        <!-- Course content will be dynamically populated here -->
-    </main>
-    <footer>
-        <p>&copy; 2024 Your LMS</p>
-    </footer>
-
-    <!-- Include your client-side JavaScript file -->
-    <script src="script.js"></script>
+  <h1>Course Selection Functionality</h1>
+  <div class="container">
+    <div id="auth">
+      <h2>Login</h2>
+      <input type="email" id="loginEmail" placeholder="Email">
+      <input type="password" id="loginPassword" placeholder="Password">
+      <button onclick="login()">Login</button>
+      <h2>Signup</h2>
+      <input type="email" id="signupEmail" placeholder="Email">
+      <input type="password" id="signupPassword" placeholder="Password">
+      <button onclick="signup()">Signup</button>
+      <button onclick="logout()">Logout</button>
+    </div>
+    <div id="tasks">
+      <h2>Tasks</h2>
+      <input type="text" id="taskTitle" placeholder="Task Title">
+      <textarea id="taskDescription" placeholder="Task Description"></textarea>
+      <input type="date" id="taskDueDate">
+      <button onclick="addNewTask()">Add Task</button>
+      <ul id="taskList"></ul>
+    </div>
+    <div id="courses">
+      <h2>Courses</h2>
+      <ul id="courseList"></ul>
+      <button onclick="saveSelectedCourses()">Save Selected Courses</button>
+    </div>
+    <div id="userCourses">
+      <h2>My Selected Courses</h2>
+      <ul id="selectedCourseList"></ul>
+    </div>
+  </div>
 </body>
 </html>
