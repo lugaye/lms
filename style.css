@@ -72,3 +72,60 @@ iframe {
     height: 400px;
     margin-top: 20px;
 }
+
+/* Footer Styling */
+html {
+    font-family: sans-serif;
+    -ms-text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
+}
+body {
+    padding:0;
+    margin: 0;
+}
+
+.footer {
+    position: relative;
+    bottom:0;
+    width:100%;
+    background-color: #1791b8;
+}
+
+.footer p {
+    color: #fff;
+    font-size:.75em;
+    display: inline-block;
+}
+
+.container {
+    max-width: 1674px;  /* adjust to allow for padding as needed */
+    padding:0 50px;
+}
+
+#ftr-wrap {
+    display:table;
+    table-layout:fixed;
+    width:100%;
+    margin:0 auto;
+}
+#ftr-wrap > div {
+    display:table-cell;
+    vertical-align:middle;
+    outline:1px dashed red;  /* TEST Outline.  TO BE DELETED. */
+}
+#ftr-wrap > div:nth-child(1) {text-align:left;}
+#ftr-wrap > div:nth-child(2) {text-align:center;}
+#ftr-wrap > div:nth-child(3) {text-align:right;}
+
+.ftr-links ul {
+    padding: 0;
+}
+.ftr-links ul li {
+    display: inline-block;
+    padding-right: 15px;
+    font-size:.75em;
+}
+.ftr-links ul li a {
+    color: #fff;
+    margin: 0;
+}
