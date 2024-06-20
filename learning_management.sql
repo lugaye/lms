@@ -31,3 +31,12 @@ INSERT INTO leaderboard (name, score) VALUES
 ('Jane Smith', 90),
 ('Michael Brown', 85),
 ('Emily Jones', 80);
+
+-- Create user_courses table
+CREATE TABLE user_courses (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    course_id INT,
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    FOREIGN KEY (course_id) REFERENCES courses(id)
+);
