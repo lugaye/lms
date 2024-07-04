@@ -1,67 +1,55 @@
-// server.js
-const express = require('express');
-const session = require('express-session');
-const bcrypt = require('bcryptjs');
-const bodyParser = require('body-parser');
-const mysql = require('mysql');
-const { check, validationResult } = require('express-validator');
-const app = express();
+const express=require('express');
+const session=require('express-session');
+const bcrypt=require('bcryptjs');
+const bodyParser=require('body-parser');
+const mysql=require('mysql');
+const {check,validationResult}=require('express-validator');
+const { render } = require('ejs');
+const app=express();
 
-// Configure session middleware
 app.use(session({
-    secret: 'secret-key',
-    resave: false,
-    saveUninitialized: true
+    secret:'cdyyf-c3457-l88uiguel',
+    resave:false,
+    saveUninitialized:true
+
 }));
 
-// Create MySQL connection
-const connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'learning_management'
+const connection=mysql.createConnection({
+    host:'localhost',
+    user:'root',
+    password:'MySql04@axa#',
+    database:'learning_management'
 });
-
-// Connect to MySQL
-connection.connect((err) => {
-    if (err) {
-        console.error('Error connecting to MySQL: ' + err.stack);
+connection.connect((err)=>{
+    if(err){
+        console.error('Error connecting to mysql:'+err.stack);
         return;
     }
-    console.log('Connected to MySQL as id ' + connection.threadId);
+    console.log('Connected to Mysql')
 });
-
-// Serve static files from the default directory
 app.use(express.static(__dirname));
 
-// Set up middleware to parse incoming JSON data
 app.use(express.json());
 app.use(bodyParser.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.urlencoded({extended:true}));
+app.use(bodyParser.urlencoded({extended:true}));
 
-// Define routes
-app.get('/', (req, res) => {
+app.get('/',(req,res)=>{
     res.sendFile(__dirname + '/index.html');
 });
-
-
-  
-// Define a User representation for clarity
-const User = {
-    tableName: 'users', 
-    createUser: function(newUser, callback) {
-        connection.query('INSERT INTO ' + this.tableName + ' SET ?', newUser, callback);
-    },  
-    getUserByEmail: function(email, callback) {
-        connection.query('SELECT * FROM ' + this.tableName + ' WHERE email = ?', email, callback);
+const User= {
+    tablename:'Users',
+    createUser:function(newUser,callback){
+        connection.query('INSERT INTO '+ this.tablename + ' SET ?',newUser,callback);
     },
-    getUserByUsername: function(username, callback) {
-        connection.query('SELECT * FROM ' + this.tableName + ' WHERE username = ?', username, callback);
+    getUserByEmail:function(email,callback){
+        connection.query('SELECT * FROM '+ this.tablename + ' WHERE email = ?',email,callback);
+    },
+    getUserByUserName:function(username,callback){
+        connection.query('SELECT * FROM '+ this.tablename + ' WHERE username = ?',username,callback);
     }
 };
 
-// Registration route
 app.post('/register', [
     // Validate email and username fields
     check('email').isEmail(),
@@ -75,7 +63,8 @@ app.post('/register', [
         }
     }),
     check('username').custom(async (value) => {
-        const user = await User.getUserByUsername(value);
+        console.log('User object:', User);
+        const user = await User.getUserByUserName(value);
         if (user) {
             throw new Error('Username already exists');
         }
@@ -110,59 +99,99 @@ app.post('/register', [
       });
 });
 
-// Login route
 app.post('/login', (req, res) => {
     const { username, password } = req.body;
-    // Retrieve user from database
     connection.query('SELECT * FROM users WHERE username = ?', [username], (err, results) => {
-        if (err) throw err;
-        if (results.length === 0) {
-            res.status(401).send('Invalid username or password');
-        } else {
-            const user = results[0];
-            // Compare passwords
-            bcrypt.compare(password, user.password, (err, isMatch) => {
-                if (err) throw err;
-                if (isMatch) {
-                    // Store user in session
-                    req.session.user = user;
-                    res.send('Login successful');
-                } else {
-                    res.status(401).send('Invalid username or password');
-                }
-            });
+        if (err) {
+            console.log(err);
+            return res.status(500).send('Server error');
         }
+        if (results.length === 0) {
+            return res.status(401).send('Invalid username or password');
+        }
+        const user = results[0];
+        bcrypt.compare(password, user.password, (err, isMatch) => {
+            if (err) throw err;
+            if (isMatch) {
+                req.session.user = user;
+                res.json({ message: 'Login Successful', redirect: '/dashboard' }); // Send JSON response with redirect URL
+            } else {
+                res.status(401).send('Invalid username or password');
+            }
+        });
     });
 });
-
-// Logout route
-app.post('/logout', (req, res) => {
+app.post('/logout',(req,res)=>{
     req.session.destroy();
-    res.send('Logout successful');
+    res.send('Logout Successful')
 });
-
-//Dashboard route
 app.get('/dashboard', (req, res) => {
-    // Assuming you have middleware to handle user authentication and store user information in req.user
-    const userFullName = req.user.full_name;
-    res.render('dashboard', { fullName: userFullName });
+    if (!req.session.user) {
+        return res.status(401).redirect('/'); // Redirect to login if not authenticated
+    }
+
+    // Read the dashboard.html file and replace the placeholder with the user's full name
+    const fs = require('fs');
+    const filePath = path.join(__dirname, 'dashboard.html');
+    fs.readFile(filePath, 'utf8', (err, data) => {
+        if (err) {
+            console.log(err);
+            return res.status(500).send('Server error');
+        }
+
+        // Replace placeholder with user's full name
+        const userFullName = req.session.user.full_name;
+        const result = data.replace('<%= fullName %>', userFullName);
+
+        // Send the modified HTML file
+        res.send(result);
+    });
+});
+app.get('/course/:id',(req,res)=>{
+    const courseId=req.params.id;
+    const sql='SELECT * FROM courses WHERE id = ?';
+    db.query(sql,[courseId],(err,result)=>{
+        if(err){
+            throw err;
+        }
+        res.json(result);
+    });
+});
+app.post('/select-course', (req, res) => {
+    if (!req.session.user) {
+        return res.status(401).send('Unauthorized');
+    }
+    const userId = req.session.user.id;
+    const courseId = req.body.courseId;
+
+    connection.query('INSERT INTO user_courses (user_id, course_id) VALUES (?, ?)', [userId, courseId], (err, results) => {
+        if (err) {
+            return res.status(500).json({ error: 'Failed to select course' });
+        }
+        res.json({ success: true });
+    });
 });
 
-// Route to retrieve course content
-app.get('/course/:id', (req, res) => {
-    const courseId = req.params.id;
-    const sql = 'SELECT * FROM courses WHERE id = ?';
-    db.query(sql, [courseId], (err, result) => {
-      if (err) {
-        throw err;
-      }
-      // Send course content as JSON response
-      res.json(result);
-    });
-  });
+app.get('/selected-courses', (req, res) => {
+    if (!req.session.user) {
+        return res.status(401).send('Unauthorized');
+    }
+    const userId = req.session.user.id;
 
-// Start server
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+    connection.query(`
+        SELECT c.id, c.name
+        FROM courses c
+        JOIN user_courses uc ON c.id = uc.course_id
+        WHERE uc.user_id = ?`, [userId], (err, results) => {
+        if (err) {
+            return res.status(500).json({ error: 'Failed to fetch selected courses' });
+        }
+        res.json(results);
+    });
+});
+
+
+const PORT=3000;
+app.listen(PORT,()=>{
+    console.log(`Server is running on port: ${PORT}`);
 });

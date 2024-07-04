@@ -19,7 +19,10 @@
     </header>
     <main>
         <section class="welcome-message">
-            <h2>Hello, <span id="user-fullname"></span>!</h2>
+            <h2>Hello, 
+                <script>
+                    document.getElementById('userFullName').textContent = '<%= fullName %>';
+                </script>
             <p>Welcome to your personalized dashboard.</p>
         </section>
     </main>
