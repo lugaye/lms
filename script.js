@@ -85,6 +85,15 @@ document.addEventListener('DOMContentLoaded', () => {
         //fetch Logged in user's full name
         fetchFullName();
     }
+    // Check if the current page is the course selection page
+    if (window.location.pathname === '/select-courses') {
+        fetchCourses();
+    }
+
+    // Check if the current page is the selected courses page
+    if (window.location.pathname === '/selected-courses') {
+        fetchSelectedCourses();
+    }
 });
 
 function fetchCourseContent() {
@@ -204,4 +213,73 @@ function displayFullName(fullName) {
     const fullNameElement = document.getElementById('user-fullname');
     // Set the inner HTML of the element to the user's full name
     fullNameElement.textContent = fullName;
+}
+
+function fetchCourses() {
+    // Fetch all courses from the server
+    fetch('/courses')
+        .then(response => response.json())
+        .then(courses => displayCourses(courses))
+        .catch(error => console.error('Error fetching courses:', error));
+}
+
+function displayCourses(courses) {
+    const coursesElement = document.getElementById('courses');
+    coursesElement.innerHTML = '';
+
+    courses.forEach(course => {
+        const courseElement = document.createElement('div');
+        courseElement.innerHTML = `
+            <h2>${course.name}</h2>
+            <button onclick="selectCourse(${course.id})">Select Course</button>
+        `;
+        coursesElement.appendChild(courseElement);
+    });
+}
+
+function selectCourse(courseId) {
+    // Get the user ID from the session (assuming the user ID is stored in the session)
+    const userId = // Get user ID from session
+
+    // Send course selection to the server
+    fetch('/select-course', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ user_id: userId, course_id: courseId })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.message) {
+            alert(data.message);
+        } else {
+            alert('Failed to select course');
+        }
+    })
+    .catch(error => console.error('Error selecting course:', error));
+}
+
+function fetchSelectedCourses() {
+    // Get the user ID from the session (assuming the user ID is stored in the session)
+    const userId = // Get user ID from session
+
+    // Fetch selected courses for the user
+    fetch(`/selected-courses/${userId}`)
+        .then(response => response.json())
+        .then(courses => displaySelectedCourses(courses))
+        .catch(error => console.error('Error fetching selected courses:', error));
+}
+
+function displaySelectedCourses(courses) {
+    const selectedCoursesElement = document.getElementById('selected-courses');
+    selectedCoursesElement.innerHTML = '';
+
+    courses.forEach(course => {
+        const courseElement = document.createElement('div');
+        courseElement.innerHTML = `
+            <h2>${course.name}</h2>
+        `;
+        selectedCoursesElement.appendChild(courseElement);
+    });
 }

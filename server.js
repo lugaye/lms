@@ -18,7 +18,7 @@ app.use(session({
 const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: '',
+    password: '12345678',
     database: 'learning_management'
 });
 
@@ -160,6 +160,56 @@ app.get('/course/:id', (req, res) => {
       res.json(result);
     });
   });
+
+// Route to handle course selection
+app.post('/select-course', (req, res) => {
+    const { user_id, course_id } = req.body;
+
+    // Insert user-course relationship into the database
+    const sql = 'INSERT INTO user_courses (user_id, course_id) VALUES (?, ?)';
+    connection.query(sql, [user_id, course_id], (err, result) => {
+        if (err) {
+            console.error('Error inserting course selection: ' + err.message);
+            return res.status(500).json({ error: 'Failed to select course' });
+        }
+        res.status(200).json({ message: 'Course selected successfully' });
+    });
+});
+
+// Route to get selected courses for a user
+app.get('/selected-courses/:user_id', (req, res) => {
+    const user_id = req.params.user_id;
+
+    // Query to get selected courses for the user
+    const sql = `
+        SELECT courses.* FROM courses
+        JOIN user_courses ON courses.id = user_courses.course_id
+        WHERE user_courses.user_id = ?`;
+    connection.query(sql, [user_id], (err, results) => {
+        if (err) {
+            console.error('Error fetching selected courses: ' + err.message);
+            return res.status(500).json({ error: 'Failed to fetch selected courses' });
+        }
+        res.json(results);
+    });
+});
+
+// Serve selected courses page
+app.get('/selected-courses', (req, res) => {
+    res.sendFile(__dirname + '/selected-courses.html');
+});
+
+// Route to get all courses (for selection)
+app.get('/courses', (req, res) => {
+    const sql = 'SELECT * FROM courses';
+    connection.query(sql, (err, results) => {
+        if (err) {
+            console.error('Error fetching courses: ' + err.message);
+            return res.status(500).json({ error: 'Failed to fetch courses' });
+        }
+        res.json(results);
+    });
+});
 
 // Start server
 const PORT = process.env.PORT || 3000;
