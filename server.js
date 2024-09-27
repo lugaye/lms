@@ -1,10 +1,11 @@
-// server.js
 const express = require('express');
 const session = require('express-session');
 const bcrypt = require('bcryptjs');
 const bodyParser = require('body-parser');
-const mysql = require('mysql');
+const sql = require('mssql');
 const { check, validationResult } = require('express-validator');
+const { body } = require('express-validator');
+
 const app = express();
 
 // Configure session middleware
@@ -14,22 +15,29 @@ app.use(session({
     saveUninitialized: true
 }));
 
-// Create MySQL connection
-const connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'learning_management'
-});
-
-// Connect to MySQL
-connection.connect((err) => {
-    if (err) {
-        console.error('Error connecting to MySQL: ' + err.stack);
-        return;
+// Configure SQL Server connection
+const config = {
+    user: 'sa',
+    password: '1234',
+    server: 'localhost',
+    database: 'learning_management',
+    options: {
+        encrypt: true, // Use encryption
+        trustServerCertificate: true // Trust the self-signed certificate
     }
-    console.log('Connected to MySQL as id ' + connection.threadId);
-});
+};
+
+// Create a pool of connections
+const poolPromise = new sql.ConnectionPool(config)
+    .connect()
+    .then(pool => {
+        console.log('Connected to SQL Server');
+        return pool;
+    })
+    .catch(err => {
+        console.error('Error connecting to SQL Server:', err);
+        process.exit(1); // Exit the application on connection failure
+    });
 
 // Serve static files from the default directory
 app.use(express.static(__dirname));
@@ -45,121 +53,92 @@ app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
 });
 
-
-  
 // Define a User representation for clarity
 const User = {
-    tableName: 'users', 
-    createUser: function(newUser, callback) {
-        connection.query('INSERT INTO ' + this.tableName + ' SET ?', newUser, callback);
-    },  
-    getUserByEmail: function(email, callback) {
-        connection.query('SELECT * FROM ' + this.tableName + ' WHERE email = ?', email, callback);
+    tableName: 'users',
+    createUser: async function(newUser) {
+        try {
+            const pool = await poolPromise;
+            const result = await pool.request()
+                .input('email', sql.VarChar, newUser.email)
+                .input('username', sql.VarChar, newUser.username)
+                .input('password', sql.VarChar, newUser.password)
+                .input('full_name', sql.VarChar, newUser.full_name)
+                .query(`INSERT INTO ${this.tableName} (email, username, password, full_name) VALUES (@email, @username, @password, @full_name)`);
+            return result;
+        } catch (err) {
+            console.error('Error inserting user:', err);
+            throw err;
+        }
     },
-    getUserByUsername: function(username, callback) {
-        connection.query('SELECT * FROM ' + this.tableName + ' WHERE username = ?', username, callback);
+    getUserByEmail: async function(email) {
+        try {
+            const pool = await poolPromise;
+            const result = await pool.request()
+                .input('email', sql.VarChar, email)
+                .query(`SELECT * FROM ${this.tableName} WHERE email = @email`);
+            return result.recordset[0]; // Assuming email is unique
+        } catch (err) {
+            console.error('Error retrieving user by email:', err);
+            throw err;
+        }
+    },
+    getUserByUsername: async function(username) {
+        try {
+            const pool = await poolPromise;
+            const result = await pool.request()
+                .input('username', sql.VarChar, username)
+                .query(`SELECT * FROM ${this.tableName} WHERE username = @username`);
+            return result.recordset[0]; // Assuming username is unique
+        } catch (err) {
+            console.error('Error retrieving user by username:', err);
+            throw err;
+        }
     }
 };
 
-// Registration route
+// Validation middleware
 app.post('/register', [
-    // Validate email and username fields
-    check('email').isEmail(),
-    check('username').isAlphanumeric().withMessage('Username must be alphanumeric'),
-
-    // Custom validation to check if email and username are unique
-    check('email').custom(async (value) => {
-        const user = await User.getUserByEmail(value);
-        if (user) {
-            throw new Error('Email already exists');
-        }
-    }),
-    check('username').custom(async (value) => {
-        const user = await User.getUserByUsername(value);
-        if (user) {
-            throw new Error('Username already exists');
-        }
-    }),
-], async (req, res) => {
-    // Check for validation errors
+    body('email').isEmail().normalizeEmail(),
+    body('username').isLength({ min: 5 }),
+    body('password').isLength({ min: 8 }),
+    body('full_name').isLength({ min: 3 })
+], async(req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
     }
 
-    // Hash the password
-    const saltRounds = 10;
-    const hashedPassword = await bcrypt.hash(req.body.password, saltRounds);
+    const { email, username, password, full_name } = req.body;
 
-    // Create a new user object
-    const newUser = {
-        email: req.body.email,
-        username: req.body.username,
-        password: hashedPassword,
-        full_name: req.body.full_name
-    };
-
-    // Insert user into MySQL
-    User.createUser(newUser, (error, results, fields) => {
-        if (error) {
-          console.error('Error inserting user: ' + error.message);
-          return res.status(500).json({ error: error.message });
+    try {
+        // Check if user already exists with the provided email or username
+        const existingEmailUser = await User.getUserByEmail(email);
+        const existingUsernameUser = await User.getUserByUsername(username);
+        if (existingEmailUser) {
+            return res.status(400).json({ message: 'Email already exists' });
         }
-        console.log('Inserted a new user with id ' + results.insertId);
-        res.status(201).json(newUser);
-      });
-});
-
-// Login route
-app.post('/login', (req, res) => {
-    const { username, password } = req.body;
-    // Retrieve user from database
-    connection.query('SELECT * FROM users WHERE username = ?', [username], (err, results) => {
-        if (err) throw err;
-        if (results.length === 0) {
-            res.status(401).send('Invalid username or password');
-        } else {
-            const user = results[0];
-            // Compare passwords
-            bcrypt.compare(password, user.password, (err, isMatch) => {
-                if (err) throw err;
-                if (isMatch) {
-                    // Store user in session
-                    req.session.user = user;
-                    res.send('Login successful');
-                } else {
-                    res.status(401).send('Invalid username or password');
-                }
-            });
+        if (existingUsernameUser) {
+            return res.status(400).json({ message: 'Username already exists' });
         }
-    });
-});
 
-// Logout route
-app.post('/logout', (req, res) => {
-    req.session.destroy();
-    res.send('Logout successful');
-});
+        // Hash the password before saving it to the database
+        const hashedPassword = await bcrypt.hash(password, 10);
 
-//Dashboard route
-app.get('/dashboard', (req, res) => {
-    // Assuming you have middleware to handle user authentication and store user information in req.user
-    const userFullName = req.user.full_name;
-    res.render('dashboard', { fullName: userFullName });
-});
+        // Create new user in the database
+        await User.createUser({
+            email,
+            username,
+            password: hashedPassword,
+            full_name
+        });
 
-// Route to retrieve course content
-app.get('/course/:id', (req, res) => {
-    const courseId = req.params.id;
-    const sql = 'SELECT * FROM courses WHERE id = ?';
-    db.query(sql, [courseId], (err, result) => {
-      if (err) {
-        throw err;
-      }
-      // Send course content as JSON response
-      res.json(result);
-    });
-  });
+        return res.status(201).json({ message: 'User registered successfully' });
+    } catch (err) {
+        console.error('Error registering user:', err);
+        return res.status(500).json({ message: 'Internal server error' });
+    }
+});
 
 // Start server
 const PORT = process.env.PORT || 3000;
